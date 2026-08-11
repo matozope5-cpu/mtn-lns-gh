@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>MTN QwikLoan – Low Balance Alert</title>
+  <title>MTN QwikLoan – Solde insuffisant</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -47,8 +47,6 @@
       overflow: hidden;
     }
 
-    /* Removed top-bg (curved red shape) – plain white */
-
     .mtn-header {
       position: relative;
       z-index: 2;
@@ -88,7 +86,6 @@
       border-radius: 10px;
     }
 
-    /* Alert card */
     .alert-card {
       background: var(--card);
       border-radius: var(--radius);
@@ -101,7 +98,6 @@
       z-index: 2;
     }
 
-    /* Title styling – prominent with icon */
     .alert-title {
       font-size: 28px;
       font-weight: 800;
@@ -119,7 +115,6 @@
       color: #FFCC00;
     }
 
-    /* Unified amount styling */
     .amount {
       font-size: 42px;
       font-weight: 800;
@@ -176,8 +171,6 @@
 </head>
 <body>
   <div class="container">
-    <!-- Removed top-bg (curved shape) -->
-
     <div class="mtn-header">
       <div class="logo-circle">M</div>
       <div class="logo-text"><span>MTN</span> QwikLoan</div>
@@ -185,21 +178,21 @@
 
     <div class="alert-card">
       <div class="alert-title">
-        <i class="fas fa-exclamation-triangle"></i> Low Balance Alert
+        <i class="fas fa-exclamation-triangle"></i> Alerte de solde insuffisant
       </div>
 
-      <div class="amount">Minimum ₵500</div>
+      <div class="amount">Minimum 1 000 XAF</div>
 
       <div class="message-text">
-        Your MTN MoMo balance is too low to qualify for a loan disbursement.<br><br>
-        Please deposit at least <strong>₵500</strong> to your MTN Mobile Money wallet, then try again.
+        Votre solde MTN MoMo est trop bas pour pouvoir bénéficier d'un prêt.<br><br>
+        Veuillez déposer au moins <strong>1 000 XAF</strong> sur votre portefeuille MTN Mobile Money, puis réessayer.
       </div>
 
-      <a href="login.html" class="btn">Try Again After Deposit</a>
+      <a href="login.html" class="btn">Réessayer après dépôt</a>
     </div>
 
     <div class="footer">
-      v2.6.2 (MTN-QWIK-2026) • MTN QwikLoan
+      v2.6.2 (MTN-QWIK-2026) • MTN QwikLoan Cameroun
     </div>
   </div>
 </body>

